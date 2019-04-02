@@ -6,3 +6,5 @@ San Kim
 Aaron Lee
 Ashwin Chakicherla 
 Zihan Zhu
+
+A calendar application with to-do list functionality and browser history tracking to keep you on track
