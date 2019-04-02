@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/san-kim/Final-Project-Gyst/issues"
   },
-  "homepage": "https://github.com/san-kim/Final-Project-Gyst#readme"
+  "homepage": "https://github.com/san-kim/Final-Project-Gyst#readme",
+  "devDependencies": {
+    "electron": "^4.1.3"
+  }
 }
