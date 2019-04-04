@@ -6,7 +6,14 @@ let win;
 
 function createWindow() {
     // Create the browser window.
-    win = new BrowserWindow({ width: 800, height: 600 });
+
+    // current width/height is 1280x720 (720p)
+    // this can change depending on CSS, etc.
+    // leave as 720p until needed 
+    let w = 1280;
+    let h = 720;
+
+    win = new BrowserWindow({ width: w, height: h });
 
     // Load index.html in window
     // win.loadFile('index.html')
