@@ -8,7 +8,10 @@ function createWindow() {
     // Create the browser window.
     win = new BrowserWindow({ width: 800, height: 600 })
 
-    // and load the index.html of the app.
+    // TODO: add support for connecting electron frontend to tomcat server
+    // i.e. localhost:8080//
+
+    // Load index.html in window
     win.loadFile('index.html')
 
     // Open the DevTools.
