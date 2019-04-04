@@ -12,7 +12,8 @@ function createWindow() {
     // i.e. localhost:8080//
 
     // Load index.html in window
-    win.loadFile('index.html')
+    // win.loadFile('index.html')
+    win.loadURL("https://github.com")
 
     // Open the DevTools.
     win.webContents.openDevTools()
