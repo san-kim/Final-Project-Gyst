@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class Event {
 
+    // CAN BE EDITED AND CHANGED PER EVENT
+
     // event identification
     private String eventName;
 
@@ -19,14 +21,18 @@ public class Event {
     // misc
     private String notes;
     private String location;
-    private Account host; // host user for this event
 
-    // sharing functionality
-    private ArrayList<Account> interested;
-    private ArrayList<Account> going;
-    private ArrayList<Account> not_going;
-    private ArrayList<Account> no_response;
-    private ArrayList<Account> people_shared; // all people event is shared with
+    // sharing functionality --> all public arraylists to make adding and removing users easier per group
+    public ArrayList<Account> interested;
+    public ArrayList<Account> going;
+    public ArrayList<Account> not_going;
+    public ArrayList<Account> no_response;
+    public ArrayList<Account> people_shared; // all people event is shared with
+
+
+    // CANNOT BE CHANGED --> HOST MUST STAY SAME
+
+    private Account host; // host user for this event
     
     // private Notification notification; --> FIXME: this may not be necessary
     
@@ -46,6 +52,70 @@ public class Event {
         eventName = name; startTime = start; endTime = end;
         month = m; day = d; year = y;
         notes = note; location = loc; host = h;
+    }
+
+    public void setEventName(String e){
+        eventName = e;
+    }
+
+    public String getEventName(){
+        return eventName;
+    }
+
+    public void setStartTime(int s){
+        startTime = s;
+    }
+
+    public int getStartTime(){
+        return startTime;
+    }
+
+    public void setEndtime(int e){
+        endTime = e;
+    }
+
+    public int getEndTime(){
+        return endTime;
+    }
+
+    public void setMonth(int m){
+        month = m;
+    }
+
+    public int getMonth(){
+        return month;
+    }
+
+    public void setDay(int d){
+        day = d;
+    }
+
+    public int getDay(){
+        return day;
+    }
+
+    public void setYear(int y){
+        year = y;
+    }
+    
+    public int getYear(){
+        return year;
+    }
+
+    public void setNotes(String n){
+        notes = n;
+    }
+
+    public String getNotes(){
+        return notes;
+    }
+
+    public void setLocation(String l){
+        location = l;
+    }
+
+    public String getLocation(){
+        return location;
     }
 
 }
