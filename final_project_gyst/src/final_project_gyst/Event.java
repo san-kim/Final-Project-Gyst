@@ -41,4 +41,11 @@ public class Event {
         // TODO: parse ISO-8601 Date-Time String into class data
     }
 
+    // constructor with all variables already parsed
+    public Event(String name, int start, int end, int m, int d, int y, String note, String loc, Account h){
+        eventName = name; startTime = start; endTime = end;
+        month = m; day = d; year = y;
+        notes = note; location = loc; host = h;
+    }
+
 }
