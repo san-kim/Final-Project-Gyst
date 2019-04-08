@@ -38,7 +38,7 @@ public class Event {
         eventName = name; notes = note; location = loc; host = h;
 
         // convert UTC Date / Time String to Date and Time in int
-        
+        // TODO: parse ISO-8601 Date-Time String into class data
     }
 
 }
