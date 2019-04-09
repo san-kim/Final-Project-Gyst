@@ -7,6 +7,10 @@ public class Event {
     // CAN BE EDITED AND CHANGED PER EVENT
 
     // event identification
+	
+	// TODO: this needs to be UNIQUE FOR ALL EVENTS --> ACROSS ALL USERS (maybe use a hashset & while loop?)
+	private long id; 
+	
     private String eventName;
 
     // times
@@ -37,9 +41,10 @@ public class Event {
     // private Notification notification; --> FIXME: this may not be necessary
     
     void sendNotification(){
-        
+        // needs implementation
     }
 
+    // constructor with ISO-8601 Date-Time String
     public Event(String name, String UTCDateTimeString, String note, String loc, Account h){
         eventName = name; notes = note; location = loc; host = h;
 
