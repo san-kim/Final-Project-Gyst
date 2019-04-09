@@ -53,7 +53,7 @@ public class GetEvents extends HttpServlet {
 		**/
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		String jsonOutput = "";
+		String jsonOutput = "{";
 		for (Event e: currentUser.getEvents()) {
 			// TODO: print json array format for events
 		}
