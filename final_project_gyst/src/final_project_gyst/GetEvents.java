@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import com.google.gson.Gson;
 
 /**
  * Servlet implementation class GetEvents
@@ -55,12 +56,15 @@ public class GetEvents extends HttpServlet {
 
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		String jsonOutput;
 		ArrayList<CalendarEvent> eventsToSend;
 		for (Event e: currentUser.getEvents()) {
 			CalendarEvent toSend = new CalendarEvent(e); // generate new calendar formatted event to send to frontend
-			
+			eventsToSend.add(toSend);
 		}
+		// create json array from CalendarEvent class
+		String jsonOutput = new Gson().toJson(eventsToSend);
+		out.println(jsonOutput);
+		out.flush();
 	}
 
 	/**

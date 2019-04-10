@@ -38,20 +38,40 @@ public class CalendarEvent{
         return id;
     }
 
+    public void setId(int id){
+        this.id = id;
+    }
+
     public String getStartTime(){
         return startTime;
+    }
+
+    public void setStartTime(String startTime){
+        this.startTime = startTime;
     }
 
     public String getEndTime(){
         return endTime;
     }
 
+    public void setEndTime(String endTime){
+        this.endTime = endTime;
+    }
+
     public String getTitle(){
         return title;
     }
 
+    public void setTitle(String title){
+        this.title = title;
+    }
+
     public boolean getAllDay(){
         return allDay;
+    }
+
+    public void setAllDay(boolean allDay){
+        this.allDay = allDay;
     }
 
     public String getClassName(){
