@@ -20,17 +20,17 @@ public class CalendarEvent{
 		**/
     private long id;
     private String title;
-    private String startTime;
-    private String endTime;
+    private String start;
+    private String end;
     private boolean allDay;
     private String className = "info";
-    private String URL = ""; // ONCLICK FUNCTION, SET FOR ANY PARTICULAR EVENT --> MUST SEND EVENT ID AS PARAMETER
+    // private String URL = ""; // ONCLICK FUNCTION, SET FOR ANY PARTICULAR EVENT --> MUST SEND EVENT ID AS PARAMETER
 
     public CalendarEvent(Event event){
         id = event.getId();
         title = event.getEventName();
-        startTime = event.getStartTime();
-        endTime = event.getEndTime();
+        start = event.getStart();
+        end = event.getEnd();
         allDay = event.getAllDay();
     }
 
@@ -42,20 +42,20 @@ public class CalendarEvent{
         this.id = id;
     }
 
-    public String getStartTime(){
-        return startTime;
+    public String getStart(){
+        return start;
     }
 
-    public void setStartTime(String startTime){
-        this.startTime = startTime;
+    public void setStart(String start){
+        this.start = start;
     }
 
-    public String getEndTime(){
-        return endTime;
+    public String getEnd(){
+        return end;
     }
 
-    public void setEndTime(String endTime){
-        this.endTime = endTime;
+    public void setEnd(String end){
+        this.end = end;
     }
 
     public String getTitle(){
@@ -78,7 +78,7 @@ public class CalendarEvent{
         return className;
     }
 
-    public String getURL(){
-        return URL;
-    }
+    // public String getURL(){
+    //     return URL;
+    // }
 }

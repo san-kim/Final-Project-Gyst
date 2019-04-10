@@ -14,8 +14,8 @@ public class Event {
     private String eventName;
 
     // times
-    private String startTime;
-    private String endTime;
+    private String start;
+    private String end;
     private boolean allDay;
 
     // date --> might not be necessary, can represent date as ISO-8601 String
@@ -46,10 +46,9 @@ public class Event {
     }
 
     // constructor with all variables already parsed
-    public Event(String name, String start, String end, String note, String loc, Account h, boolean all){
-        eventName = name; startTime = start; endTime = end;
-        notes = note; location = loc; host = h;
-        allDay = all;
+    public Event(long id, String name, String start, String end, String note, String loc, Account h, boolean all){
+        this.id = id; eventName = name; this.start = start; this.end = end;
+        notes = note; location = loc; host = h; allDay = all;
     }
 
     public void setEventName(String e){
@@ -71,20 +70,20 @@ public class Event {
         return eventName;
     }
 
-    public void setStartTime(String s){
-        startTime = s;
+    public void setStart(String s){
+        start = s;
     }
 
-    public String getStartTime(){
-        return startTime;
+    public String getStart(){
+        return start;
     }
 
-    public void setEndtime(String e){
-        endTime = e;
+    public void setEnd(String e){
+        end = e;
     }
 
-    public String getEndTime(){
-        return endTime;
+    public String getEnd(){
+        return end;
     }
 
     // public void setMonth(int m){
