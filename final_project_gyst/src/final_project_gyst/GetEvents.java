@@ -2,6 +2,7 @@ package final_project_gyst;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,11 +52,14 @@ public class GetEvents extends HttpServlet {
 					--> NEED TO MAKE FUNCTION FOR AJAX CALL TO SERVLET (/GetEvents)
 
 		**/
+
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		String jsonOutput = "{";
+		String jsonOutput;
+		ArrayList<CalendarEvent> eventsToSend;
 		for (Event e: currentUser.getEvents()) {
-			// TODO: print json array format for events
+			CalendarEvent toSend = new CalendarEvent(e); // generate new calendar formatted event to send to frontend
+			
 		}
 	}
 

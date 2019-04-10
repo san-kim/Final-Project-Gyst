@@ -14,13 +14,14 @@ public class Event {
     private String eventName;
 
     // times
-    private int startTime;
-    private int endTime;
+    private String startTime;
+    private String endTime;
+    private boolean allDay;
 
-    // date
-    private int month;
-    private int day;
-    private int year;
+    // date --> might not be necessary, can represent date as ISO-8601 String
+    // private int month;
+    // private int day;
+    // private int year;
 
     // misc
     private String notes;
@@ -44,68 +45,71 @@ public class Event {
         // needs implementation
     }
 
-    // constructor with ISO-8601 Date-Time String
-    public Event(String name, String UTCDateTimeString, String note, String loc, Account h){
-        eventName = name; notes = note; location = loc; host = h;
-
-        // convert UTC Date / Time String to Date and Time in int
-        // TODO: parse ISO-8601 Date-Time String into class data
-    }
-
     // constructor with all variables already parsed
-    public Event(String name, int start, int end, int m, int d, int y, String note, String loc, Account h){
+    public Event(String name, String start, String end, String note, String loc, Account h, boolean all){
         eventName = name; startTime = start; endTime = end;
-        month = m; day = d; year = y;
         notes = note; location = loc; host = h;
+        allDay = all;
     }
 
     public void setEventName(String e){
         eventName = e;
     }
+    
+    public long getId(){
+        return id;
+    }
 
+    public boolean getAllDay(){
+        return allDay;
+    }
+
+    public void setId(int i){
+        id = i;
+    }
     public String getEventName(){
         return eventName;
     }
 
-    public void setStartTime(int s){
+    public void setStartTime(String s){
         startTime = s;
     }
 
-    public int getStartTime(){
+    public String getStartTime(){
         return startTime;
     }
 
-    public void setEndtime(int e){
+    public void setEndtime(String e){
         endTime = e;
     }
 
-    public int getEndTime(){
+    public String getEndTime(){
         return endTime;
     }
 
-    public void setMonth(int m){
-        month = m;
-    }
+    // public void setMonth(int m){
+    //     month = m;
+    // }
 
-    public int getMonth(){
-        return month;
-    }
+    // public int getMonth(){
+    //     return month;
+    // }
 
-    public void setDay(int d){
-        day = d;
-    }
+    // public void setDay(int d){
+    //     day = d;
+    // }
 
-    public int getDay(){
-        return day;
-    }
+    // public int getDay(){
+    //     return day;
+    // }
 
-    public void setYear(int y){
-        year = y;
-    }
+    // public void setYear(int y){
+    //     year = y;
+    // }
     
-    public int getYear(){
-        return year;
-    }
+    // public int getYear(){
+    //     return year;
+    // }
 
     public void setNotes(String n){
         notes = n;
