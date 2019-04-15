@@ -61,7 +61,7 @@ public class RegisterValidation extends HttpServlet {
 			ps.setString(1, username);
 			ps.setString(2, password);
 			ps.executeUpdate();
-			RequestDispatcher rd = request.getRequestDispatcher("LoggedIn.jsp");//TODO: direct this to logged in page!
+			RequestDispatcher rd = request.getRequestDispatcher("fullcalendar.html");
 			request.setAttribute("UserN", username);
 			rd.forward(request, response);
 			return;

@@ -68,7 +68,7 @@ public class LoginValidation extends HttpServlet {
 				System.out.println("sqle closing:"+sqle.getMessage());
 			}
 		}
-		RequestDispatcher rd = request.getRequestDispatcher("LoggedIn.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("fullcalendar.html");
 		request.setAttribute("UserN", username);
 		rd.forward(request, response);
 		return;
