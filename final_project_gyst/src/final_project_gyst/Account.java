@@ -37,6 +37,12 @@ public class Account extends Thread{
         return userID;
     }
 
-    // TODO: Thread.Run() method implementation
-    
+    // TODO: Thread.Run() method implementation 
+    public void run(){
+        //populate events to the calendar
+        Connection conn = null;
+		PreparedStatement ps =null;
+        ResultSet rs = null;
+        
+    }
 }
