@@ -169,7 +169,6 @@ $.fn.fullCalendar = function(options) {
 		calendar.render();
 	});
 	
-	
 	return this;
 	
 };
