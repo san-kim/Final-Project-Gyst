@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.google.gson.*;
+import com.oracle.jrockit.jfr.EventInfo;
 
 /**
  * Servlet implementation class GetEvents
@@ -47,24 +48,32 @@ public class GetEvents extends HttpServlet {
 		// System.out.println("added b");
 		ArrayList<Event> AllEvents = new ArrayList<Event>();
 		//TODO: get all events in the database
+		DatabaseAccess d = new DatabaseAccess();
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
+		ArrayList <EventInfo> events_to_send = d.getEvents(currentUser.getUserName());
 		ArrayList<CalendarEvent> eventsToSend = new ArrayList<CalendarEvent>();
+		for (int i=0;i<events_to_send.size();i++) {
+			
+			Event events_to_send.get(i).getId();
+			
+		}
+		
 		// for (Event e: currentUser.getHostedEvents()) {
 		// 	CalendarEvent toSend = new CalendarEvent(e); // generate new calendar formatted event to send to frontend
 		// 	eventsToSend.add(toSend);
 		// }
 		
 		//the host must be in the people_shared arraylist too, so just go over this arraylist is enough
-		for (Event e: AllEvents) {
-			for(int i =0; i< e.people_shared.length;i++){
-				if(e.people_shared.ElementAt(i).getUserName()==currentUser.getUserName){
-					CalendarEvent toSend = new CalendarEvent(e); // generate new calendar formatted event to send to frontend
-					eventsToSend.add(toSend);
-				}
-			}
-			
-		}
+//		for (Event e: AllEvents) {
+//			for(int i =0; i< e.people_shared.size();i++){
+//				if(e.people_shared.elementData(i).getUserName()==currentUser.getUserName()){
+//					CalendarEvent toSend = new CalendarEvent(e); // generate new calendar formatted event to send to frontend
+//					eventsToSend.add(toSend);
+//				}
+//			}
+//			
+//		}
 
 		
 		// create json array from CalendarEvent class
