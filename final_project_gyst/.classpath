@@ -9,7 +9,7 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/zzh76/OneDrive/Documents/my_eclipse_workspace/Weathermeister Back-End API Integration/gson-2.8.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/zzh76/OneDrive/Documents/my_eclipse_workspace/Weathermeister Back-End API Integration/mysql-connector-java-8.0.15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/zzh76/OneDrive/Documents/my_eclipse_workspace/Final-Project-Gyst/final_project_gyst/WebContent/WEB-INF/lib/gson-2.8.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/zzh76/OneDrive/Documents/my_eclipse_workspace/Final-Project-Gyst/final_project_gyst/WebContent/WEB-INF/lib/mysql-connector-java-8.0.15.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
