@@ -13,16 +13,16 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.*;
 
 /**
- * Servlet implementation class AddEvent
+ * Servlet implementation class DeleteEvent
  */
-@WebServlet("/AddEvent")
-public class AddEvent extends HttpServlet {
+@WebServlet("/DeleteEvent")
+public class DeleteEvent extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddEvent() {
+    public DeleteEvent() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,26 +31,24 @@ public class AddEvent extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+        
+        
 		HttpSession session = request.getSession();
-		Account currentUser = (Account) session.getAttribute("user");
+        Account currentUser = (Account) session.getAttribute("user");
+        String eventNameToDelete = (String) session.getAttribute("eventnametodelete");
+        
+        //TODO: if currentuser does not host this event, the user cannot delete this event. Maybe implement in frontend?
 		
 		//Account currentUser = new Account("abc", "123");
-        Event a = new Event((long) session.getAttribute("eventid"),
-        (String) session.getAttribute("eventname"), 
-        (String) session.getAttribute("eventstart"),
-        (String) session.getAttribute("eventend"),
-        (String) session.getAttribute("eventnote"),
-        (String) session.getAttribute("eventlocation"),
-        (Account)currentUser, false, (ArrayList<Account>) session.getAttribute("peopleshared"));
 		
         
-		//TODO: Insert event info into our database.
+        //TODO: Remove this event in our database.
+        //Find the events in database which has the event name same as this name, then delete
 		
 		//a.people_shared = new ArrayList<Account>();
 		//a.people_shared.add(currentUser);//add the currentuser to people_shared
-		currentUser.addHostedEvent(a);//add event object to account's hosting events
-        System.out.println("added a");
+		currentUser.removeHostedEvent(a);//add event object to account's hosting events
+        System.out.println("removed a");
 
 		// response.setContentType("application/json");
 		// PrintWriter out = response.getWriter();

@@ -46,9 +46,10 @@ public class Event {
     }
 
     // constructor with all variables already parsed
-    public Event(long id, String name, String start, String end, String note, String loc, Account h, boolean all){
+    public Event(long id, String name, String start, String end, String note, String loc, Account h, boolean all,ArrayList<Account> people_shared){
         this.id = id; eventName = name; this.start = start; this.end = end;
         notes = note; location = loc; host = h; allDay = all;
+        this.people_shared = people_shared;
     }
 
     public void setEventName(String e){
