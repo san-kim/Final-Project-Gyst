@@ -561,10 +561,10 @@ public class DatabaseAccess
 	} 
 	
 	//make sure you store before as before=this; then do whatever change then after=this
-	public void changeToDoEvent(Event before, Event after)
+	public void changeToDoEvent(Event after, boolean afterblock)
 	{
 		try {
-			ps = conn.prepareStatement("SELECT COUNT(*) FROM ToDoEvents WHERE ToDoEvent_ID="+before.getId());
+			ps = conn.prepareStatement("SELECT COUNT(*) FROM ToDoEvents WHERE ToDoEvent_ID="+after.getId());
 			rs = ps.executeQuery();			
 				
 			//as long as there are more rows, as select will return a table
@@ -578,12 +578,12 @@ public class DatabaseAccess
 			if(matchExists)
 			{
 				//delete all old instances of this
-				removeAllToDoEvents(before);
+				removeAllToDoEvents(after);
 				//to update, add updated information
 				//add for each username
 				for(Account acct : after.people_shared)
 				{
-					addEvent((int)after.getId(), acct.getUsername(), after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes());
+					addToDoEvent((int)after.getId(), acct.getUsername(), after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), afterblock, after.getNotes());
 				}
 			}
 		}
