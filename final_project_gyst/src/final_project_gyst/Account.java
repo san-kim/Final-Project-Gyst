@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Account extends Thread{
     // TODO: Create a map for accounts in Server class --> should be map<username, account object>
+    //FIXME: Zihan: I dont think the Account needs to be a thread any more. We use thread only in chatroom
 
     private long userID;
     private String username;
@@ -15,15 +16,15 @@ public class Account extends Thread{
         hosted_events = new ArrayList<Event>();
     }
     
-    public ArrayList<Event> getEvents(){
+    public ArrayList<Event> getHostedEvents(){
     	return hosted_events;
     }
 
-    public void addEvent(Event e){
+    public void addHostedEvent(Event e){
         hosted_events.add(e);
     }
 
-    public void removeEvent(Event e){
+    public void removeHostedEvent(Event e){
         hosted_events.remove(e);
     }
 
@@ -33,6 +34,10 @@ public class Account extends Thread{
 
     public long getUserId(){
         return userID;
+    }
+
+    public String getUserName(){
+        return username;
     }
 
     // TODO: Thread.Run() method implementation
