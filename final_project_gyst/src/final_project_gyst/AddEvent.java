@@ -45,8 +45,16 @@ public class AddEvent extends HttpServlet {
         (Account)currentUser, false, (ArrayList<Account>) session.getAttribute("peopleshared"));
 		
         
-		//TODO: Insert event info into our database.
-		
+		//Insert event info into our database.
+		DatabaseAccess d = new DatabaseAccess();
+		d.addEvent((long) session.getAttribute("eventid"),
+		(String) currentUser.getUserName(),
+		(String) session.getAttribute("eventname"), 
+		(String) session.getAttribute("eventlocation"),
+        (String) session.getAttribute("eventstart"),
+        (String) session.getAttribute("eventend"),
+        (String) session.getAttribute("eventnote")
+        /*(Account)currentUser, false, (ArrayList<Account>) session.getAttribute("peopleshared")*/);
 		//a.people_shared = new ArrayList<Account>();
 		//a.people_shared.add(currentUser);//add the currentuser to people_shared
 		currentUser.addHostedEvent(a);//add event object to account's hosting events

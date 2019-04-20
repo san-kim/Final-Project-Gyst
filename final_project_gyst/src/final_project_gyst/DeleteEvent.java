@@ -41,14 +41,20 @@ public class DeleteEvent extends HttpServlet {
 		
 		//Account currentUser = new Account("abc", "123");
 		
+        DatabaseAccess d = new DatabaseAccess();
+        //traverse all hosted events, if match, delete that event.
+        for(int i =0;i<currentUser.getHostedEvents.length();i++){
+            if(currentUser.getHostedEvents.ElementAt(i).getEventName()==eventNameToDelete){
+                d.removeAllEvent(currentUser.getHostedEvents.ElementAt(i));
+                currentUser.removeHostedEvent(a);//add event object to account's hosting events
+                System.out.println("removed a");
+            }
+        }
         
-        //TODO: Remove this event in our database.
         //Find the events in database which has the event name same as this name, then delete
 		
 		//a.people_shared = new ArrayList<Account>();
 		//a.people_shared.add(currentUser);//add the currentuser to people_shared
-		currentUser.removeHostedEvent(a);//add event object to account's hosting events
-        System.out.println("removed a");
 
 		// response.setContentType("application/json");
 		// PrintWriter out = response.getWriter();
