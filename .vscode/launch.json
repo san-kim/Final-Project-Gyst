@@ -9,7 +9,7 @@
             "type": "java",
             "request": "launch",
             "stopOnEntry": true,
-            "jdkPath": "${env:JAVA_HOME}/bin",
+            "jdkPath": "${java.home}/bin",
             "cwd": "${fileDirname}",
             "startupClass": "${fileBasenameNoExtension}",
             "classpath": [
@@ -22,7 +22,7 @@
             "type": "java",
             "request": "launch",
             "stopOnEntry": true,
-            "jdkPath": "${env:JAVA_HOME}/bin",
+            "jdkPath": "${java.home}/bin",
             "cwd": "${fileDirname}",
             "startupClass": "${fileBasenameNoExtension}",
             "classpath": [
