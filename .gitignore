@@ -1,3 +1,5 @@
 node_modules/
 .DS_Store
 final_project_gyst/WebContent/WEB-INF/web.xml
+*.class
+/.metadata/
