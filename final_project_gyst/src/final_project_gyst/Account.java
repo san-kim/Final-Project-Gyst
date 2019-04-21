@@ -15,6 +15,7 @@ public class Account extends Thread{
     public Account(String u, String p){
         username = u; password = p;
         hosted_events = new ArrayList<Event>();
+        todo_events = new ArrayList<ToDoEvent>();
     }
     
     public ArrayList<Event> getHostedEvents(){
@@ -29,6 +30,18 @@ public class Account extends Thread{
         hosted_events.remove(e);
     }
 
+    public ArrayList<ToDoEvent> getToDoEvents(){
+    	return todo_events;
+    }
+
+    public void addToDoEvent(ToDoEvent e){
+    	todo_events.add(e);
+    }
+
+    public void removeToDoEvent(ToDoEvent e){
+    	todo_events.remove(e);
+    }
+    
     public void setUserId(long id){
         userID = id;
     }
