@@ -36,7 +36,7 @@ public class ModifyEvent extends HttpServlet {
         
 		HttpSession session = request.getSession();
         Account currentUser = (Account) session.getAttribute("user");
-        String eventNameToModify = (String) session.getAttribute("eventnametomodify");
+        //String eventNameToModify = (String) session.getAttribute("eventnametomodify");
         //FIXME: I am assuming the event names are unique.
         
         //TODO: if currentuser does not host this event, the user cannot modify this event. Implement in frontend?
