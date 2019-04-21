@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 import javafx.util.Pair;
@@ -408,12 +409,12 @@ public class DatabaseAccess
 		}
 	}
 	
-	public ArrayList<EventInfo> getEvents(String username)
+	public HashSet<EventInfo> getEvents(String username)
 	{
 		if(userExists(username) == false)
 			return null;
 		
-		ArrayList<EventInfo> result = new ArrayList<EventInfo>(); 
+		HashSet<EventInfo> result = new HashSet<EventInfo>(); 
 		try {
 			ps = conn.prepareStatement("SELECT * FROM User_Events WHERE User_ID="+getIDFromUsername(username));
 			rs = ps.executeQuery();			
