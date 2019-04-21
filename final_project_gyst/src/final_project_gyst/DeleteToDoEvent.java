@@ -26,9 +26,10 @@ public class DeleteToDoEvent extends HttpServlet {
         DatabaseAccess d = new DatabaseAccess();
         //traverse all todo events, if match, delete that event.
         for(int i =0;i<currentUser.getToDoEvents().size();i++){
-            if(currentUser.getToDoEvents().get(i).getEventName()==eventNameToDelete){
-                d.removeToDoEvent(currentUser.getToDoEvents().get(i));
-                currentUser.removeToDoEvent(currentUser.getToDoEvents().get(i));//add event object to account's hosting events
+        	ToDoEvent a = currentUser.getToDoEvents().get(i);
+            if(a.getToDoEventName()==eventNameToDelete){
+                d.removeToDoEvent(a);
+                currentUser.removeToDoEvent(a);
                 System.out.println("removed a");
             }
         }

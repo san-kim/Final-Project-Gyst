@@ -50,7 +50,7 @@ public class Account extends Thread{
         return userID;
     }
 
-    public String getUserName(){
+    public String getUsername(){
         return username;
     }
 
