@@ -1,6 +1,7 @@
 package final_project_gyst;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,9 +25,10 @@ public class DeleteToDoEvent extends HttpServlet {
 		//Account currentUser = new Account("abc", "123");
 		
         DatabaseAccess d = new DatabaseAccess();
+        Iterator<ToDoEvent> it = currentUser.getToDoEvents().iterator();
         //traverse all todo events, if match, delete that event.
-        for(int i =0;i<currentUser.getToDoEvents().size();i++){
-        	ToDoEvent a = currentUser.getToDoEvents().get(i);
+        while(it.hasNext()) {
+        	ToDoEvent a = it.next();
             if(a.getToDoEventName()==eventNameToDelete){
             	d.removeToDoEvent((String) currentUser.getUsername(),
     			(String) session.getAttribute("eventname"), 
