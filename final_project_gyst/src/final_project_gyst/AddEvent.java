@@ -48,7 +48,7 @@ public class AddEvent extends HttpServlet {
         
 		//Insert event info into our database.
 		DatabaseAccess d = new DatabaseAccess();
-		d.addEvent((long) session.getAttribute("eventid"),
+		d.addEvent((int) session.getAttribute("eventid"),
 		(String) currentUser.getUserName(),
 		(String) session.getAttribute("eventname"), 
 		(String) session.getAttribute("eventlocation"),
