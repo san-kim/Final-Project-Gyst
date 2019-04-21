@@ -1,8 +1,6 @@
 package final_project_gyst;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
