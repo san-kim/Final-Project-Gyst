@@ -1,7 +1,6 @@
 package final_project_gyst;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -28,17 +27,19 @@ public class AddToDoEvent extends HttpServlet {
         (String) session.getAttribute("eventstart"),
         (String) session.getAttribute("eventend"),
         (String) session.getAttribute("eventnote"),
-        (String) session.getAttribute("eventlocation"), false);
+        (String) session.getAttribute("eventlocation"),
+        (boolean)session.getAttribute("eventblock"));
 		
         
 		//Insert event info into our database.
 		DatabaseAccess d = new DatabaseAccess();
-		d.addEvent((int) session.getAttribute("eventid"),
+		d.addToDoEvent((int) session.getAttribute("eventid"),
 		(String) currentUser.getUsername(),
 		(String) session.getAttribute("eventname"), 
 		(String) session.getAttribute("eventlocation"),
         (String) session.getAttribute("eventstart"),
         (String) session.getAttribute("eventend"),
+        (boolean)session.getAttribute("eventblock"),
         (String) session.getAttribute("eventnote"));
 		currentUser.addToDoEvent(a); //add todo event object to account's todo events
         System.out.println("added a");

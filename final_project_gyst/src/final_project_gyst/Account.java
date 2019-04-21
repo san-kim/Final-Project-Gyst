@@ -8,12 +8,11 @@ public class Account extends Thread{
 
     private long userID;
     private String username;
-    private String password;
     private ArrayList<Event> hosted_events;
     private ArrayList<ToDoEvent> todo_events;
 
-    public Account(String u, String p){
-        username = u; password = p;
+    public Account(String u){
+        username = u;
         hosted_events = new ArrayList<Event>();
         todo_events = new ArrayList<ToDoEvent>();
     }

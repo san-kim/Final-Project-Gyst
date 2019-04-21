@@ -28,7 +28,13 @@ public class DeleteToDoEvent extends HttpServlet {
         for(int i =0;i<currentUser.getToDoEvents().size();i++){
         	ToDoEvent a = currentUser.getToDoEvents().get(i);
             if(a.getToDoEventName()==eventNameToDelete){
-                d.removeToDoEvent(a);
+            	d.removeToDoEvent((String) currentUser.getUsername(),
+    			(String) session.getAttribute("eventname"), 
+    			(String) session.getAttribute("eventlocation"),
+    	        (String) session.getAttribute("eventstart"),
+    	        (String) session.getAttribute("eventend"),
+    	        (boolean)session.getAttribute("eventblock"),
+    	        (String) session.getAttribute("eventnote"));
                 currentUser.removeToDoEvent(a);
                 System.out.println("removed a");
             }
