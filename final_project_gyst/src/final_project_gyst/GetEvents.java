@@ -46,7 +46,6 @@ public class GetEvents extends HttpServlet {
 		// System.out.println("added a");	
 		// currentUser.addHostedEvent(b);
 		// System.out.println("added b");
-		ArrayList<Event> AllEvents = new ArrayList<Event>();
 		//TODO: get all events in the database
 		DatabaseAccess d = new DatabaseAccess();
 		response.setContentType("application/json");
