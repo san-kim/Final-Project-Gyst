@@ -23,7 +23,7 @@ public class AddToDoEvent extends HttpServlet {
 		Account currentUser = (Account) session.getAttribute("user");
 		
 		//Account currentUser = new Account("abc", "123");
-        ToDoEvent a = new ToDoEvent((long) session.getAttribute("eventid"),
+        ToDoEvent a = new ToDoEvent((int) session.getAttribute("eventid"),
         (String) session.getAttribute("eventname"), 
         (String) session.getAttribute("eventstart"),
         (String) session.getAttribute("eventend"),
@@ -33,8 +33,8 @@ public class AddToDoEvent extends HttpServlet {
         
 		//Insert event info into our database.
 		DatabaseAccess d = new DatabaseAccess();
-		d.addEvent((long) session.getAttribute("eventid"),
-		(String) currentUser.getUserName(),
+		d.addEvent((int) session.getAttribute("eventid"),
+		(String) currentUser.getUsername(),
 		(String) session.getAttribute("eventname"), 
 		(String) session.getAttribute("eventlocation"),
         (String) session.getAttribute("eventstart"),

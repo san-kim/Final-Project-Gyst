@@ -7,7 +7,7 @@ public class ToDoEvent {
     // event identification
 	
 	// TODO: this needs to be UNIQUE FOR ALL EVENTS --> ACROSS ALL USERS (maybe use a hashset & while loop?)
-	private long id; 
+	private int id; 
 	
     private String name;
     private String location;
@@ -32,23 +32,23 @@ public class ToDoEvent {
     }
 
     // constructor with all variables already parsed
-    public ToDoEvent(long id, String name, String start, String end, String note, String location, boolean block){
+    public ToDoEvent(int id, String name, String start, String end, String note, String location, boolean block){
         this.id = id; this.name = name; this.location = location; 
         this.start = start; this.end = end; this.block = block; notes = note;
     }
 
-    public void setName(String e){
+    public void setToDoEventName(String e){
         name = e;
     }
     
-    public long getId(){
+    public int getId(){
         return id;
     }
 
     public void setId(int i){
         id = i;
     }
-    public String getName(){
+    public String getToDoEventName(){
         return name;
     }
 
