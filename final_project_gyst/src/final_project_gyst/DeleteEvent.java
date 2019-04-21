@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import com.google.gson.*;
 
 /**
  * Servlet implementation class DeleteEvent
@@ -39,21 +38,27 @@ public class DeleteEvent extends HttpServlet {
         String eventNameToDelete = (String) session.getAttribute("eventnametodelete");
         
         //TODO: if currentuser does not host this event, the user cannot delete this event. Maybe implement in frontend?
+        
 		
 		//Account currentUser = new Account("abc", "123");
 		
         DatabaseAccess d = new DatabaseAccess();
         //traverse all hosted events, if match, delete that event.
-        HashSet<Event> events_host = currentUser.getHostedEvents();
+        HashSet<Event> events_host = currentUser.getEvents();
 		Iterator<Event> it = events_host.iterator();
-	     while(it.hasNext()){
-	    	 Event temp = it.next();
-	    	 if(temp.getEventName()==eventNameToDelete){
-               d.removeAllEvent(temp);
-               currentUser.removeHostedEvent(temp);//add event object to account's hosting events
-               System.out.println("event deleted");
-           }
-	     }
+		boolean hosted = false;
+		while (it.hasNext()) {
+			Event temp = it.next();
+			if (temp.getEventName() == eventNameToDelete) {
+				d.removeAllEvent(temp);
+				currentUser.removeEvent(temp);// add event object to account's hosting events
+				System.out.println("event deleted");
+				hosted = true;
+			}
+		}
+		if (!hosted) {
+			
+		}
         
 //        for(int i =0;i<currentUser.getHostedEvents().size();i++){
 //            if(currentUser.getHostedEvents().get(i).getEventName()==eventNameToDelete){

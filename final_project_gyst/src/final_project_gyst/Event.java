@@ -126,4 +126,7 @@ public class Event {
         return location;
     }
 
+    public Account getHost(){
+        return host;
+    }
 }
