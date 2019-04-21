@@ -47,8 +47,8 @@ public class DeleteEvent extends HttpServlet {
         for(int i =0;i<currentUser.getHostedEvents().size();i++){
             if(currentUser.getHostedEvents().get(i).getEventName()==eventNameToDelete){
                 d.removeAllEvent(currentUser.getHostedEvents().get(i));
-                currentUser.removeHostedEvent(a);//add event object to account's hosting events
-                System.out.println("removed a");
+                currentUser.removeHostedEvent(currentUser.getHostedEvents().get(i));//add event object to account's hosting events
+                System.out.println("event deleted");
             }
         }
         
