@@ -26,9 +26,9 @@ function getHistory(){
         history_file = "C:\\Users\\" + currentUser + "\\AppData\\Local\\Google\\Chrome\\UserData\\Default\\History";
     }
     else if (process.platform == 'darwin'){
-        let currentUser = os.userInfo("username");
+        // let currentUser = os.userInfo("username");
         currentUser = "achakicherla"; // for testing purposes
-        history_file = "/Users/" + currentUser + "/Library/Application\ Support/Google/Chrome/Default/History";
+        history_file = "/Users/" + currentUser + "/Library/Application\ Support/Google/Chrome/Profile\ 1/History";
     }
     else{
         let currentUser = os.userInfo("username");
@@ -51,22 +51,22 @@ function getHistory(){
     var output = result.values().next().value.values;
     var redditArray = [];
 
-    for (let i = 0; i < output.size(); i++){
+    for (let i = 0; i < output.length; i++){
         let obj = output[i];
-        redditArray.push(obj[1]);
+        redditArray.push(obj[0]);
     }
 
     urlMap.set(REDDIT, redditArray); // add reddit urls to map
 
     // FACEBOOK
-    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%facebook%\'");
+    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%messenger%\'");
 
     output = result.values().next().value.values;
     var facebookArray = [];
 
-    for (let i = 0; i < output.size(); i++) {
+    for (let i = 0; i < output.length; i++) {
         let obj = output[i];
-        facebookArray.push(obj[1]);
+        facebookArray.push(obj[0]);
     }
 
     urlMap.set(FACEBOOK, facebookArray); // add facebook urls to map
@@ -77,9 +77,9 @@ function getHistory(){
     output = result.values().next().value.values;
     var twitterArray = [];
 
-    for (let i = 0; i < output.size(); i++) {
+    for (let i = 0; i < output.length; i++) {
         let obj = output[i];
-        twitterArray.push(obj[1]);
+        twitterArray.push(obj[0]);
     }
 
     urlMap.set(TWITTER, twitterArray); // add twitter urls to map
@@ -90,9 +90,9 @@ function getHistory(){
     output = result.values().next().value.values;
     var youtubeArray = [];
 
-    for (let i = 0; i < output.size(); i++) {
+    for (let i = 0; i < output.length; i++) {
         let obj = output[i];
-        youtubeArray.push(obj[1]);
+        youtubeArray.push(obj[0]);
     }
 
     urlMap.set(YOUTUBE, youtubeArray); // add youtube urls to map
@@ -103,9 +103,9 @@ function getHistory(){
     output = result.values().next().value.values;
     var amazonArray = [];
 
-    for (let i = 0; i < output.size(); i++) {
+    for (let i = 0; i < output.length; i++) {
         let obj = output[i];
-        amazonArray.push(obj[1]);
+        amazonArray.push(obj[0]);
     }
 
     urlMap.set(AMAZON, amazonArray); // add amazon urls to map
@@ -116,9 +116,9 @@ function getHistory(){
     output = result.values().next().value.values;
     var instaArray = [];
 
-    for (let i = 0; i < output.size(); i++) {
+    for (let i = 0; i < output.length; i++) {
         let obj = output[i];
-        instaArray.push(obj[1]);
+        instaArray.push(obj[0]);
     }
 
     urlMap.set(INSTAGRAM, instaArray); // add instagram urls to map
@@ -129,9 +129,9 @@ function getHistory(){
     output = result.values().next().value.values;
     var netflixArray = [];
 
-    for (let i = 0; i < output.size(); i++) {
+    for (let i = 0; i < output.length; i++) {
         let obj = output[i];
-        netflixArray.push(obj[1]);
+        netflixArray.push(obj[0]);
     }
 
     urlMap.set(NETFLIX, netflixArray); // add netflix urls to map
@@ -142,9 +142,9 @@ function getHistory(){
     output = result.values().next().value.values;
     var twitchArray = [];
 
-    for (let i = 0; i < output.size(); i++) {
+    for (let i = 0; i < output.length; i++) {
         let obj = output[i];
-        twitchArray.push(obj[1]);
+        twitchArray.push(obj[0]);
     }
 
     urlMap.set(TWITCH, twitchArray); // add twitch urls to map
@@ -153,11 +153,39 @@ function getHistory(){
     // chrome time to unix epoch time = 11 644 473 600 seconds
     // Now iterate through all of the IDs --> check if time is > current time - 24 hours (86400 seconds)
 
+    var total_sum = 0;
+    var usageMap = [];
+    let currTime = Math.round((new Date()).getTime() / 1000); // current time in seconds --> now subtract 24 hours
+    let previousDay = ((currTime - (4 * 86400)) * 1000000) + (11644473600 * 1000000); // subtract 1 day and convert to microseconds
+
     // start with REDDIT usage
-    let currArray = urlMap.get(REDDIT);
-    for (let i = 0; i < currArray.size(); i++){
-        var request = "SELECT * FROM visits WHERE";
+    for (let numSites = 0; numSites < 8; numSites++){
+        let currArray = urlMap.get(numSites);
+        let sum = 0;
+        for (let i = 0; i < currArray.length; i++) {
+            var request = "SELECT * FROM visits WHERE url = " + currArray[i]; /* + " AND visit_time >  " + previousDay; */
+            var exec = db.exec(request);
+            var check = exec[0].values[0][2];
+            var duration = exec[0].values[0][6];
+            if (check > previousDay) {
+                sum += duration;
+                // console.log(check);
+                // console.log(duration);
+            }
+        }
+        console.log("SITE ID - " + numSites + ": " + (sum / 1000000 / 60));
+        usageMap.push(sum / 1000000 / 60);
+        total_sum += (sum / 1000000 / 60);
     }
+    console.log('Total Hours: ~' + (total_sum / 60));
+    console.log("REDDIT: " + usageMap[REDDIT] + " %: " + usageMap[REDDIT] / total_sum);
+    console.log("FACEBOOK: " + usageMap[FACEBOOK] + " %: " + usageMap[FACEBOOK] / total_sum);
+    console.log("TWITTER: " + usageMap[TWITTER] + " %: " + usageMap[TWITTER] / total_sum);
+    console.log("YOUTUBE: " + usageMap[YOUTUBE] + " %: " + usageMap[YOUTUBE] / total_sum);
+    console.log("AMAZON: " + usageMap[AMAZON] + " %: " + usageMap[AMAZON] / total_sum);
+    console.log("INSTAGRAM: " + usageMap[INSTAGRAM] + " %: " + usageMap[INSTAGRAM] / total_sum);
+    console.log("NETFLIX: " + usageMap[NETFLIX] + " %: " + usageMap[NETFLIX] / total_sum);
+    console.log("TWITCH: " + usageMap[TWITCH] + " %: " + usageMap[TWITCH] / total_sum);
 }
 
 function createWindow() {
