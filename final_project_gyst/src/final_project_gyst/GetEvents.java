@@ -3,6 +3,8 @@ package final_project_gyst;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,8 +52,12 @@ public class GetEvents extends HttpServlet {
 		DatabaseAccess d = new DatabaseAccess();
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		ArrayList<final_project_gyst.EventInfo> events_to_send = d.getEvents(currentUser.getUsername());
+		HashSet<final_project_gyst.EventInfo> events_to_send = d.getEvents(currentUser.getUsername());
 		ArrayList<CalendarEvent> eventsToSend = new ArrayList<CalendarEvent>();
+		Iterator<final_project_gyst.EventInfo> it = events_to_send.iterator();
+	     while(it.hasNext()){
+	        System.out.println(it.next());
+	     }
 		for (int i=0;i<events_to_send.size();i++) {
 			
 			Event tempevent = new Event(events_to_send.get(i).user_ID,
