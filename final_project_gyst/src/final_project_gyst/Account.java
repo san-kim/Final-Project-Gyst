@@ -1,6 +1,5 @@
 package final_project_gyst;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Account extends Thread{
