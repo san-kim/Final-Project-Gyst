@@ -51,7 +51,7 @@ public class GetEvents extends HttpServlet {
 		DatabaseAccess d = new DatabaseAccess();
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		ArrayList <EventInfo> events_to_send = d.getEvents(currentUser.getUserName());
+		ArrayList<final_project_gyst.EventInfo> events_to_send = d.getEvents(currentUser.getUsername());
 		ArrayList<CalendarEvent> eventsToSend = new ArrayList<CalendarEvent>();
 		for (int i=0;i<events_to_send.size();i++) {
 			
@@ -59,11 +59,12 @@ public class GetEvents extends HttpServlet {
 					events_to_send.get(i).eventname,
 					events_to_send.get(i).start,
 					events_to_send.get(i).end,
-					events_to_send.get(i).note,
+					events_to_send.get(i).notes,
 					events_to_send.get(i).location,
-					, , false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
+					 currentUser, false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
 					);
-			
+			CalendarEvent toSend = new CalendarEvent(tempevent); // generate new calendar formatted event to send to frontend
+			eventsToSend.add(toSend);
 		}
 		
 		// for (Event e: currentUser.getHostedEvents()) {
@@ -103,3 +104,5 @@ public class GetEvents extends HttpServlet {
 	}
 
 }
+
+
