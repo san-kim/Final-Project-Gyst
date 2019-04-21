@@ -1,6 +1,7 @@
 package final_project_gyst;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Account extends Thread{
     // TODO: Create a map for accounts in Server class --> should be map<username, account object>
@@ -8,16 +9,16 @@ public class Account extends Thread{
 
     private long userID;
     private String username;
-    private ArrayList<Event> hosted_events;
-    private ArrayList<ToDoEvent> todo_events;
+    private HashSet<Event> hosted_events;
+    private HashSet<ToDoEvent> todo_events;
 
     public Account(String u){
         username = u;
-        hosted_events = new ArrayList<Event>();
-        todo_events = new ArrayList<ToDoEvent>();
+        hosted_events = new HashSet<Event>();
+        todo_events = new HashSet<ToDoEvent>();
     }
     
-    public ArrayList<Event> getHostedEvents(){
+    public HashSet<Event> getHostedEvents(){
     	return hosted_events;
     }
 
@@ -29,7 +30,7 @@ public class Account extends Thread{
         hosted_events.remove(e);
     }
 
-    public ArrayList<ToDoEvent> getToDoEvents(){
+    public HashSet<ToDoEvent> getToDoEvents(){
     	return todo_events;
     }
 
