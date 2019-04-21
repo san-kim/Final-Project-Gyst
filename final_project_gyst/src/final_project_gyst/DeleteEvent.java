@@ -3,6 +3,8 @@ package final_project_gyst;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,13 +46,29 @@ public class DeleteEvent extends HttpServlet {
 		
         DatabaseAccess d = new DatabaseAccess();
         //traverse all hosted events, if match, delete that event.
-        for(int i =0;i<currentUser.getHostedEvents().size();i++){
-            if(currentUser.getHostedEvents().get(i).getEventName()==eventNameToDelete){
-                d.removeAllEvent(currentUser.getHostedEvents().get(i));
-                currentUser.removeHostedEvent(currentUser.getHostedEvents().get(i));//add event object to account's hosting events
-                System.out.println("event deleted");
-            }
-        }
+        HashSet<Event> events_host = currentUser.getHostedEvents();
+		Iterator<final_project_gyst.EventInfo> it = events_to_send.iterator();
+	     while(it.hasNext()){
+	    	 final_project_gyst.EventInfo temp = it.next();
+	    	 Event tempevent = new Event(temp.user_ID,
+	    			 temp.eventname,
+	    			 temp.start,
+	    			 temp.end,
+	    			 temp.notes,
+	    			 temp.location,
+						 currentUser, false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
+						);
+				CalendarEvent toSend = new CalendarEvent(tempevent); // generate new calendar formatted event to send to frontend
+				eventsToSend.add(toSend);
+	     }
+        
+//        for(int i =0;i<currentUser.getHostedEvents().size();i++){
+//            if(currentUser.getHostedEvents().get(i).getEventName()==eventNameToDelete){
+//                d.removeAllEvent(currentUser.getHostedEvents().get(i));
+//                currentUser.removeHostedEvent(currentUser.getHostedEvents().get(i));//add event object to account's hosting events
+//                System.out.println("event deleted");
+//            }
+//        }
         
         //Find the events in database which has the event name same as this name, then delete
 		

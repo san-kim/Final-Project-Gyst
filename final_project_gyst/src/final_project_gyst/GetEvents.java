@@ -56,21 +56,31 @@ public class GetEvents extends HttpServlet {
 		ArrayList<CalendarEvent> eventsToSend = new ArrayList<CalendarEvent>();
 		Iterator<final_project_gyst.EventInfo> it = events_to_send.iterator();
 	     while(it.hasNext()){
-	        System.out.println(it.next());
+	    	 final_project_gyst.EventInfo temp = it.next();
+	    	 Event tempevent = new Event(temp.user_ID,
+	    			 temp.eventname,
+	    			 temp.start,
+	    			 temp.end,
+	    			 temp.notes,
+	    			 temp.location,
+						 currentUser, false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
+						);
+				CalendarEvent toSend = new CalendarEvent(tempevent); // generate new calendar formatted event to send to frontend
+				eventsToSend.add(toSend);
 	     }
-		for (int i=0;i<events_to_send.size();i++) {
-			
-			Event tempevent = new Event(events_to_send.get(i).user_ID,
-					events_to_send.get(i).eventname,
-					events_to_send.get(i).start,
-					events_to_send.get(i).end,
-					events_to_send.get(i).notes,
-					events_to_send.get(i).location,
-					 currentUser, false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
-					);
-			CalendarEvent toSend = new CalendarEvent(tempevent); // generate new calendar formatted event to send to frontend
-			eventsToSend.add(toSend);
-		}
+//		for (int i=0;i<events_to_send.size();i++) {
+//			
+//			Event tempevent = new Event(events_to_send.get(i).user_ID,
+//					events_to_send.get(i).eventname,
+//					events_to_send.get(i).start,
+//					events_to_send.get(i).end,
+//					events_to_send.get(i).notes,
+//					events_to_send.get(i).location,
+//					 currentUser, false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
+//					);
+//			CalendarEvent toSend = new CalendarEvent(tempevent); // generate new calendar formatted event to send to frontend
+//			eventsToSend.add(toSend);
+//		}
 		
 		// for (Event e: currentUser.getHostedEvents()) {
 		// 	CalendarEvent toSend = new CalendarEvent(e); // generate new calendar formatted event to send to frontend
