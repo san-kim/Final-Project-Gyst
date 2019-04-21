@@ -1,3 +1,5 @@
 node_modules/
 .DS_Store
-.metadata/.plugins/org.eclipse.tm.terminal.view.ui/.executables/data 2.properties
+final_project_gyst/WebContent/WEB-INF/web.xml
+*.class
+/.metadata/
