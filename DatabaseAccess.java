@@ -264,7 +264,7 @@ public class DatabaseAccess
 			ps.setString(3, password);
 			ps.executeUpdate();
 			
-			acc = new Account(username, password);
+			acc = new Account(username);
 			acc.setUserId((long)ID_number);
 						
 			return acc;
@@ -914,7 +914,7 @@ class EventInfo
 		this.location = location;
 		this.start = start;
 		this.end = end;
-		this.notes = notes;		
+		this.notes = notes;
 	}
 }
 
