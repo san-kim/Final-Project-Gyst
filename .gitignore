@@ -1,2 +1,3 @@
 node_modules/
 .DS_Store
+.metadata/.plugins/org.eclipse.tm.terminal.view.ui/.executables/data 2.properties
