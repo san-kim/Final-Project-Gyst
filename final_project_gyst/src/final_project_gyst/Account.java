@@ -10,6 +10,7 @@ public class Account extends Thread{
     private String username;
     private String password;
     private ArrayList<Event> hosted_events;
+    private ArrayList<ToDoEvent> to_events;
 
     public Account(String u, String p){
         username = u; password = p;

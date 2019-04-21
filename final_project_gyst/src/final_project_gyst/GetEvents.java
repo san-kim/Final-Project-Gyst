@@ -55,7 +55,14 @@ public class GetEvents extends HttpServlet {
 		ArrayList<CalendarEvent> eventsToSend = new ArrayList<CalendarEvent>();
 		for (int i=0;i<events_to_send.size();i++) {
 			
-			Event events_to_send.get(i).getId();
+			Event tempevent = new Event(events_to_send.get(i).user_ID,
+					events_to_send.get(i).eventname,
+					events_to_send.get(i).start,
+					events_to_send.get(i).end,
+					events_to_send.get(i).note,
+					events_to_send.get(i).location,
+					, , false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
+					);
 			
 		}
 		
