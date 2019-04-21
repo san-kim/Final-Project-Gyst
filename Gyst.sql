@@ -17,6 +17,7 @@ CREATE TABLE User_Events (
     Start_time VARCHAR(50) NOT NULL,
     End_time VARCHAR(50) NOT NULL,
     notes VARCHAR(50) NULL,
+    Host_ID INT(11) NOT NULL,
     
     FOREIGN KEY(User_ID) REFERENCES UserInfo(User_ID)
 );
