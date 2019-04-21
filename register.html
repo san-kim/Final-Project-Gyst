@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Register</title>
+		<link rel="stylesheet" type="text/css" href="register3.css" />
+		<style>
+			html, body{ width: 100%; height: 100%; margin: 0; padding: 0;}
+		</style>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="jparticle.jquery.min.js"></script>
+		<script>
+			function check()
+			{
+				var z = document.getElementById("username").value;
+				var a = document.getElementById("password").value;
+				var b = document.getElementById("confirmpassword").value;
+				
+				//sends back the error response or creates new account if successful
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("POST", "account_servlet?registering=true&username=" + z + "&password=" + a + "&confirmpassword=" + b, false);
+				xhttp.send();
+	
+				document.getElementById("errormessage").innerHTML = xhttp.responseText;
+	
+				//if fail dont, redirect
+				if(xhttp.responseText.trim().length != 0)
+				{
+					return false;
+				}
+			}
+		</script>
+	</head>
+	
+	<body>
+		<div id="background">
+			<script>
+				$(function(){
+					$("body").jParticle({
+						particlesNumber: 100,
+			            linkDist: 50,
+			            disableLinks: false,
+			            disableMouse: false,
+			            createLinkDist: 200,
+			            color: '#92B9BA',
+			            width:null,
+			            height:null,
+			            background: '#fcfcfc',
+			            linksWidth: 0.5,
+			            particle: 
+			            {
+			                color: "white",
+			                minSize: 1,
+			                maxSize: 1,
+			                speed: 30
+			            }
+					});
+				});
+				</script><script type="text/javascript">
+			</script>
+		</div>
+		<div id="topbar" class="read_success">
+			<a href="index.html" id="weathermeister_topbar">G y s t</a>
+			<a href="index.html"><img id="logo" src="gyst_homepageicon.png"></a>
+		</div>
+		
+		<div id="signdiv">	
+			<div id="register_p_div">
+				<p id="registerp">Register</p>
+			</div>		
+			<form action="calendar.html" onsubmit="return check();" id="submitform">
+				<p id="usernametext">Username</p>
+				<input type="text" name="username" id="username" class="inputbar" value="">
+				<p id="passwordtext">Password</p>
+				<input type="password" name="password" id="password" class="inputbar">
+				<p id="passwordtext">Confirm Password</p>
+				<input type="password" name="confirmpassword" id="confirmpassword" class="inputbar">
+				<p id="errormessage"><br></p>
+				<input type="submit" name="submit" value="Register" id="registerbutton">
+			</form>
+		</div>
+		
+		<div id="logindiv">
+			<p id="loginp">Have an account?</p>
+			<button id="loginbutton" onclick="location.href='login.html'">login</button>
+		</div>
+		
+	</body>
+</html>

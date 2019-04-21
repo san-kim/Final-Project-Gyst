@@ -2,6 +2,9 @@ const { app, BrowserWindow } = require('electron');
 let fs = require('fs');
 let os = require('os');
 let sql = require('sql.js');
+const {ipcMain} = require('electron');
+const username = require('username');
+
 const REDDIT = 0;
 const FACEBOOK = 1;
 const TWITTER = 2;
@@ -12,6 +15,12 @@ const NETFLIX = 6;
 const TWITCH = 7;
 
 
+ipcMain.on('asynchronous-message', (event, arg) => {
+    console.log(arg) // prints "ping"
+    event.sender.send('asynchronous-reply', 'pong');
+});
+
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -19,19 +28,16 @@ let win;
 
 function getHistory(){
     var history_file;
-    // FIXME: can't get current username --> current implementation doesn't work
+    let currentUser = username.sync();
+    // *FIXME*: can't get current username --> current implementation doesn't work -- FIXED
     if (process.platform == 'win32'){
         // if current platform is windows
-        let currentUser = os.userInfo("username");
         history_file = "C:\\Users\\" + currentUser + "\\AppData\\Local\\Google\\Chrome\\UserData\\Default\\History";
     }
     else if (process.platform == 'darwin'){
-        // let currentUser = os.userInfo("username");
-        currentUser = "achakicherla"; // for testing purposes
         history_file = "/Users/" + currentUser + "/Library/Application\ Support/Google/Chrome/Profile\ 1/History";
     }
     else{
-        let currentUser = os.userInfo("username");
         history_file = "/home/" + currentUser + "/.config/google-chrome/default/History";
     }
 
@@ -186,6 +192,9 @@ function getHistory(){
     console.log("INSTAGRAM: " + usageMap[INSTAGRAM] + " %: " + usageMap[INSTAGRAM] / total_sum);
     console.log("NETFLIX: " + usageMap[NETFLIX] + " %: " + usageMap[NETFLIX] / total_sum);
     console.log("TWITCH: " + usageMap[TWITCH] + " %: " + usageMap[TWITCH] / total_sum);
+
+
+
 }
 
 function createWindow() {
