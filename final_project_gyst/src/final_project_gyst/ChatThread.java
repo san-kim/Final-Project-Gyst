@@ -1,3 +1,5 @@
+package final_project_gyst;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
