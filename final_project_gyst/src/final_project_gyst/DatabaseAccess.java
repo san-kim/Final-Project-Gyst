@@ -311,7 +311,7 @@ public class DatabaseAccess
 	}
 	
 	//keep it this syntax because we will likely need to update the database without rewriting every time
-	public void addEvent(int eventID, String username, String eventname, String location, String start, String end, String notes)
+	public void addEvent(int eventID, String username, String eventname, String location, String start, String end, String notes, Account host)
 	{
 		//if this entry is already there do nothing
 		if(isUserInEvent(getIDFromUsername(username), eventID))
@@ -319,7 +319,7 @@ public class DatabaseAccess
 		try {
 			//after ? comes the value user input 
 			//where not exists, only insert row
-			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes) VALUES("+eventID+","+getIDFromUsername(username)+",?,?,?,?,?)");
+			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+eventID+","+getIDFromUsername(username)+",?,?,?,?,?,"+ (int)host.getUserId() +")");
 			//replace first question mark with the firstName variable. question mark means a variable will go there
 		
 			/*
@@ -398,7 +398,7 @@ public class DatabaseAccess
 				//add for each username
 				for(Account acct : after.people_shared)
 				{
-					addEvent((int)after.getId(), acct.getUsername(), after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes());
+					addEvent((int)after.getId(), acct.getUsername(), after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes(), after.getHost());
 				}
 			}
 		}
@@ -473,7 +473,7 @@ public class DatabaseAccess
 		{
 			if(isUserInEvent((int)acct.getId(), (int)event.getId()) == false)
 			{
-				addEvent((int)event.getId(), acct.getUsername(), event.getEventName(), event.getLocation(), event.getStart(), event.getEnd(), event.getNotes());
+				addEvent((int)event.getId(), acct.getUsername(), event.getEventName(), event.getLocation(), event.getStart(), event.getEnd(), event.getNotes(), event.getHost());
 			}
 		}
 	}
