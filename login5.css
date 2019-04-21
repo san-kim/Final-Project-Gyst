@@ -1,0 +1,396 @@
+@font-face
+{
+	font-family:'Savoye LET';
+	src: url("Assignment2Images/Savoye LET Plain1.0.ttf");
+}
+
+@font-face
+{
+	font-family:'Avenir Next';
+	src: url("Assignment2Images/Avenir Next/AvenirNext-Regular.ttf");
+	font-weight:normal;
+}
+@font-face
+{
+	font-family:'Avenir Next';
+	src: url("Assignment2Images/Avenir Next/AvenirNext-Bold.ttf");
+	font-weight:bold;
+}
+@font-face
+{
+	font-family:'Avenir Next';
+	src: url("Assignment2Images/Avenir Next/AvenirNext-DemiBold.ttf");
+	font-weight:600;
+}
+@font-face
+{
+	font-family:'Avenir Next';
+	src: url("Assignment2Images/Avenir Next/AvenirNext-Medium.ttf");
+	font-weight:500;
+}
+@font-face
+{
+	font-family:'Avenir Next';
+	src: url("WebContent/Assignment2Images/Avenir Next/AvenirNext-UltraLight.ttf");
+	font-weight:200;
+}
+@font-face
+{
+	font-family:'Avenir Next';
+	src: url("Assignment2Images/Avenir Next/AvenirNext-Italic.ttf");
+	font-style:italic;
+}
+
+
+html,body 
+{
+	margin:0;
+	padding:0;
+	overflow:hidden;
+}
+
+body
+{
+	width:100%;
+	height:100%;
+}
+
+#weathermeister_topbar
+{
+	font-family:"Savoye LET";
+	color: black;
+	font-size: 40px;
+	text-align:center;
+	float:left;
+	padding-left: 1.5%;
+	padding-top: 17px;
+	text-decoration: none;
+}
+
+#topright
+{
+	float:right;
+	width:270px;
+	margin-top:12px;
+}
+
+#logo
+{
+	width:50px;
+	height:50px;
+	margin-top:10px;
+	margin-left:10px;
+}
+
+#register
+{
+	font-family:'Avenir Next';
+	font-size: 30px;
+	font-weight:200;
+	text-decoration: none;
+	margin-right: 2%;
+	color: black;
+}
+
+#login
+{
+	font-family:'Avenir Next';
+	font-size: 30px;
+	font-weight:200;
+	text-decoration: none;
+	margin-right:10%;
+	color:black;
+}
+
+#profile
+{
+	font-family:'Avenir Next';
+	font-size: 30px;
+	font-weight:200;
+	text-decoration: none;
+	margin-right: 23px;
+	color:black;
+}
+
+#signout
+{
+	font-family:'Avenir Next';
+	font-size: 30px;
+	font-weight:200;
+	text-decoration: none;
+	margin-right:10%;
+	color:black;
+}
+
+#topbar
+{
+	margin-top:0px;
+	margin-left:0px;
+	margin-right:0px;
+	background-color: #B9DEE4;
+	width:100%;
+	height:70px;
+}
+
+
+#signdiv
+{
+	position:absolute;
+	width: 40%;
+	height: 525px;
+	border-radius: 20px;
+	margin-left: 30%;
+	margin-right: 30%;
+	background-color:rgba(173,173,173,0.5);
+	margin-top: 90px;
+}
+
+#signdiv p
+{
+	font-family:'Avenir Next';
+	font-size: 29px;
+	font-weight:200;
+	margin-left:40px;
+	color:black;
+	margin-bottom:5px;
+}
+
+#usernametext
+{
+	margin-top: 140px;
+}
+
+#passwordtext
+{
+	margin-top:20px;
+}
+
+#submitform
+{
+	width:100%;
+	height:80%;
+}
+
+.inputbar
+{
+	width: calc(40vw - 80px);
+	height:32px;
+	margin-left: 40px;
+	font-size:29px;
+}
+
+#icon
+{
+	position:absolute;
+	width:200px;
+	margin-left: calc(50% - 100px);
+	margin-top: -76px;
+}
+
+#errormessage
+{
+	color:red !important;
+	font-weight:400 !important;
+	margin-top:5px;
+}
+
+#loginbutton
+{
+	margin-left: calc(20vw - 65px);
+	margin-top: -10px;
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color:#B9DEE4;
+	border: 1px solid grey;
+	outline:none;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+	text-decoration:none;
+}
+
+#loginbutton:hover
+{
+	margin-left: calc(20vw - 65px);
+	margin-top: -10px;
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color:#c8f0f7;
+	border: 1px solid grey;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+}
+
+#loginbutton:active
+{
+	margin-left: calc(20vw - 65px);
+	margin-top: -10px;
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color: #a5cad1;
+	border: 1px solid grey;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+}
+
+#signdiv #loginp
+{
+	position:absolute;
+	font-size:40px;
+	font-weight:400;
+	left:50%;
+	margin-left:-51.3205px;
+}
+
+#login_p_div
+{
+	position:absolute;
+	width:100%;
+	height:40px;
+	display:inline-block;
+}
+
+#guestdiv
+{
+	margin-top:-100px;
+}
+
+#registerdiv
+{
+	width:100%;
+	margin-top:650px;
+}
+
+#registerdiv #registerp
+{
+	font-family:'Avenir Next';
+	font-size: 29px;
+	font-weight:200;
+	color:black;
+	margin-bottom:5px;
+	text-align:center;
+	padding-left:-40px !important;
+}
+#registerbutton
+{
+	margin-left: calc(50% - 65px);
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color:#B9DEE4;
+	border: 0px solid grey;
+	outline:none;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+	text-decoration:none;
+	z-index: 101;
+}
+
+#registerbutton:hover
+{
+	margin-left: calc(50% - 65px);
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color:#c8f0f7;
+	border: 0px solid grey;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+	z-index: 101;
+}
+
+#registerbutton:active
+{
+	margin-left: calc(50% - 65px);
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color: #a5cad1;
+	border: 0px solid grey;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+}
+
+#guestdiv
+{
+	position:absolute;
+	margin-top:-135px;
+	width:100%;
+}
+
+#guestbutton
+{
+	margin-left: calc(20vw - 65px);
+	margin-top:18px;
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color: lightgrey;
+	border: 1px solid grey;
+	outline:none;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+	text-decoration:none;
+	z-index: 101;
+}
+
+#guestbutton:hover
+{
+	margin-left: calc(20vw - 65px);
+	margin-top:18px;
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color: #e8e8e8;
+	border: 1px solid grey;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+	z-index: 101;
+}
+
+#guestbutton:active
+{
+	margin-left: calc(20vw - 65px);
+	margin-top:18px;
+	width: 130px;
+	height: 45px;
+	border-radius:22px;
+	background-color: #afafaf;
+	border: 1px solid grey;
+	font-family: "Avenir Next";
+	font-weight:200;
+	font-size:30px;
+	color: black;
+}
+
+.background
+{
+	position:absolute;
+	width:110%;
+	height:calc(100% + 3px);
+	z-index:-1;
+}
+
+#background_image
+{
+	filter:blur(4px);
+	margin-left:-10px;
+}
