@@ -3,50 +3,33 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Login</title>
-		<link rel="stylesheet" type="text/css" href="login8.css" />
+		<title>Register</title>
+		<link rel="stylesheet" type="text/css" href="register1.css" />
 		<style>
 			html, body{ width: 100%; height: 100%; margin: 0; padding: 0;}
 		</style>
 		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 		<script src="jparticle.jquery.min.js"></script>
 		<script>
-			function checkUsernamePassword()
+			function check()
 			{
-				var a = document.getElementById("username").value;
-				var b = document.getElementById("password").value;
+				var z = document.getElementById("username").value;
+				var a = document.getElementById("password").value;
+				var b = document.getElementById("confirmpassword").value;
 				
 				//sends back the error response or creates new account if successful
 				var xhttp = new XMLHttpRequest();
-				xhttp.open("POST", "account_servlet?login=true&username=" + a + "&password=" + b, false);
+				xhttp.open("POST", "account_servlet?registering=true&username=" + z + "&password=" + a + "&confirmpassword=" + b, false);
 				xhttp.send();
-				
+	
 				document.getElementById("errormessage").innerHTML = xhttp.responseText;
-												
-				//if fail, don't redirect
+	
+				//if fail dont, redirect
 				if(xhttp.responseText.trim().length != 0)
 				{
 					return false;
 				}
 			}
-		
-			function guestlogin()
-			{
-				return new Promise( function (resolve, reject) {
-					var xhttp = new XMLHttpRequest();
-					xhttp.open("POST", "account_servlet?guestlogin=true", false);
-					xhttp.send();
-					resolve();
-				});
-				
-			}
-			
-			function doGuestLogin() {
-				guestlogin().then(function(){
-					window.location.href = "calendar.html";
-				});
-			}
-			
 		</script>
 	</head>
 	
@@ -82,26 +65,25 @@
 			<a href="index.html"><img id="logo" src="gyst_homepageicon.png"></a>
 		</div>
 		
-		<div id="signdiv">			
-			<div id="login_p_div">
-				<p id="loginp">Login</p>
-			</div>
-			<form action="calendar.html" onsubmit="return checkUsernamePassword();" id="submitform">
+		<div id="signdiv">	
+			<div id="register_p_div">
+				<p id="registerp">Register</p>
+			</div>		
+			<form action="calendar.html" onsubmit="return check();" id="submitform">
 				<p id="usernametext">Username</p>
 				<input type="text" name="username" id="username" class="inputbar" value="">
 				<p id="passwordtext">Password</p>
 				<input type="password" name="password" id="password" class="inputbar">
- 				<p id="errormessage"><br></p>
- 				<input type="submit" name="submit" value="login" id="loginbutton">
+				<p id="passwordtext">Confirm Password</p>
+				<input type="password" name="confirmpassword" id="confirmpassword" class="inputbar">
+				<p id="errormessage"><br></p>
+				<input type="submit" name="submit" value="Register" id="registerbutton">
 			</form>
-			<div id="guestdiv">
-				<button id="guestbutton" onclick="doGuestLogin()">guest</button>
-			</div>
 		</div>
 		
-		<div id="registerdiv">
-			<p id="registerp">New User?</p>
-			<button id="registerbutton" onclick="location.href='register.html'">register</button>
+		<div id="logindiv">
+			<p id="loginp">Have an account?</p>
+			<button id="loginbutton" onclick="location.href='login.html'">login</button>
 		</div>
 		
 	</body>
