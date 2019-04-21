@@ -1,22 +1,207 @@
 const { app, BrowserWindow } = require('electron');
+let fs = require('fs');
+let os = require('os');
+let sql = require('sql.js');
+const REDDIT = 0;
+const FACEBOOK = 1;
+const TWITTER = 2;
+const YOUTUBE = 3;
+const AMAZON = 4;
+const INSTAGRAM = 5;
+const NETFLIX = 6;
+const TWITCH = 7;
+
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
+
+function getHistory(){
+    var history_file;
+    // FIXME: can't get current username --> current implementation doesn't work
+    if (process.platform == 'win32'){
+        // if current platform is windows
+        let currentUser = os.userInfo("username");
+        history_file = "C:\\Users\\" + currentUser + "\\AppData\\Local\\Google\\Chrome\\UserData\\Default\\History";
+    }
+    else if (process.platform == 'darwin'){
+        // let currentUser = os.userInfo("username");
+        currentUser = "achakicherla"; // for testing purposes
+        history_file = "/Users/" + currentUser + "/Library/Application\ Support/Google/Chrome/Profile\ 1/History";
+    }
+    else{
+        let currentUser = os.userInfo("username");
+        history_file = "/home/" + currentUser + "/.config/google-chrome/default/History";
+    }
+
+
+
+    var databaseFile = fs.readFileSync(history_file);
+    var db = new sql.Database(databaseFile);
+
+    var urlMap = new Map(); // create new map
+   
+
+    // now get url activity from each site
+
+    // REDDIT
+    var result = db.exec("SELECT * FROM urls WHERE url LIKE \'%reddit%\'");
+
+    var output = result.values().next().value.values;
+    var redditArray = [];
+
+    for (let i = 0; i < output.length; i++){
+        let obj = output[i];
+        redditArray.push(obj[0]);
+    }
+
+    urlMap.set(REDDIT, redditArray); // add reddit urls to map
+
+    // FACEBOOK
+    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%messenger%\'");
+
+    output = result.values().next().value.values;
+    var facebookArray = [];
+
+    for (let i = 0; i < output.length; i++) {
+        let obj = output[i];
+        facebookArray.push(obj[0]);
+    }
+
+    urlMap.set(FACEBOOK, facebookArray); // add facebook urls to map
+
+    // TWITTER
+    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%twitter%\'");
+
+    output = result.values().next().value.values;
+    var twitterArray = [];
+
+    for (let i = 0; i < output.length; i++) {
+        let obj = output[i];
+        twitterArray.push(obj[0]);
+    }
+
+    urlMap.set(TWITTER, twitterArray); // add twitter urls to map
+
+    // YOUTUBE
+    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%youtube%\'");
+
+    output = result.values().next().value.values;
+    var youtubeArray = [];
+
+    for (let i = 0; i < output.length; i++) {
+        let obj = output[i];
+        youtubeArray.push(obj[0]);
+    }
+
+    urlMap.set(YOUTUBE, youtubeArray); // add youtube urls to map
+
+    // AMAZON
+    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%amazon%\'");
+
+    output = result.values().next().value.values;
+    var amazonArray = [];
+
+    for (let i = 0; i < output.length; i++) {
+        let obj = output[i];
+        amazonArray.push(obj[0]);
+    }
+
+    urlMap.set(AMAZON, amazonArray); // add amazon urls to map
+
+    // INSTAGRAM
+    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%instagram%\'");
+
+    output = result.values().next().value.values;
+    var instaArray = [];
+
+    for (let i = 0; i < output.length; i++) {
+        let obj = output[i];
+        instaArray.push(obj[0]);
+    }
+
+    urlMap.set(INSTAGRAM, instaArray); // add instagram urls to map
+
+    // NETFLIX
+    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%netflix%\'");
+
+    output = result.values().next().value.values;
+    var netflixArray = [];
+
+    for (let i = 0; i < output.length; i++) {
+        let obj = output[i];
+        netflixArray.push(obj[0]);
+    }
+
+    urlMap.set(NETFLIX, netflixArray); // add netflix urls to map
+
+    // TWITCH
+    result = db.exec("SELECT * FROM urls WHERE url LIKE \'%twitch%\'");
+
+    output = result.values().next().value.values;
+    var twitchArray = [];
+
+    for (let i = 0; i < output.length; i++) {
+        let obj = output[i];
+        twitchArray.push(obj[0]);
+    }
+
+    urlMap.set(TWITCH, twitchArray); // add twitch urls to map
+
+    // TODO: get all viewing time on each site
+    // chrome time to unix epoch time = 11 644 473 600 seconds
+    // Now iterate through all of the IDs --> check if time is > current time - 24 hours (86400 seconds)
+
+    var total_sum = 0;
+    var usageMap = [];
+    let currTime = Math.round((new Date()).getTime() / 1000); // current time in seconds --> now subtract 24 hours
+    let previousDay = ((currTime - (4 * 86400)) * 1000000) + (11644473600 * 1000000); // subtract 1 day and convert to microseconds
+
+    // start with REDDIT usage
+    for (let numSites = 0; numSites < 8; numSites++){
+        let currArray = urlMap.get(numSites);
+        let sum = 0;
+        for (let i = 0; i < currArray.length; i++) {
+            var request = "SELECT * FROM visits WHERE url = " + currArray[i]; /* + " AND visit_time >  " + previousDay; */
+            var exec = db.exec(request);
+            var check = exec[0].values[0][2];
+            var duration = exec[0].values[0][6];
+            if (check > previousDay) {
+                sum += duration;
+                // console.log(check);
+                // console.log(duration);
+            }
+        }
+        console.log("SITE ID - " + numSites + ": " + (sum / 1000000 / 60));
+        usageMap.push(sum / 1000000 / 60);
+        total_sum += (sum / 1000000 / 60);
+    }
+    console.log('Total Hours: ~' + (total_sum / 60));
+    console.log("REDDIT: " + usageMap[REDDIT] + " %: " + usageMap[REDDIT] / total_sum);
+    console.log("FACEBOOK: " + usageMap[FACEBOOK] + " %: " + usageMap[FACEBOOK] / total_sum);
+    console.log("TWITTER: " + usageMap[TWITTER] + " %: " + usageMap[TWITTER] / total_sum);
+    console.log("YOUTUBE: " + usageMap[YOUTUBE] + " %: " + usageMap[YOUTUBE] / total_sum);
+    console.log("AMAZON: " + usageMap[AMAZON] + " %: " + usageMap[AMAZON] / total_sum);
+    console.log("INSTAGRAM: " + usageMap[INSTAGRAM] + " %: " + usageMap[INSTAGRAM] / total_sum);
+    console.log("NETFLIX: " + usageMap[NETFLIX] + " %: " + usageMap[NETFLIX] / total_sum);
+    console.log("TWITCH: " + usageMap[TWITCH] + " %: " + usageMap[TWITCH] / total_sum);
+}
 
 function createWindow() {
     // Create the browser window.
 
     // current width/height is 1280x720 (720p)
     // this can change depending on CSS, etc.
-    // leave as 720p until needed 
+    // leave as 720p until needed
+    
     let w = 1280;
     let h = 720;
-
+    getHistory();
     win = new BrowserWindow({ width: w, height: h });
 
     // Load index.html in window
-    win.loadFile('fullcalendar.html');
+    win.loadFile('calendar.html');
 
     // TODO: add support for connecting electron frontend to tomcat server
     // MUST START TOMCAT SERVER BEFORE LAUNCHING APP IF THIS IS THE CASE
