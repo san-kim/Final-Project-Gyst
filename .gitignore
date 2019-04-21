@@ -3,3 +3,4 @@ node_modules/
 final_project_gyst/WebContent/WEB-INF/web.xml
 *.class
 /.metadata/
+/.settings/
