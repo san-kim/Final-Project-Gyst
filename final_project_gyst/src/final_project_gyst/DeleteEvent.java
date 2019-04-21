@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,9 +44,9 @@ public class DeleteEvent extends HttpServlet {
 		
         DatabaseAccess d = new DatabaseAccess();
         //traverse all hosted events, if match, delete that event.
-        for(int i =0;i<currentUser.getHostedEvents.length();i++){
-            if(currentUser.getHostedEvents.ElementAt(i).getEventName()==eventNameToDelete){
-                d.removeAllEvent(currentUser.getHostedEvents.ElementAt(i));
+        for(int i =0;i<currentUser.getHostedEvents().size();i++){
+            if(currentUser.getHostedEvents().get(i).getEventName()==eventNameToDelete){
+                d.removeAllEvent(currentUser.getHostedEvents().get(i));
                 currentUser.removeHostedEvent(a);//add event object to account's hosting events
                 System.out.println("removed a");
             }

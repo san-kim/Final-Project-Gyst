@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +43,7 @@ public class AddEvent extends HttpServlet {
         (String) session.getAttribute("eventend"),
         (String) session.getAttribute("eventnote"),
         (String) session.getAttribute("eventlocation"),
-        (Account)currentUser, false, (ArrayList<Account>) session.getAttribute("peopleshared"));
+        (Account)currentUser, false);
 		
         
 		//Insert event info into our database.
