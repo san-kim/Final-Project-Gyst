@@ -572,18 +572,19 @@ public class DatabaseAccess
 		}
 	}
 	
-	public HashSet<ToDoEventInfo> getToDoEvents(String username)
+	public ArrayList<ToDoEventInfo> getToDoEvents(String username)
 	{
 		if(userExists(username) == false)
 			return null;
 		
-		HashSet<ToDoEventInfo> result = new HashSet<ToDoEventInfo>(); 
+		ArrayList<ToDoEventInfo> result = new ArrayList<ToDoEventInfo>(); 
 		try {
-			ps = conn.prepareStatement("SELECT * FROM ToDoEvents WHERE User_ID="+getIDFromUsername(username));
+			ps = conn.prepareStatement("SELECT * FROM ToDoEvents WHERE User_ID="+getIDFromUsername(username)+ " ORDER BY End_time ASC");
 			rs = ps.executeQuery();			
 			
 			while(rs.next())
 			{
+				String todoEventID = rs.getString("ToDoEvent_ID");
 				int user_ID = rs.getInt("User_ID");
 				String eventname = rs.getString("Event_name");
 				String location = rs.getString("location");
