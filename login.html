@@ -20,7 +20,7 @@
 				
 				//sends back the error response or creates new account if successful
 				var xhttp = new XMLHttpRequest();
-				xhttp.open("POST", "account_servlet?login=true&username=" + a + "&password=" + b, false);
+				xhttp.open("POST", "http://localhost:8080/final_project_gyst/account_servlet?login=true&username=" + a + "&password=" + b, false);
 				xhttp.send();
 				
 				document.getElementById("errormessage").innerHTML = xhttp.responseText;
