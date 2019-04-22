@@ -8,8 +8,10 @@
 	<style>
 	html, body{ width: 100%; height: 100%; margin: 0; padding: 0;}
 	</style>
-	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script src="jparticle.jquery.min.js"></script>
+	<script>
+		window.$ = window.jQuery = require('./assets/js/jquery-2.1.4.min.js');
+	</script>
+	<script src="./assets/js/jparticle.jquery.min.js"></script>
 	<style>
 		#title
 		{
@@ -91,7 +93,7 @@
 <div id="nem">
 	<p id="title" class="text">Welcome to GYST!</p>
 	<p id="subtitle" class="text">A calendar that helps you Get Your Sh- ... "Stuff" Together!</p>
-	<img src="gyst_homepageicon.png">
+	<img src="./assets/images/gyst_homepageicon.png">
 	<p id="direct"><a id="directlink" class="text" href="login.html" onclick="directUser()">Get Started ></a></p>
 </div>
 </body>

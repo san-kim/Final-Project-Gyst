@@ -607,6 +607,21 @@
 			document.getElementById("eventpopupdiv").style.display = "none";
             document.getElementById("todoeventform").style.display = "none";			
 		}
+	function logout()
+        {
+            return new Promise( function (resolve, reject) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "account_servlet?logout=true", false);
+                xhttp.send();
+                resolve();
+            });
+        }
+
+        function doLogout() {
+            logout().then(function(){
+                window.location.href = "login.html";
+            });
+        }
 	</script>
 </head>
 <body>
@@ -617,7 +632,7 @@
 			<button id="addtodobutton" onclick="showTodoeventpopup();">+</button>
 		</div>
 		<button id="browsingtimebutton" onclick="location.href='browserusage.html';">Browsing Time</button>
-		<button id="logoutbutton" onclick="">log out</button>
+		<button id="logoutbutton" onclick="doLogout();">log out</button>
 	</div>
 	<div id="calendar"></div>
 	<div id="nexteventdiv">nexteventdiv</div>
