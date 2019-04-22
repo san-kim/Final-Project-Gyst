@@ -50,8 +50,7 @@ public class AddEvent extends HttpServlet {
 		(String) session.getAttribute("eventlocation"),
         (String) session.getAttribute("eventstart"),
         (String) session.getAttribute("eventend"),
-        (String) session.getAttribute("eventnote"),
-        currentUser
+        (String) session.getAttribute("eventnote")
         /*(Account)currentUser, false, (ArrayList<Account>) session.getAttribute("peopleshared")*/);
 		//a.people_shared = new ArrayList<Account>();
 		//a.people_shared.add(currentUser);//add the currentuser to people_shared
