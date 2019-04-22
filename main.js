@@ -242,7 +242,7 @@ function createWindow() {
     win = new BrowserWindow({ width: w, height: h });
 
     // Load index.html in window
-    win.loadFile('index.html');
+    win.loadFile('updated_fullcalendar.html');
 
     // TODO: add support for connecting electron frontend to tomcat server
     // MUST START TOMCAT SERVER BEFORE LAUNCHING APP IF THIS IS THE CASE
