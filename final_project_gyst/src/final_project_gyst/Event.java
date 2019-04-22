@@ -1,7 +1,5 @@
 package final_project_gyst;
 
-import java.util.ArrayList;
-
 public class Event {
 
     // CAN BE EDITED AND CHANGED PER EVENT
@@ -26,18 +24,6 @@ public class Event {
     // misc
     private String notes;
     private String location;
-
-    // sharing functionality --> all public arraylists to make adding and removing users easier per group
-    public ArrayList<Account> interested;
-    public ArrayList<Account> going;
-    public ArrayList<Account> not_going;
-    public ArrayList<Account> no_response;
-    public ArrayList<Account> people_shared; // all people event is shared with
-
-
-    // CANNOT BE CHANGED --> HOST MUST STAY SAME
-
-    private Account host; // host user for this event
     
     // private Notification notification; --> FIXME: this may not be necessary
     
@@ -46,9 +32,9 @@ public class Event {
     }
 
     // constructor with all variables already parsed
-    public Event(long id, String name, String start, String end, String note, String loc, Account h, boolean all){
+    public Event(long id, String name, String start, String end, String note, String loc, boolean all){
         this.id = id; eventName = name; this.start = start; this.end = end;
-        notes = note; location = loc; host = h; allDay = all;
+        notes = note; location = loc; allDay = all;
     }
 
     public void setEventName(String e){
@@ -124,9 +110,5 @@ public class Event {
 
     public String getLocation(){
         return location;
-    }
-
-    public Account getHost(){
-        return host;
     }
 }

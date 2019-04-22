@@ -311,15 +311,12 @@ public class DatabaseAccess
 	}
 	
 	//keep it this syntax because we will likely need to update the database without rewriting every time
-	public void addEvent(int eventID, String username, String eventname, String location, String start, String end, String notes, String host)
+	public void addEvent(String username, String eventname, String location, String start, String end, String notes)
 	{
-		//if this entry is already there do nothing
-		if(isUserInEvent(getIDFromUsername(username), eventID))
-			return;
 		try {
 			//after ? comes the value user input 
 			//where not exists, only insert row
-			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+eventID+","+getIDFromUsername(username)+",?,?,?,?,?,"+ getIDFromUsername(host) +")");
+			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes) VALUES("+ generateEvent_ID() +","+getIDFromUsername(username)+",?,?,?,?,?)");
 			//replace first question mark with the firstName variable. question mark means a variable will go there
 		
 			/*
@@ -329,8 +326,8 @@ public class DatabaseAccess
 			ps.setString(1, eventname);
 			ps.setString(2, location);
 			ps.setString(3, start);
-			ps.setString(4, end);
-			ps.setString(5, notes);
+			ps.setString(4, end);			
+			ps.setString(5, notes);			
 			ps.executeUpdate();
 		}
 		
@@ -376,7 +373,7 @@ public class DatabaseAccess
 	} 
 	
 	//make sure you store before as before=this; then do whatever change then after=this
-	public void changeEvent(Event after)
+	public void changeEvent(String username, Event after)
 	{
 		try {
 			ps = conn.prepareStatement("SELECT COUNT(*) FROM User_Events WHERE Event_ID="+after.getId());
@@ -395,11 +392,7 @@ public class DatabaseAccess
 				//delete all old instances of this
 				removeAllEvent(after);
 				//to update, add updated information
-				//add for each username
-				for(Account acct : after.people_shared)
-				{
-					addEvent((int)after.getId(), acct.getUsername(), after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes(), after.getHost());
-				}
+				addEvent(username, after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes());
 			}
 		}
 			
@@ -464,14 +457,6 @@ public class DatabaseAccess
 		{
 			System.out.println("sqle: " + sqle.getMessage());
 			return false;
-		}
-	}
-	
-	public void addEventsForMultipleUsers(Event event)
-	{
-		for(String acct : event.people_shared)
-		{
-			addEvent((int)event.getId(), acct, event.getEventName(), event.getLocation(), event.getStart(), event.getEnd(), event.getNotes(), event.getHost());
 		}
 	}
 	
@@ -561,7 +546,7 @@ public class DatabaseAccess
 	} 
 	
 	//make sure you store before as before=this; then do whatever change then after=this
-	public void changeToDoEvent(Event after, boolean afterblock)
+	public void changeToDoEvent(String username, ToDoEvent after)
 	{
 		try {
 			ps = conn.prepareStatement("SELECT COUNT(*) FROM ToDoEvents WHERE ToDoEvent_ID="+after.getId());
@@ -577,14 +562,7 @@ public class DatabaseAccess
 			
 			if(matchExists)
 			{
-				//delete all old instances of this
-				removeAllToDoEvents(after);
-				//to update, add updated information
-				//add for each username
-				for(Account acct : after.people_shared)
-				{
-					addToDoEvent((int)after.getId(), acct.getUsername(), after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), afterblock, after.getNotes());
-				}
+				addToDoEvent((int)after.getId(), username, after.getToDoEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getBlock(), after.getNotes());
 			}
 		}
 			
