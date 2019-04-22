@@ -74,6 +74,7 @@ public class account_servlet extends HttpServlet
 				//that username doesn't exist
 				if(am.userExists(username) == false)
 				{
+					System.out.println("hi3");
 					responsetext = responsetext + "This user does not exist. ";
 				}
 				//username exists, wrong
@@ -87,6 +88,9 @@ public class account_servlet extends HttpServlet
 					session.setAttribute("currentuser", username);
 				}
 				
+				System.out.println(session.getAttribute("currentuser"));
+
+				
 				response.setContentType("text/html");
 				PrintWriter out = response.getWriter();
 				out.println(responsetext);
@@ -94,27 +98,25 @@ public class account_servlet extends HttpServlet
 		}
 		
 		String guestlogin = request.getParameter("guestlogin");
+		if(guestlogin != null)
 		{
-			if(guestlogin != null)
+			if(guestlogin.trim().equals("true"))
 			{
-				if(guestlogin.trim().equals("true"))
-				{
-					//let session know currentuser is a guest, do not create an account
-					session.setAttribute("currentuser", "guest");
-				}
+				//let session know currentuser is a guest, do not create an account
+				session.setAttribute("currentuser", "guest");
+				System.out.println(session.getAttribute("currentuser"));
 			}
 		}
 		
 		String logout = request.getParameter("logout");
+		if(logout != null)
 		{
-			if(logout != null)
+			if(logout.trim().equals("true"))
 			{
-				if(logout.trim().equals("true"))
-				{
-					//let session know currentuser is a guest, do not create an account
-					session.setAttribute("currentuser", "");
-				}
+				//let session know currentuser is a guest, do not create an account
+				session.setAttribute("currentuser", "");
 			}
+			System.out.println(session.getAttribute("currentuser"));
 		}
 	}
 
