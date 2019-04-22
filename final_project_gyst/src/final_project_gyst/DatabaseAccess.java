@@ -597,12 +597,12 @@ public class DatabaseAccess
 		}
 	}
 	
-	public ArrayList<ToDoEventInfo> getToDoEvents(String username)
+	public HashSet<ToDoEventInfo> getToDoEvents(String username)
 	{
 		if(userExists(username) == false)
 			return null;
 		
-		ArrayList<ToDoEventInfo> result = new ArrayList<ToDoEventInfo>(); 
+		HashSet<ToDoEventInfo> result = new HashSet<ToDoEventInfo>(); 
 		try {
 			ps = conn.prepareStatement("SELECT * FROM ToDoEvents WHERE User_ID="+getIDFromUsername(username));
 			rs = ps.executeQuery();			
