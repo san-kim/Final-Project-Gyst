@@ -8,25 +8,25 @@ public class Account extends Thread{
 
     private long userID;
     private String username;
-    private HashSet<Event> hosted_events;
+    private HashSet<Event> events;
     private HashSet<ToDoEvent> todo_events;
 
     public Account(String u){
         username = u;
-        hosted_events = new HashSet<Event>();
+        events = new HashSet<Event>();
         todo_events = new HashSet<ToDoEvent>();
     }
     
-    public HashSet<Event> getHostedEvents(){
-    	return hosted_events;
+    public HashSet<Event> getEvents(){
+    	return events;
     }
 
-    public void addHostedEvent(Event e){
-        hosted_events.add(e);
+    public void addEvent(Event e){
+        events.add(e);
     }
 
-    public void removeHostedEvent(Event e){
-        hosted_events.remove(e);
+    public void removeEvent(Event e){
+        events.remove(e);
     }
 
     public HashSet<ToDoEvent> getToDoEvents(){

@@ -51,11 +51,12 @@ public class AddEvent extends HttpServlet {
 		(String) session.getAttribute("eventlocation"),
         (String) session.getAttribute("eventstart"),
         (String) session.getAttribute("eventend"),
-        (String) session.getAttribute("eventnote")
+        (String) session.getAttribute("eventnote"),
+        currentUser
         /*(Account)currentUser, false, (ArrayList<Account>) session.getAttribute("peopleshared")*/);
 		//a.people_shared = new ArrayList<Account>();
 		//a.people_shared.add(currentUser);//add the currentuser to people_shared
-		currentUser.addHostedEvent(a);//add event object to account's hosting events
+		currentUser.addEvent(a);//add event object to account's hosting events
         System.out.println("added a");
 
 		// response.setContentType("application/json");

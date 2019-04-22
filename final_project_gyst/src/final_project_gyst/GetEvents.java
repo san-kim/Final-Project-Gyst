@@ -13,28 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.google.gson.*;
-import com.oracle.jrockit.jfr.EventInfo;
 
-/**
- * Servlet implementation class GetEvents
- */
 @WebServlet("/GetEvents")
 public class GetEvents extends HttpServlet {
+	
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public GetEvents() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
 		Account currentUser = (Account) session.getAttribute("user");
 		
@@ -52,11 +36,11 @@ public class GetEvents extends HttpServlet {
 		DatabaseAccess d = new DatabaseAccess();
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		HashSet<final_project_gyst.EventInfo> events_to_send = d.getEvents(currentUser.getUsername());
+		HashSet<EventInfo> events_to_send = d.getEvents(currentUser.getUsername());
 		ArrayList<CalendarEvent> eventsToSend = new ArrayList<CalendarEvent>();
-		Iterator<final_project_gyst.EventInfo> it = events_to_send.iterator();
+		Iterator<EventInfo> it = events_to_send.iterator();
 	     while(it.hasNext()){
-	    	 final_project_gyst.EventInfo temp = it.next();
+	    	 EventInfo temp = it.next();
 	    	 Event tempevent = new Event(temp.user_ID,
 	    			 temp.eventname,
 	    			 temp.start,
@@ -110,11 +94,7 @@ public class GetEvents extends HttpServlet {
 		//TODO: in fullcalendar.html, get the eventsToSend parameter and populate the events on the calendar page
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
