@@ -4,6 +4,8 @@ let os = require('os');
 let sql = require('sql.js');
 const {ipcMain} = require('electron');
 const username = require('username');
+var db;
+var history;
 
 const REDDIT = 0;
 const FACEBOOK = 1;
@@ -15,39 +17,37 @@ const NETFLIX = 6;
 const TWITCH = 7;
 
 
-ipcMain.on('asynchronous-message', (event, arg) => {
-    console.log(arg) // prints "ping"
-    event.sender.send('asynchronous-reply', 'pong');
+ipcMain.on('synchronous-message', (event, arg) => {
+    // console.log(arg) // prints "ping"
+    event.returnValue = getHistory(arg);
 });
-
-
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 
-function getHistory(){
-    var history_file;
+function initHistory(){
+    let history_file;
     let currentUser = username.sync();
     // *FIXME*: can't get current username --> current implementation doesn't work -- FIXED
-    if (process.platform == 'win32'){
+    if (process.platform == 'win32') {
         // if current platform is windows
         history_file = "C:\\Users\\" + currentUser + "\\AppData\\Local\\Google\\Chrome\\UserData\\Default\\History";
-    }
-    else if (process.platform == 'darwin'){
-        history_file = "/Users/" + currentUser + "/Library/Application\ Support/Google/Chrome/Profile\ 1/History";
-    }
-    else{
+    } else if (process.platform == 'darwin') {
+        history_file = "/Users/" + currentUser + "/Library/Application\ Support/Google/Chrome/Profile\ 1/History"; // FIXME:  --> change 'Profile\ 1' to 'Default'
+    } else {
         history_file = "/home/" + currentUser + "/.config/google-chrome/default/History";
     }
 
 
 
     var databaseFile = fs.readFileSync(history_file);
-    var db = new sql.Database(databaseFile);
+    db = new sql.Database(databaseFile);
+}
+
+function getHistory(days = 1){
 
     var urlMap = new Map(); // create new map
-   
 
     // now get url activity from each site
 
@@ -162,7 +162,7 @@ function getHistory(){
     var total_sum = 0;
     var usageMap = [];
     let currTime = Math.round((new Date()).getTime() / 1000); // current time in seconds --> now subtract 24 hours
-    let previousDay = ((currTime - (4 * 86400)) * 1000000) + (11644473600 * 1000000); // subtract 1 day and convert to microseconds
+    let previousDay = ((currTime - (days * 4 * 86400)) * 1000000) + (11644473600 * 1000000); // subtract 1 day and convert to microseconds
 
     // start with REDDIT usage
     for (let numSites = 0; numSites < 8; numSites++){
@@ -193,8 +193,39 @@ function getHistory(){
     console.log("NETFLIX: " + usageMap[NETFLIX] + " %: " + usageMap[NETFLIX] / total_sum);
     console.log("TWITCH: " + usageMap[TWITCH] + " %: " + usageMap[TWITCH] / total_sum);
 
-
-
+    var dataPoints = [{
+                            y: usageMap[REDDIT],
+                            label: "Reddit"
+                        },
+                        {
+                            y: usageMap[FACEBOOK],
+                            label: "Facebook"
+                        },
+                        {
+                            y: usageMap[TWITTER],
+                            label: "Twitter"
+                        },
+                        {
+                            y: usageMap[YOUTUBE],
+                            label: "Youtube"
+                        },
+                        {
+                            y: usageMap[AMAZON],
+                            label: "Amazon"
+                        },
+                        {
+                            y: usageMap[INSTAGRAM],
+                            label: "Instagram"
+                        },
+                        {
+                            y: usageMap[NETFLIX],
+                            label: "Netflix"
+                        },
+                        {
+                            y: usageMap[TWITCH],
+                            label: "Twitch"
+                        }];
+    return dataPoints;
 }
 
 function createWindow() {
@@ -206,11 +237,12 @@ function createWindow() {
     
     let w = 1280;
     let h = 720;
-    getHistory();
+    initHistory();
+    // getHistory();
     win = new BrowserWindow({ width: w, height: h });
 
     // Load index.html in window
-    win.loadFile('calendar.html');
+    win.loadFile('index.html');
 
     // TODO: add support for connecting electron frontend to tomcat server
     // MUST START TOMCAT SERVER BEFORE LAUNCHING APP IF THIS IS THE CASE

@@ -190,8 +190,8 @@ body
 #errormessage
 {
 	color:red !important;
-	font-weight:400 !important;
-	margin-top:5px;
+	font-weight:200 !important;
+	margin-top:-3px;
 }
 
 #loginbutton
@@ -201,8 +201,8 @@ body
 	width: 130px;
 	height: 45px;
 	border-radius:22px;
-	background-color:#B9DEE4;
-	border: 1px solid grey;
+	background-color:#c8f0f7;
+	border: 0px solid grey;
 	outline:none;
 	font-family: "Avenir Next";
 	font-weight:200;
@@ -218,8 +218,8 @@ body
 	width: 130px;
 	height: 45px;
 	border-radius:22px;
-	background-color:#c8f0f7;
-	border: 1px solid grey;
+	background-color:#DEF6FA;
+	border: 0px solid grey;
 	font-family: "Avenir Next";
 	font-weight:200;
 	font-size:30px;
@@ -233,8 +233,8 @@ body
 	width: 130px;
 	height: 45px;
 	border-radius:22px;
-	background-color: #a5cad1;
-	border: 1px solid grey;
+	background-color: #B9DEE4;
+	border: 0px solid grey;
 	font-family: "Avenir Next";
 	font-weight:200;
 	font-size:30px;
@@ -285,7 +285,7 @@ body
 	width: 130px;
 	height: 45px;
 	border-radius:22px;
-	background-color:#B9DEE4;
+	background-color:#c8f0f7;
 	border: 0px solid grey;
 	outline:none;
 	font-family: "Avenir Next";
@@ -302,7 +302,7 @@ body
 	width: 130px;
 	height: 45px;
 	border-radius:22px;
-	background-color:#c8f0f7;
+	background-color:#DEF6FA;
 	border: 0px solid grey;
 	font-family: "Avenir Next";
 	font-weight:200;
@@ -317,7 +317,7 @@ body
 	width: 130px;
 	height: 45px;
 	border-radius:22px;
-	background-color: #a5cad1;
+	background-color: #B9DEE4;
 	border: 0px solid grey;
 	font-family: "Avenir Next";
 	font-weight:200;
@@ -381,16 +381,14 @@ body
 	color: black;
 }
 
-.background
+canvas
 {
-	position:absolute;
-	width:110%;
-	height:calc(100% + 3px);
-	z-index:-1;
-}
-
-#background_image
-{
-	filter:blur(4px);
-	margin-left:-10px;
+	width: 100vw;
+    height: 100vh;
+    position:absolute;
+    left: 0px;
+    top: 0px;
+    z-index: -1;
+    padding:0px;
+    margin-top:0px !important;
 }

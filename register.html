@@ -4,12 +4,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Register</title>
-		<link rel="stylesheet" type="text/css" href="register1.css" />
+		<link rel="stylesheet" type="text/css" href="./assets/css/register.css" />
 		<style>
 			html, body{ width: 100%; height: 100%; margin: 0; padding: 0;}
 		</style>
-		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-		<script src="jparticle.jquery.min.js"></script>
+		<script>
+			window.$ = window.jQuery = require('./assets/js/jquery-2.1.4.min.js');
+		</script>
+		<script src="./assets/js/jparticle.jquery.min.js"></script>
 		<script>
 			function check()
 			{
@@ -62,7 +64,7 @@
 		</div>
 		<div id="topbar" class="read_success">
 			<a href="index.html" id="weathermeister_topbar">G y s t</a>
-			<a href="index.html"><img id="logo" src="gyst_homepageicon.png"></a>
+			<a href="index.html"><img id="logo" src="./assets/images/gyst_homepageicon.png"></a>
 		</div>
 		
 		<div id="signdiv">	
