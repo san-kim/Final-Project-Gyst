@@ -15,12 +15,31 @@
                 d = arg;
                 console.log(arg) // TODO: needs to print correctly formatted output data
             });
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                title: {
-                    text: "Most Visited Sites"
-                },
-                data: d
+            var chart = new CanvasJS.Chart("chartContainer",
+            {
+            title:{
+                text: "Gaming Consoles Sold in 2012"
+            },
+            legend: {
+                maxWidth: 350,
+                itemWidth: 120
+            },
+            data: [
+                {
+                type: "pie",
+                showInLegend: true,
+                legendText: "{label}",
+                dataPoints: [
+                        { y: 4181563, label: "PlayStation 3" },
+                        { y: 2175498, label: "Wii" },
+                        { y: 3125844, label: "Xbox 360" },
+                        { y: 1176121, label: "Nintendo DS"},
+                        { y: 4303364, label: "Nintendo 3DS"},
+                        { y: 1727161, label: "PSP" },
+                        { y: 1717786, label: "PS Vita"}
+                            ]
+                }
+            ]
             });
             chart.render();
 
