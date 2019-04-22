@@ -31,7 +31,7 @@ public class AddEvent extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		Account currentUser = (Account) session.getAttribute("user");
+		String currentUsername =  (String) session.getAttribute("currentuser");
 		
 		//Account currentUser = new Account("abc", "123");
         Event a = new Event((long) session.getAttribute("eventid"),
@@ -40,13 +40,13 @@ public class AddEvent extends HttpServlet {
         (String) session.getAttribute("eventend"),
         (String) session.getAttribute("eventnote"),
         (String) session.getAttribute("eventlocation"),
-        (Account)currentUser, false);
+        (String)currentUsername, false);
 		
         
 		//Insert event info into our database.
 		DatabaseAccess d = new DatabaseAccess();
 		d.addEvent((int) session.getAttribute("eventid"),
-		(String) currentUser.getUsername(),
+		(String) currentUsername,
 		(String) session.getAttribute("eventname"), 
 		(String) session.getAttribute("eventlocation"),
         (String) session.getAttribute("eventstart"),
