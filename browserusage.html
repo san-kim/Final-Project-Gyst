@@ -497,7 +497,7 @@
         {
             return new Promise( function (resolve, reject) {
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", "account_servlet?logout=true", false);
+                xhttp.open("POST", "http://localhost:8080/final_project_gyst/account_servlet?logout=true", false);
                 xhttp.send();
                 resolve();
             });
