@@ -653,7 +653,7 @@
         {
             return new Promise( function (resolve, reject) {
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", "account_servlet?logout=true", false);
+                xhttp.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?logout=true", false);
                 xhttp.send();
                 resolve();
             });
@@ -665,9 +665,40 @@
                 window.location.href = "login.html";
             });
         }
+    </script>
+    <script>
+        function populateToDoEvents()
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?gettodo=true", false);
+            xhttp.send();
+        }
+    </script>
+    <script>
+        function addtodoevent()
+        {
+            alert("here1");
+            var name = document.getElementById("todoeventname").value;
+            var location = document.getElementById("todolocation").value;
+            alert("here 1.1")
+            var start = document.getElementById("todostart").value;
+            alert(start);
+            var end = document.getElementById("todoend").value;
+            alert(end);
+            var notes = document.getElementById("todonotesinput").value;
+            
+            alert("here2");
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?addtodo=true&name="+name+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes, false);
+            xhttp.send();
+            
+            alert("here3");
+
+        }
 	</script>
 </head>
-<body>
+<body onload="populateToDoEvents();">
 	<div id="tododiv">
 		<p id="todop">To Do</p>
 		<div id="todolistdiv">
@@ -714,18 +745,18 @@
         <input type="submit" id="eventsubmitbutton" name="submit" value="add event">
     </form> 
     
-    <form id="todoeventform">
+    <form id="todoeventform" onsubmit="return addtodoevent();">
         <p class="neweventformp">New To Do Event</p>
         <p>Event Name</p>
-        <input type="text" name="todoeventname">
+        <input type="text" name="todoeventname" id="todoeventname">
         <p>Location</p>
-        <input type="text" name="location">
+        <input type="text" name="location" id="todolocation">
         <p>Date</p>
-        <input type="date" name="date">
+        <input type="date" name="date" id="tododate">
         <p>Start</p>
-        <input type="time" name="start">
+        <input type="time" name="start" id="todostart">
         <p>End</p>
-        <input type="time" name="end">
+        <input type="time" name="end" id="todoend">
         <p>Notes</p>
         <input type="text" id="todonotesinput" name="notes">
         <input type="submit" id="todoeventsubmitbutton" name="submit" value="add to do event">
