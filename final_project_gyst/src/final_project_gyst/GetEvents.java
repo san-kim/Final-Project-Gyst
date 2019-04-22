@@ -86,6 +86,7 @@ public class GetEvents extends HttpServlet {
 		// create json array from CalendarEvent class
 		Gson gson = new Gson();
 		String jsonOutput = gson.toJson(eventsToSend);
+		response.setStatus(HttpServletResponse.SC_OK);
 		out.write(jsonOutput);
 		//out.println(jsonOutput);
 		out.flush();
