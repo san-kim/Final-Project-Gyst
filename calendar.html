@@ -8,10 +8,26 @@
 	<script>
 		function getEvents(){
 			var xhttp = new XMLHttpRequest();
-			xhttp.open('GET', "http://localhost:8080/final_project_gyst/GetEvents", false);
+			xhttp.open('GET', "localhost:3000/getevents", false);
 			// xhttp.send();
 			console.log(xhttp);
 			return xhttp.responseText;
+		}
+		function sendEvent(){
+			var xhttp = new XMLHttpRequest();
+			xhttp.open('POST', 'localhost:3000/addevent', true);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			var eventname = "eventname=" + document.getElementById('eventname').value;
+			var location = "&location=" + document.getElementById('location').value;
+			var start = "&start=" + document.getElementById('start').value;
+			var end = "&end=" + document.getElementById('end').value;
+			var notes = "&notes=" + document.getElementById('notes').value;
+			var requestString = eventname + location + start + end + notes;
+			xhttp.send(requestString);
+
+			xhttp.onreadystatechange = function(){
+				console.log('xhttp request changing');
+			}
 		}
 	</script>
 	<script>
@@ -695,20 +711,20 @@
     <button id="addeventbutton" onclick="showEventpopup()">Add Calendar Event</button>
 	<!-- darker background -->
 	<div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup();"></div>
-	<form id="eventform">
+	<form id="eventform" action="http://localhost:3000/addevent" method="GET">
         <p class="neweventformp">New Event</p>
         <p>Event Name</p>
-        <input type="text" name="eventname">
+        <input type="text" name="eventname" id="eventname">
         <p>Location</p>
-        <input type="text" name="location">
+        <input type="text" name="location" id="location">
         <p>Date</p>
         <input type="date" name="date">
         <p>Start</p>
-        <input type="time" name="start">
+        <input type="datetime-local" name="start" id="start">
         <p>End</p>
-        <input type="time" name="end">
+        <input type="datetime-local" name="end" id="end">
         <p>Notes</p>
-        <input type="text" name="notes">
+		<input type="text" name="notes" id="notes">
         <p>Share event with:</p>
         <input type="text" name="sharedwith">
         <input type="submit" id="eventsubmitbutton" name="submit" value="add event">

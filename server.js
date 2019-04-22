@@ -20,18 +20,12 @@ function initializeMySQL(){
 
 initializeMySQL();
 
-// function getEvents(){
-
-// }
-
-
 app.get('/getevents', (req, res) => {
     var id = req.query.id;
     var array = [];
     var query = 'SELECT * FROM User_Events WHERE User_ID=' + id;
     con.query(query, function (err, result) {
         if (err) throw err;
-        // console.log(result.length);
         for (let i = 0; i < result.length; i++){
             let topush = {
                 title: result[i].Event_name,
@@ -39,22 +33,59 @@ app.get('/getevents', (req, res) => {
                 end: result[i].End_time,
                 id: result[i].Event_ID
             };
-            // console.log(topush);
             array.push(topush);
             console.log(array[i]);
-            // console.log("title: " + result[i].Event_name);
-            // console.log("start: " + result[i].Start_time);
-            // console.log("end: " + result[i].End_time);
-            // console.log("id: " + result[i].Event_ID);
         }
-        res.send(array);
+        res.json(array);
+    });    
+});
+
+app.get('/addevent', (req, res) => {
+    var name = req.query.eventname;
+    var loc = req.query.location;
+    var start = req.query.start;
+    var end = req.query.end;
+    var notes = req.query.notes;
+    var id = 3003932;
+    var eventid = generateID();
+    var query = 'INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes) VALUES ?';
+    var values = [];
+    values.push([
+        eventid,
+        id,
+        name,
+        loc,
+        start,
+        end,
+        notes
+    ]);
+    con.query(query, values, function(err, result) {
+        if (err) throw err;
+        console.log('added event with id ' + eventid);
     });
-    
-    // console.log(array);
-    
+    res.location('calendar.html');
 });
 
 
+function generateID(){
+    var id = Math.floor(Math.random() * 5000000);
+    while (idExists(id)){
+        id = Math.floor(Math.random() * 5000000);
+    }
+    return id;
+}
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+function idExists(id){
+    var query = 'SELECT * FROM User_Events where Event_ID=' + id;
+    con.query(query, function (err, result) {
+        if (err) throw err;
+        if (result.length > 0){
+            return true;
+        }
+    });
+    return false;
+}
+
+
+app.listen(port, () => console.log(`NODE TEST SERVER HOSTED ON PORT ${port}!`));
 
