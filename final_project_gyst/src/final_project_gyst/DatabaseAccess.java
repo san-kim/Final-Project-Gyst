@@ -337,26 +337,26 @@ public class DatabaseAccess
 		}
 	}
 	
-	public void removeOneEvent(Event event, String username)
-	{
-		int EventID = (int)event.getId();
-		if(!userExists(username))
-			return;
-		try {
-			//after ? comes the value user input 
-			//where not exists, only insert row
-			ps = conn.prepareStatement("DELETE FROM User_Events WHERE Event_ID="+EventID+" AND User_ID="+getIDFromUsername(username));
-			ps.executeUpdate();
-		}
-		
-		catch(SQLException sqle)
-		{
-			System.out.println("sqle: " + sqle.getMessage());
-		}
-	} 
+//	public void removeOneEvent(Event event, String username)
+//	{
+//		int EventID = (int)event.getId();
+//		if(!userExists(username))
+//			return;
+//		try {
+//			//after ? comes the value user input 
+//			//where not exists, only insert row
+//			ps = conn.prepareStatement("DELETE FROM User_Events WHERE Event_ID="+EventID+" AND User_ID="+getIDFromUsername(username));
+//			ps.executeUpdate();
+//		}
+//		
+//		catch(SQLException sqle)
+//		{
+//			System.out.println("sqle: " + sqle.getMessage());
+//		}
+//	} 
 	
 	//removes all events with this event ID
-	public void removeAllEvent(Event event)
+	public void removeEvent(Event event)
 	{
 		int EventID = (int)event.getId();
 		try {
@@ -390,7 +390,7 @@ public class DatabaseAccess
 			if(matchExists)
 			{
 				//delete all old instances of this
-				removeAllEvent(after);
+				removeEvent(after);
 				//to update, add updated information
 				addEvent(username, after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes());
 			}

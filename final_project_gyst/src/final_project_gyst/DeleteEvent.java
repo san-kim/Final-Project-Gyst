@@ -34,8 +34,14 @@ public class DeleteEvent extends HttpServlet {
         
         
 		HttpSession session = request.getSession();
-        Account currentUser = (Account) session.getAttribute("user");
-        String eventNameToDelete = (String) session.getAttribute("eventnametodelete");
+		String currentUsername =  (String) session.getAttribute("currentuser");
+		Event todelete = new Event((long) session.getAttribute("eventid"),
+		        (String) session.getAttribute("eventname"), 
+		        (String) session.getAttribute("eventstart"),
+		        (String) session.getAttribute("eventend"),
+		        (String) session.getAttribute("eventnote"),
+		        (String) session.getAttribute("eventlocation"),
+		         false);
         
         //TODO: if currentuser does not host this event, the user cannot delete this event. Maybe implement in frontend?
         
@@ -43,22 +49,23 @@ public class DeleteEvent extends HttpServlet {
 		//Account currentUser = new Account("abc", "123");
 		
         DatabaseAccess d = new DatabaseAccess();
+        d.removeEvent(todelete);
         //traverse all hosted events, if match, delete that event.
-        HashSet<Event> events_host = currentUser.getEvents();
-		Iterator<Event> it = events_host.iterator();
-		boolean hosted = false;
-		while (it.hasNext()) {
-			Event temp = it.next();
-			if (temp.getEventName() == eventNameToDelete) {
-				d.removeAllEvent(temp);
-				currentUser.removeEvent(temp);// add event object to account's hosting events
-				System.out.println("event deleted");
-				hosted = true;
-			}
-		}
-		if (!hosted) {
-			
-		}
+//        HashSet<Event> events_host = d.getEvents(currentUsername);
+//		Iterator<Event> it = events_host.iterator();
+//		boolean hosted = false;
+//		while (it.hasNext()) {
+//			Event temp = it.next();
+//			if (temp.getEventName() == eventNameToDelete) {
+//				d.removeEvent(temp);
+//				//currentUser.removeEvent(temp);// add event object to account's hosting events
+//				System.out.println("event deleted");
+//				hosted = true;
+//			}
+//		}
+//		if (!hosted) {
+//			
+//		}
         
 //        for(int i =0;i<currentUser.getHostedEvents().size();i++){
 //            if(currentUser.getHostedEvents().get(i).getEventName()==eventNameToDelete){
@@ -82,7 +89,7 @@ public class DeleteEvent extends HttpServlet {
 		// }
         
         //FIXME:Then call GetEvents to update our calendar page
-        request.setAttribute("user",currentUser);
+        request.setAttribute("currentuser",currentUsername);
         RequestDispatcher rd = request.getRequestDispatcher("GetEvents");
         rd.forward(request,response);
 	}

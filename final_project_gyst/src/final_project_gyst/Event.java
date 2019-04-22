@@ -37,7 +37,7 @@ public class Event {
         notes = note; location = loc; allDay = all;
     }
 
-    public void setEventName(String e){
+    public void setEventName(String e){ 
         eventName = e;
     }
     

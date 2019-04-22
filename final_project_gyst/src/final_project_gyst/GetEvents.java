@@ -47,7 +47,7 @@ public class GetEvents extends HttpServlet {
 	    			 temp.end,
 	    			 temp.notes,
 	    			 temp.location,
-	    			 currentUsername, false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
+	    			 false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
 						);
 				CalendarEvent toSend = new CalendarEvent(tempevent); // generate new calendar formatted event to send to frontend
 				eventsToSend.add(toSend);
