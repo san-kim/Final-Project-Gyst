@@ -311,7 +311,7 @@ public class DatabaseAccess
 	}
 	
 	//keep it this syntax because we will likely need to update the database without rewriting every time
-	public void addEvent(int eventID, String username, String eventname, String location, String start, String end, String notes, Account host)
+	public void addEvent(int eventID, String username, String eventname, String location, String start, String end, String notes, String host)
 	{
 		//if this entry is already there do nothing
 		if(isUserInEvent(getIDFromUsername(username), eventID))
@@ -319,7 +319,7 @@ public class DatabaseAccess
 		try {
 			//after ? comes the value user input 
 			//where not exists, only insert row
-			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+eventID+","+getIDFromUsername(username)+",?,?,?,?,?,"+ (int)host.getUserId() +")");
+			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+eventID+","+getIDFromUsername(username)+",?,?,?,?,?,"+ getIDFromUsername(host) +")");
 			//replace first question mark with the firstName variable. question mark means a variable will go there
 		
 			/*
@@ -329,8 +329,8 @@ public class DatabaseAccess
 			ps.setString(1, eventname);
 			ps.setString(2, location);
 			ps.setString(3, start);
-			ps.setString(4, end);			
-			ps.setString(5, notes);			
+			ps.setString(4, end);
+			ps.setString(5, notes);
 			ps.executeUpdate();
 		}
 		
@@ -469,12 +469,9 @@ public class DatabaseAccess
 	
 	public void addEventsForMultipleUsers(Event event)
 	{
-		for(Account acct : event.people_shared)
+		for(String acct : event.people_shared)
 		{
-			if(isUserInEvent((int)acct.getId(), (int)event.getId()) == false)
-			{
-				addEvent((int)event.getId(), acct.getUsername(), event.getEventName(), event.getLocation(), event.getStart(), event.getEnd(), event.getNotes(), event.getHost());
-			}
+			addEvent((int)event.getId(), acct, event.getEventName(), event.getLocation(), event.getStart(), event.getEnd(), event.getNotes(), event.getHost());
 		}
 	}
 	
