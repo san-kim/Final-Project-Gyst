@@ -17,9 +17,9 @@ const NETFLIX = 6;
 const TWITCH = 7;
 
 
-ipcMain.on('asynchronous-message', (event, arg) => {
+ipcMain.on('synchronous-message', (event, arg) => {
     // console.log(arg) // prints "ping"
-    event.sender.send('asynchronous-reply', getHistory(arg));
+    event.returnValue = getHistory(arg);
 });
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -193,46 +193,39 @@ function getHistory(days = 1){
     console.log("NETFLIX: " + usageMap[NETFLIX] + " %: " + usageMap[NETFLIX] / total_sum);
     console.log("TWITCH: " + usageMap[TWITCH] + " %: " + usageMap[TWITCH] / total_sum);
 
-    var data = [{
-            type: "pie",
-            startAngle: 240,
-            yValueFormatString: "##0.00\"%\"",
-            indexLabel: "{label} {y}",
-            dataPoints: [{
-                        //     y: (usageMap[REDDIT] / total_sum * 100).toFixed(2),
-                        //     label: "Reddit"
-                        // },
-                        // {
-                        //     y: (usageMap[FACEBOOK] / total_sum * 100).toFixed(2),
-                        //     label: "Facebook"
-                        // },
-                        // {
-                        //     y: (usageMap[TWITTER] / total_sum * 100).toFixed(2),
-                        //     label: "Twitter"
-                        // },
-                        // {
-                            y: (usageMap[YOUTUBE] / total_sum * 100).toFixed(2),
+    var dataPoints = [{
+                            y: usageMap[REDDIT],
+                            label: "Reddit"
+                        },
+                        {
+                            y: usageMap[FACEBOOK],
+                            label: "Facebook"
+                        },
+                        {
+                            y: usageMap[TWITTER],
+                            label: "Twitter"
+                        },
+                        {
+                            y: usageMap[YOUTUBE],
                             label: "Youtube"
                         },
                         {
-                            y: (usageMap[AMAZON] / total_sum * 100).toFixed(2),
+                            y: usageMap[AMAZON],
                             label: "Amazon"
                         },
-                        // {
-                        //     y: (usageMap[INSTAGRAM] / total_sum * 100).toFixed(2),
-                        //     label: "Instagram"
-                        // },
-                        // {
-                        //     y: (usageMap[NETFLIX] / total_sum * 100).toFixed(2),
-                        //     label: "Netflix"
-                        // },
                         {
-                            y: (usageMap[TWITCH] / total_sum * 100).toFixed(2),
+                            y: usageMap[INSTAGRAM],
+                            label: "Instagram"
+                        },
+                        {
+                            y: usageMap[NETFLIX],
+                            label: "Netflix"
+                        },
+                        {
+                            y: usageMap[TWITCH],
                             label: "Twitch"
-                        }]       
-                }];
-
-    return data;
+                        }];
+    return dataPoints;
 }
 
 function createWindow() {
@@ -249,7 +242,7 @@ function createWindow() {
     win = new BrowserWindow({ width: w, height: h });
 
     // Load index.html in window
-    win.loadFile('index.html');
+    win.loadFile('browserusage.html');
 
     // TODO: add support for connecting electron frontend to tomcat server
     // MUST START TOMCAT SERVER BEFORE LAUNCHING APP IF THIS IS THE CASE

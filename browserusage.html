@@ -10,15 +10,18 @@
     <script>
         var d;
         window.onload = function () {
-            ipcRenderer.send('asynchronous-message', numDays);
-            ipcRenderer.on('asynchronous-reply', (event, arg) => {
-                d = arg;
-                console.log(arg) // TODO: needs to print correctly formatted output data
-            });
+            // ipcRenderer.send('asynchronous-message', numDays);
+            // ipcRenderer.on('asynchronous-reply', (event, arg) => {
+            //     d = arg;
+            //     console.log(arg) // TODO: needs to print correctly formatted output data
+            // });
+
+            d = (ipcRenderer.sendSync('synchronous-message', 1)) // prints "pong"
+
             var chart = new CanvasJS.Chart("chartContainer",
             {
             title:{
-                text: "Gaming Consoles Sold in 2012"
+                text: "Browser Usage"
             },
             legend: {
                 maxWidth: 350,
@@ -29,15 +32,7 @@
                 type: "pie",
                 showInLegend: true,
                 legendText: "{label}",
-                dataPoints: [
-                        { y: 4181563, label: "PlayStation 3" },
-                        { y: 2175498, label: "Wii" },
-                        { y: 3125844, label: "Xbox 360" },
-                        { y: 1176121, label: "Nintendo DS"},
-                        { y: 4303364, label: "Nintendo 3DS"},
-                        { y: 1727161, label: "PSP" },
-                        { y: 1717786, label: "PS Vita"}
-                            ]
+                dataPoints: d
                 }
             ]
             });
