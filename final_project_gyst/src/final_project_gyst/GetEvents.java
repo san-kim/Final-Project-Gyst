@@ -86,11 +86,12 @@ public class GetEvents extends HttpServlet {
 		// create json array from CalendarEvent class
 		Gson gson = new Gson();
 		String jsonOutput = gson.toJson(eventsToSend);
-		out.println(jsonOutput);
+		out.write(jsonOutput);
+		//out.println(jsonOutput);
 		out.flush();
 
-		request.setAttribute("eventsToSend", jsonOutput);
-		request.getRequestDispatcher("fullcalendar.html").forward(request, response);
+		//request.setAttribute("eventsToSend", jsonOutput);
+		//request.getRequestDispatcher("fullcalendar.html").forward(request, response);
 		//TODO: in fullcalendar.html, get the eventsToSend parameter and populate the events on the calendar page
 	}
 
