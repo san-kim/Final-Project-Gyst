@@ -32,7 +32,7 @@ public class ModifyEvent extends HttpServlet {
         
         
 		HttpSession session = request.getSession();
-        Account currentUser = (Account) session.getAttribute("user");
+		String currentUsername =  (String) session.getAttribute("currentuser");
         //String eventNameToModify = (String) session.getAttribute("eventnametomodify");
         //FIXME: I am assuming the event names are unique.
         
@@ -46,10 +46,10 @@ public class ModifyEvent extends HttpServlet {
         (String) session.getAttribute("eventend"),
         (String) session.getAttribute("eventnote"),
         (String) session.getAttribute("eventlocation"),
-        (Account)currentUser, false);
+         false);
 
         //Modify this event in our database.
-		d.changeEvent(modified);
+		d.changeEvent(currentUsername,modified);
 		//a.people_shared = new ArrayList<Account>();
 		//a.people_shared.add(currentUser);//add the currentuser to people_shared
 
@@ -62,7 +62,7 @@ public class ModifyEvent extends HttpServlet {
 		// }
         
         //FIXME:Then call GetEvents to update our calendar page
-        request.setAttribute("user",currentUser);
+		request.setAttribute("currentuser",currentUsername);
         RequestDispatcher rd = request.getRequestDispatcher("GetEvents");
         rd.forward(request,response);
 	}
