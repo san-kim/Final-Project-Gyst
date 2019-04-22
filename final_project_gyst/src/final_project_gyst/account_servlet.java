@@ -104,6 +104,18 @@ public class account_servlet extends HttpServlet
 				}
 			}
 		}
+		
+		String logout = request.getParameter("logout");
+		{
+			if(logout != null)
+			{
+				if(logout.trim().equals("true"))
+				{
+					//let session know currentuser is a guest, do not create an account
+					session.setAttribute("currentuser", "");
+				}
+			}
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
