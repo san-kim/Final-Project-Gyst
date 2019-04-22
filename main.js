@@ -32,7 +32,7 @@ function initHistory(){
     // *FIXME*: can't get current username --> current implementation doesn't work -- FIXED
     if (process.platform == 'win32') {
         // if current platform is windows
-        history_file = "C:\\Users\\" + currentUser + "\\AppData\\Local\\Google\\Chrome\\UserData\\Default\\History";
+        history_file = "C:\\Users\\" + currentUser + "\\AppData\\Local\\Google\\Chrome\\User\ Data\\Default\\History";
     } else if (process.platform == 'darwin') {
         history_file = "/Users/" + currentUser + "/Library/Application\ Support/Google/Chrome/Profile\ 1/History"; // FIXME:  --> change 'Profile\ 1' to 'Default'
     } else {
