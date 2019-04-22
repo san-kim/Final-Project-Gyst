@@ -183,11 +183,10 @@
 					allDay: false,
 				},
 				{
-					id: 4,
 					title: 'Click for Google',
 					start: new Date(y, m, 28),
 					end: new Date(y, m, 29),
-					url: 'javascript:showEventpopup()',
+					url: 'http://google.com/',
 					className: 'success'
 				}
 			],
@@ -489,12 +488,12 @@
             background-color: white;
             z-index: 1000001;
             width: 40vw;
-            height:40vw;
+            height: calc(40vw + 100px);
             position: absolute;
             display:none;
             border-radius: 10px;
             margin-left: 30vw;
-            margin-top: calc(50vh - 20vw);
+            margin-top: calc(50vh - 20vw - 50px);
         }
         
         #eventform .neweventformp
@@ -582,6 +581,38 @@
             margin-bottom: 1000px;
         }
         
+        #todolistdiv a
+        {
+            text-decoration: none;
+            margin-left: 20px;
+            color:black;
+        }
+        
+        #nexteventdiv p
+        {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        
+        #nexteventleft
+        {
+            float: left;
+            margin-left: 10px
+        }
+        
+        #nexteventname
+        {
+            position: absolute;
+            margin-left: 120px;
+            font-weight: 200;
+        }
+        
+        #remainingtime
+        {
+            float: right;
+            margin-right: 10px;
+            font-weight: 200;
+        }
 	</style>
     
     <script>
@@ -608,21 +639,6 @@
 			document.getElementById("eventpopupdiv").style.display = "none";
             document.getElementById("todoeventform").style.display = "none";			
 		}
-	function logout()
-        {
-            return new Promise( function (resolve, reject) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", "account_servlet?logout=true", false);
-                xhttp.send();
-                resolve();
-            });
-        }
-
-        function doLogout() {
-            logout().then(function(){
-                window.location.href = "login.html";
-            });
-        }
 	</script>
 </head>
 <body>
@@ -630,13 +646,21 @@
 		<p id="todop">To Do</p>
 		<div id="todolistdiv">
 			<!-- POPULATE TABLE HERE -->
+            <br>
+            <a href="" action="">todo 1</a><br>
+            <a href="" action="">todo 2</a><br>
+            <a href="" action="">todo 3</a><br>
 			<button id="addtodobutton" onclick="showTodoeventpopup();">+</button>
 		</div>
 		<button id="browsingtimebutton" onclick="location.href='browserusage.html';">Browsing Time</button>
-		<button id="logoutbutton" onclick="doLogout();">log out</button>
+		<button id="logoutbutton" onclick="">log out</button>
 	</div>
 	<div id="calendar"></div>
-	<div id="nexteventdiv">nexteventdiv</div>
+	<div id="nexteventdiv">
+        <p id="nexteventleft">next event:</p>
+        <p id="nexteventname">todo 1</p>
+        <p id="remainingtime">5:00 remaining</p>
+    </div>
 	<div id="monthdiv">
 		<p id="monthp">Calendar</p>
 	</div>
@@ -645,6 +669,8 @@
 	<div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup();"></div>
 	<form id="eventform">
         <p class="neweventformp">New Event</p>
+        <p>Event Name</p>
+        <input type="text" name="eventname">
         <p>Location</p>
         <input type="text" name="location">
         <p>Date</p>
@@ -662,6 +688,8 @@
     
     <form id="todoeventform">
         <p class="neweventformp">New To Do Event</p>
+        <p>Event Name</p>
+        <input type="text" name="todoeventname">
         <p>Location</p>
         <input type="text" name="location">
         <p>Date</p>
@@ -676,3 +704,4 @@
     </form> 
 </body>
 </html>
+ 
