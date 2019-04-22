@@ -31,7 +31,7 @@ public class AddEvent extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		HttpSession session = request.getSession();
-		Account currentUser = (Account) session.getAttribute("user");
+		String currentUsername =  (String) session.getAttribute("currentuser");
 		
 		//Account currentUser = new Account("abc", "123");
         Event a = new Event((long) session.getAttribute("eventid"),
@@ -40,13 +40,12 @@ public class AddEvent extends HttpServlet {
         (String) session.getAttribute("eventend"),
         (String) session.getAttribute("eventnote"),
         (String) session.getAttribute("eventlocation"),
-        (Account)currentUser, false);
+        false);
 		
         
 		//Insert event info into our database.
 		DatabaseAccess d = new DatabaseAccess();
-		d.addEvent((int) session.getAttribute("eventid"),
-		(String) currentUser.getUsername(),
+		d.addEvent((String) currentUsername,
 		(String) session.getAttribute("eventname"), 
 		(String) session.getAttribute("eventlocation"),
         (String) session.getAttribute("eventstart"),
@@ -56,7 +55,7 @@ public class AddEvent extends HttpServlet {
         /*(Account)currentUser, false, (ArrayList<Account>) session.getAttribute("peopleshared")*/);
 		//a.people_shared = new ArrayList<Account>();
 		//a.people_shared.add(currentUser);//add the currentuser to people_shared
-		currentUser.addEvent(a);//add event object to account's hosting events
+		d.addEvent(currentUsername,a.getEventName(),a.getLocation(),a.getStart(),a.getEnd(),a.getNotes());//add event object to account's hosting events
         System.out.println("added a");
 
 		// response.setContentType("application/json");
@@ -68,7 +67,7 @@ public class AddEvent extends HttpServlet {
 		// }
         
         //FIXME:Then call GetEvents to update our calendar page
-        request.setAttribute("user",currentUser);
+        request.setAttribute("currentuser",currentUsername);
         RequestDispatcher rd = request.getRequestDispatcher("GetEvents");
         rd.forward(request,response);
 	}

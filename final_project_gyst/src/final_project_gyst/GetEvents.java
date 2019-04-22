@@ -20,7 +20,7 @@ public class GetEvents extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Account currentUser = (Account) session.getAttribute("user");
+		String currentUsername =  (String) session.getAttribute("currentuser");
 		
 		//Account currentUser = new Account("abc", "123");
 		// generate pre-made events to test servlet functionality
@@ -36,7 +36,7 @@ public class GetEvents extends HttpServlet {
 		DatabaseAccess d = new DatabaseAccess();
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		HashSet<EventInfo> events_to_send = d.getEvents(currentUser.getUsername());
+		HashSet<EventInfo> events_to_send = d.getEvents(currentUsername);
 		ArrayList<CalendarEvent> eventsToSend = new ArrayList<CalendarEvent>();
 		Iterator<EventInfo> it = events_to_send.iterator();
 	     while(it.hasNext()){
@@ -47,7 +47,7 @@ public class GetEvents extends HttpServlet {
 	    			 temp.end,
 	    			 temp.notes,
 	    			 temp.location,
-						 currentUser, false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
+	    			 false//FIXME:I set it to false, but the event could be allday! Need an allday boolean in EventInfo class as well
 						);
 				CalendarEvent toSend = new CalendarEvent(tempevent); // generate new calendar formatted event to send to frontend
 				eventsToSend.add(toSend);
@@ -86,10 +86,12 @@ public class GetEvents extends HttpServlet {
 		// create json array from CalendarEvent class
 		Gson gson = new Gson();
 		String jsonOutput = gson.toJson(eventsToSend);
-		out.println(jsonOutput);
+		response.setStatus(HttpServletResponse.SC_OK);
+		out.write(jsonOutput);
+		//out.println(jsonOutput);
 		out.flush();
 
-		request.setAttribute("eventsToSend", jsonOutput);
+		//request.setAttribute("eventsToSend", jsonOutput);
 		request.getRequestDispatcher("fullcalendar.html").forward(request, response);
 		//TODO: in fullcalendar.html, get the eventsToSend parameter and populate the events on the calendar page
 	}

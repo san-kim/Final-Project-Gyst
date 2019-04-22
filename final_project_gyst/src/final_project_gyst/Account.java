@@ -16,10 +16,6 @@ public class Account extends Thread{
         events = new HashSet<Event>();
         todo_events = new HashSet<ToDoEvent>();
     }
-    
-    public HashSet<Event> getEvents(){
-    	return events;
-    }
 
     public void addEvent(Event e){
         events.add(e);
