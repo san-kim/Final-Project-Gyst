@@ -378,12 +378,12 @@
             background-color: white;
             z-index: 1000001;
             width: 40vw;
-            height: 40vw;
+            height: calc(40vw + 70px);
             position: absolute;
             display:none;
             border-radius: 10px;
             margin-left: 30vw;
-            margin-top: calc(50vh - 20vw);
+            margin-top: calc(50vh - 20vw - 35px);
         }
         
         #eventform .neweventformp
@@ -598,23 +598,21 @@
     <script>
         function showtodoinfo(eventindex)
         {   
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?showtodoinfo=true&index="+eventindex, false);
-            xhttp.send();
-            document.getElementById("todoeventinfopopup").innerHTML = xhttp.responseText;
+            var xhttp3 = new XMLHttpRequest();
+            xhttp3.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?showtodoinfo=true&index="+eventindex, false);
+            xhttp3.send();
+            document.getElementById("todoeventinfopopup").innerHTML = xhttp3.responseText;
             
             document.getElementById("eventpopupdiv").style.display = "block";
 			document.getElementById("todoeventinfopopup").style.display = "block";
         }
         
-        function displayEventDetails(eventID)
+        function displayEventDetails(eventIDinput)
         {
-            alert(eventID);
-            
-            xhttp.open("GET", "http://localhost:8080/final_project_gyst/events_servlet?showeventinfo=true&id="+eventID, false);
-            alert("check1");
-            xhttp.send();
-            document.getElementById("eventinfopopup").innerHTML = xhttp.responseText;
+            var xhttp4 = new XMLHttpRequest();
+            xhttp4.open("GET", 'http://localhost:8080/final_project_gyst/events_servlet?showeventinfo=true&eventidinput='+eventIDinput, false);
+            xhttp4.send();
+            document.getElementById("eventinfopopup").innerHTML = xhttp4.responseText;
 
             document.getElementById("eventpopupdiv").style.display = "block";
 			document.getElementById("eventinfopopup").style.display = "block";
@@ -791,7 +789,7 @@
 	</div>
     <button id="addeventbutton" onclick="showEventpopup()">Add Calendar Event</button>
 	<!-- darker background -->
-  <div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup(); exittodoinfo();"></div>
+  <div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup(); exittodoinfo(); exiteventinfo();"></div>
 	<form id="eventform" action="" method="GET" onsubmit="sendEvent(); exitEventPopup();">
         <p class="neweventformp">New Event</p>
         <p>Event Name</p>
