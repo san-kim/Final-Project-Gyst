@@ -9,6 +9,7 @@
 			html, body{ width: 100%; height: 100%; margin: 0; padding: 0;}
 		</style>
 		<script>
+			const { ipcRenderer } = require('electron');
 			window.$ = window.jQuery = require('./assets/js/jquery-2.1.4.min.js');
 		</script>
 		<script src="./assets/js/jparticle.jquery.min.js"></script>
@@ -21,16 +22,21 @@
 				
 				//sends back the error response or creates new account if successful
 				var xhttp = new XMLHttpRequest();
-				xhttp.open("POST", "http://localhost:8080/final_project_gyst/account_servlet?registering=true&username=" + z +
-				"&password=" + a + "&confirmpassword=" + b, false);
+				xhttp.open("GET", "http://localhost:3000/register?username=" + z + "&password=" + a + "&confirmpassword=" + b, false);	
 				xhttp.send();
-	
-				document.getElementById("errormessage").innerHTML = xhttp.responseText;
-	
-				//if fail dont, redirect
-				if(xhttp.responseText.trim().length != 0)
-				{
+				console.log('TESTING XHTTP');
+				if (xhttp.responseText === 'uname'){
+					document.getElementById("errormessage").innerHTML = 'Username already exists.';
 					return false;
+				}
+				else if (xhttp.responseText === 'pword'){
+					document.getElementById("errormessage").innerHTML = 'Passwords must match.';
+					return false;
+				}
+				else{
+					var user = JSON.parse(xhttp.responseText);
+					ipcRenderer.sendSync('user', user);
+					console.log(user);
 				}
 			}
 		</script>

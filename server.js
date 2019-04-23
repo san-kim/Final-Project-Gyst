@@ -29,11 +29,11 @@ app.get('/getevents', (req, res) => {
         if (err) throw err;
         for (let i = 0; i < result.length; i++){
             let topush = {
-                title: result[i].Event_name,
-                start: result[i].Start_time,
-                end: result[i].End_time,
-                id: result[i].Event_ID
-            };
+                        title: result[i].Event_name,
+                        start: result[i].Start_time,
+                        end: result[i].End_time,
+                        id: result[i].Event_ID,
+                        };
             array.push(topush);
             // console.log(array[i]);
         }
@@ -48,142 +48,139 @@ app.get('/addevent', (req, res) => {
     var end = req.query.end;
     var notes = req.query.notes;
     var id = 3003932;
-    var eventid = generateID();
-    var query = 'INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES('+eventid+','+id+',\''+name+'\',\''+loc+'\',\''+start+'\',\''+end+'\',\''+notes+'\',0)';
-    var values = [];
-    values.push([
-        eventid,
-        id,
-        name,
-        loc,
-        start,
-        end,
-        notes
-    ]);
+    var query = 'INSERT INTO User_Events(User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES('+id+',\''+name+'\',\''+loc+'\',\''+start+'\',\''+end+'\',\''+notes+'\',0)';
     con.escape(query);
     con.query(query, function(err, result) {
         if (err) throw err;
-        console.log('added event with id ' + eventid);
+        console.log('added event');
     });
     res.location('calendar.html');
 });
 
-
-
-function generateID(){
-    var id = Math.floor(Math.random() * 5000000);
-    while (idExists(id)){
-        id = Math.floor(Math.random() * 5000000);
-    }
-    return id;
-}
-
-function idExists(id){
-    var query = 'SELECT * FROM User_Events WHERE Event_ID=' + id;
-    con.query(query, function (err, result) {
-        if (err) throw err;
-        if (result.length > 0){
-            return true;
-        }
-    });
-    return false;
-}
-
 function usernameExists(username){
-    var query = 'SELECT * FROM UserInfo WHERE Username=' + username;
-    con.query(query, function (err, result) {
-        if (err) throw err;
-        if (result.length > 0) {
-            return true;
-        }
+    return new Promise( (resolve, reject) => {
+        var query = 'SELECT * FROM UserInfo WHERE Username=\'' + username + '\'';
+        con.query(query, function (err, result) {
+            if (err) throw err;
+            if (result.length > 0) {
+                resolve(true);
+            }
+        });
+        resolve(false);
     });
-    return false;
 }
 
 function createAccount(username, password){
-    var id = generateID();
-    var query = 'INSERT INTO UserInfo(User_ID, Username, User_Password) VALUES(' + id + ',\'' + username + '\',\'' + password + '\')';
-     con.query(query, function (err, result) {
-         if (err) throw err;
-         console.log('added user with id ' + id);
-     });
-     return id;
+    return new Promise( (resolve, reject) => {
+        var query = 'INSERT INTO UserInfo(Username, User_Password) VALUES(' + '\'' + username + '\',\'' + password + '\')';
+        con.query(query, function (err, result) {
+            if (err) throw err;
+            var id = result.insertId;
+            console.log('added user with id ' + id);
+            resolve(id);
+        });
+    })
 }
 
 function validatePassword(username, password){
-    var query = 'SELECT * FROM UserInfo WHERE Username=' + username + ' AND User_Password=' + password;
-    con.query(query, function (err, result) {
-        if (err) throw err;
-        if (result.length > 0) {
-            return true;
-        }
+    return new Promise( (resolve, reject) => {
+        var query = 'SELECT * FROM UserInfo WHERE Username=\'' + username + '\' AND User_Password=\'' + password + '\'';
+        con.query(query, function (err, result) {
+            if (err) throw err;
+            console.log('result');
+            console.log(result);
+            console.log(result.length);
+            if (result.length > 0) {
+                console.log('true');
+                resolve(true);
+            } else {
+                resolve(false);
+            }
+        });
     });
-    return false;
 }
 
 function getIdFromName(username){
-    var query = 'SELECT * FROM UserInfo WHERE Username=' + username;
-    con.query(query, function (err, result) {
-        if (err) throw err;
-        if (result.length > 0) {
-            return result[0].Username;
-        }
-    });
+    return new Promise( (resolve, reject) => {
+        var query = 'SELECT * FROM UserInfo WHERE Username=\'' + username + '\'';
+        con.query(query, function (err, result) {
+            if (err) throw err;
+            if (result.length > 0) {
+                resolve(result[0].Username);
+            } else {
+                reject("errorstring");
+            }
+        });
+    })
+    
 }
 
-app.get('/account_servlet', (req, res) => {
-    var registering = req.param.registering;
-    if (registering != null){
-        var response = "";
-        if (registering.equals('true')){
-            let username = req.param.username;
-            let password = req.param.password;
-            let confirmpassword = request.param.confirmpassword;
-            if (usernameExists(username)){
-                response  += "This username is already taken. ";
-            }
-            else if (!password.equals(confirmpassword)){
-                response += "The passwords do not match.";
-            }
-            else{
-                var id = createAccount(username, password);
-                response = {username: username,
-                            id: id};
-            }
-            res.send(response);
-        }
-    }
-    var login = req.param.login;
-    if (login != null){
-        let response;
-        if (login.equals('true')){
-            let username = req.param.username;
-            let password = req.param.password;
+// login servlet
+app.get('/login', (req, res) => {
+    let username = req.query.username;
+    let password = req.query.password;
+    console.log('uname ' + username);
+    console.log('pword ' + password);
+    let response;
 
-            if (!usernameExists(username)){
-                repsonse = "This user does not exist.";
-            }
-            else if (!validatePassword(username, password)){
-                response = "Incorrect password.";
-            }
-            else{
-                response = {username: username,
-                            id: getIdFromName(username)};
-            }
-            res.send(response);
+    usernameExists(username).then((uname) => {
+        if (uname) {
+            response = "uname";
         }
-    }
+    });
 
-    var guestlogin = req.param.guestlogin;
-    if (guestlogin != null){
-        let response;
-        if (guestlogin.trim().equals('true')){
-            response = {username: 'guest',
-                        id: null};
+    validatePassword(username, password).then((valid) => {
+        console.log(valid);
+        if (valid) {
+            console.log(username);
+            getIdFromName(username).then((uname) => {
+                response = {
+                    username: username,
+                    id: uname
+                };
+            }).catch((error) => {
+                console.log(error);
+            });
+        } else {
+            response = "pword";
         }
-    }
+        console.log(response);
+        res.send(response);
+    });
 });
 
+// registration servlet
+app.get('/register',  (req, res) => {
+    let username = req.query.username;
+    let password = req.query.password;
+    let confirmpassword = req.query.confirmpassword;
+    let response;
+    usernameExists(username).then((uname) =>{
+        if (uname) {
+            response = 'uname';
+        }
+    });
+    if (!password === confirmpassword){
+        response = 'pword';
+    }
+    else{
+        createAccount(username, password).then((id) => {
+            response = {
+                username: username,
+                id: id
+            };
+        });
+    }
+    res.send(response);
+});
+
+// guest login servlet
+app.get('/guestlogin', (req, res) => {
+    response = {
+        username: 'guest',
+        id: '-1'};
+    res.send(response);
+});
 
 app.listen(port, () => console.log(`NODE TEST SERVER HOSTED ON PORT ${port}!`));
 

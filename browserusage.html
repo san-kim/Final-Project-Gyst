@@ -16,7 +16,7 @@
             //     console.log(arg) // TODO: needs to print correctly formatted output data
             // });
 
-            d = (ipcRenderer.sendSync('synchronous-message', 1)) // gets correctly formatted data from electron
+            d = (ipcRenderer.sendSync('gethistory', 1)) // gets correctly formatted data from electron
 
             var chart = new CanvasJS.Chart("chartContainer",
             {

@@ -6,7 +6,7 @@ const {ipcMain} = require('electron');
 const username = require('username');
 var db;
 var history;
-var current_user_id;
+var current_user;
 
 const REDDIT = 0;
 const FACEBOOK = 1;
@@ -18,9 +18,16 @@ const NETFLIX = 6;
 const TWITCH = 7;
 
 
-ipcMain.on('synchronous-message', (event, arg) => {
-    // console.log(arg) // prints "ping"
+ipcMain.on('gethistory', (event, arg) => {
     event.returnValue = getHistory(arg);
+});
+
+ipcMain.on('test', (event, arg) => {
+   current_user = arg; 
+});
+
+ipcMain.on('getuser', (event, arg) =>{
+    event.returnValue = current_user;
 });
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -243,7 +250,7 @@ function createWindow() {
     win = new BrowserWindow({ width: w, height: h });
 
     // Load index.html in window
-    win.loadFile('calendar.html');
+    win.loadFile('login.html');
 
     // TODO: add support for connecting electron frontend to tomcat server
     // MUST START TOMCAT SERVER BEFORE LAUNCHING APP IF THIS IS THE CASE
