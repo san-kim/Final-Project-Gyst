@@ -4,9 +4,13 @@
 	<meta charset="UTF-8">
 	<title>Calendar</title>
 	<script>
+		const { ipcRenderer } = require('electron');
+		const current_user = ipcRenderer.sendSync('getuser', 'abc');
+		console.log('current user renderer');
+		console.log(current_user);
 		function getEvents(){
 			var xhttp = new XMLHttpRequest();
-			xhttp.open('GET', "localhost:3000/getevents", false);
+			xhttp.open('GET', "localhost:3000/getevents?id=" + current_user.id, false);
 			// xhttp.send();
 			console.log(xhttp);
 			return xhttp.responseText;
@@ -39,13 +43,12 @@
 	<script src='./assets/js/fullcalendar/daygrid/main.js'></script>
 	<script src='./assets/js/fullcalendar/timegrid/main.js'></script>
 	<script>
-		var event_source;
 		document.addEventListener('DOMContentLoaded', function () {
 			var calendarEl = document.getElementById('calendar');
 			var xhttp = new XMLHttpRequest();
 
 			// asynchronous request
-			xhttp.open('GET', "http://localhost:3000/getevents?id=3003932", true);
+			xhttp.open('GET', "http://localhost:3000/getevents?id=" + current_user.userid, true);
 			xhttp.send();
 
 			xhttp.onreadystatechange = function () {
@@ -558,7 +561,7 @@
 
 
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?addtodo=true&name="+name+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes, false);
+            xhttp.open("GET", "http://localhost:3000/addtodo?name="+name+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes + "&id=" + current_user.id, false);
             xhttp.send();
             
             getEvents();
@@ -567,7 +570,7 @@
         function getEvents() 
         {
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?gettodo=true", false);
+            xhttp.open("GET", "http://localhost:3000/gettodo?id=" + current_user.id, false);
             xhttp.send();
             
             document.getElementById("todolist").innerHTML = xhttp.responseText;
@@ -577,7 +580,7 @@
         function getNextEvent()
         {
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?getnexttodo=true", false);
+            xhttp.open("GET", "http://localhost:3000/getnexttodo?id=" + current_user.id, false);
             xhttp.send();
             
             document.getElementById("nexteventname").innerHTML = xhttp.responseText;
@@ -587,7 +590,7 @@
         function showtodoinfo(eventindex)
         {   
             var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?showtodoinfo=true&index="+eventindex, false);
+            xhttp.open("GET", "http://localhost:3000/showtodoinfo?id=" + current_user.id + "&eventid=" + eventindex, false);
             xhttp.send();
             document.getElementById("todoeventinfopopup").innerHTML = xhttp.responseText;
             

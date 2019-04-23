@@ -12,6 +12,8 @@ const con = mysql.createConnection({
 var current_user;
 
 
+
+
 function initializeMySQL(){
     con.connect(function (err) {
         if (err) throw err;
@@ -87,11 +89,8 @@ function validatePassword(username, password){
         var query = 'SELECT * FROM UserInfo WHERE Username=\'' + username + '\' AND User_Password=\'' + password + '\'';
         con.query(query, function (err, result) {
             if (err) throw err;
-            console.log('result');
             console.log(result);
-            console.log(result.length);
             if (result.length > 0) {
-                console.log('true');
                 resolve(true);
             } else {
                 resolve(false);
@@ -119,20 +118,19 @@ function getIdFromName(username){
 app.get('/login', (req, res) => {
     let username = req.query.username;
     let password = req.query.password;
-    console.log('uname ' + username);
-    console.log('pword ' + password);
-    let response;
+    console.log('uname: ' + username);
+    console.log('pword: ' + password);
+    let response = "";
 
     usernameExists(username).then((uname) => {
         if (uname) {
             response = "uname";
         }
+        res.send(response);
     });
 
     validatePassword(username, password).then((valid) => {
-        console.log(valid);
         if (valid) {
-            console.log(username);
             getIdFromName(username).then((uname) => {
                 response = {
                     username: username,
@@ -141,7 +139,8 @@ app.get('/login', (req, res) => {
             }).catch((error) => {
                 console.log(error);
             });
-        } else {
+        } 
+        else {
             response = "pword";
         }
         console.log(response);
@@ -181,6 +180,110 @@ app.get('/guestlogin', (req, res) => {
         id: '-1'};
     res.send(response);
 });
+
+// get all todo events
+app.get('/gettodo', (req, res) =>{
+    // let username = req.query.username;
+    let userid = req.query.id;
+    let response = "";
+    getTodoEvents(userid).then((result) => {
+        for (var i = 0; i < result.length; i++){
+            response += "<a onclick='showtodoinfo(" + i + ");'>" + result[i].name + "</a><br>";
+        }
+    });
+    res.send(response);
+});
+
+// get todo ending soonest
+app.get('/getnexttodo', (req, res) => {
+    // let username = req.query.username;
+    let userid = req.query.id;
+    let response = "";
+    getTodoEvents(userid).then((result) => {
+        response = result[0].name;
+    });
+    res.send(response);
+});
+
+app.post('/addtodo', (req, res) => {
+    let userid = req.query.id;
+    let response;
+    let event = {
+        userid: userid,
+        name: req.query.name,
+        location: req.query.location,
+        start: req.query.start,
+        end: req.query.end,
+        notes: req.query.notes,
+        block: false
+    };
+    addTodoEvent(event);
+});
+
+function addTodoEvent(event){
+    var query = 'INSERT INTO ToDoEvents(User_ID, Event_name, location, Start_time, End_time, User_block, notes) VALUES(' + event.userid + ",\'" + event.name + "\',\'" + event.location + "\',\'" + event.start + "\',\'" + event.end + "\'," + event.block + ",\'"  + event.notes + "\')";
+    con.query(query, function (err, result){
+        if (err) throw err;
+        console.log('added todo event');
+    });
+}
+
+// get info for a todo with given event id
+app.get('/showtodoinfo', (req, res) => {
+    let userid = req.query.id;
+    let eventid = req.query.eventid;
+    let response = "";
+    getTodoEvent(eventid).then((event) => {
+        response += "<p id='todotitle'>To Do Event Details</p>";
+        response += "<p>event name: " + event.eventname + "</p>";
+        response += "<p>location: " + event.location + "</p>";
+        response += "<p>start: " + event.start + "</p>";
+        response += "<p>end: " + event.end + "</p>";
+        response += "<p>notes: " + event.notes + "</p>";
+        response += "<button id='closebutton' onclick='exittodoinfo();'>close</button>";
+    });
+    res.send(response);
+});
+
+function getTodoEvent(id){
+    return new Promise( (resolve, reject) => {
+        var query = 'SELECT * FROM ToDoEvents WHERE Event_ID=' + id;
+        con.query(query, function (err, result) {
+            if (err) throw err;
+            var event = {
+                eventname: result[0].Event_name,
+                location: result[0].location,
+                start: result[0].Start_time,
+                end: result[0].End_time,
+                notes: result[0].notes,
+            };
+            resolve(event);
+        });
+    });
+}
+
+function getTodoEvents(id){
+    return new Promise( (resolve, reject) => {
+        var query = 'SELECT * FROM ToDoEvents WHERE User_ID=' + id + ' ORDER BY End_time ASC';
+        con.query(query, function (err, result) {
+            if (err)  throw err;
+            var array = [];
+            if (result.length < 1){
+                reject('no to-do events');
+            }
+            for (var i = 0; i < result.length; i++){
+                array.push({
+                    user: id,
+                    name: result[i].Event_name,
+                    loc: result[i].location,
+                    start: result[i].Start_time,
+                    end: result[i].End_time
+                });
+            }
+            resolve(array);
+        });
+    });
+}
 
 app.listen(port, () => console.log(`NODE TEST SERVER HOSTED ON PORT ${port}!`));
 

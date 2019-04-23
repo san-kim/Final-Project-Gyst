@@ -17,13 +17,15 @@ const INSTAGRAM = 5;
 const NETFLIX = 6;
 const TWITCH = 7;
 
+console.log('hello world');
+
 
 ipcMain.on('gethistory', (event, arg) => {
     event.returnValue = getHistory(arg);
 });
 
-ipcMain.on('test', (event, arg) => {
-   current_user = arg; 
+ipcMain.on('user', (event, arg) => {
+    current_user = arg;
 });
 
 ipcMain.on('getuser', (event, arg) =>{

@@ -37,6 +37,7 @@
 						else{
 							var user = JSON.parse(xhttp.responseText);
 							ipcRenderer.sendSync('user', user);
+							console.log('current user');
 							console.log(user);
 						}
 					}
@@ -97,7 +98,7 @@
 			<div id="login_p_div">
 				<p id="loginp">Login</p>
 			</div>
-			<form action="calendar.html" onsubmit="return checkUsernamePassword();" id="submitform">
+			<form onsubmit="return checkUsernamePassword();" id="submitform">
 				<p id="usernametext">Username</p>
 				<input type="text" name="username" id="username" class="inputbar" value="">
 				<p id="passwordtext">Password</p>
