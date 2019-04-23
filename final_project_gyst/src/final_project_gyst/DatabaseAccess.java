@@ -22,7 +22,7 @@ public class DatabaseAccess
 	{
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Gyst?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&user=root&password=password123");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Gyst?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&user=root&password=sankim333");
 		}
 		catch(SQLException sqle)
 		{
@@ -316,12 +316,12 @@ public class DatabaseAccess
 	}
 	
 	//keep it this syntax because we will likely need to update the database without rewriting every time
-	public void addEvent(String username, String eventname, String location, String start, String end, String notes)
+	public void addEvent(String username, String eventname, String location, String start, String end, String notes, String host)
 	{
 		try {
 			//after ? comes the value user input 
 			//where not exists, only insert row
-			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes) VALUES("+ generateEvent_ID() +","+getIDFromUsername(username)+",?,?,?,?,?)");
+			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+ generateEvent_ID() +","+getIDFromUsername(username)+",?,?,?,?,?,"+getIDFromUsername(host)+")");
 			//replace first question mark with the firstName variable. question mark means a variable will go there
 		
 			/*
@@ -397,7 +397,7 @@ public class DatabaseAccess
 				//delete all old instances of this
 				removeEvent(after);
 				//to update, add updated information
-				addEvent(username, after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes());
+				addEvent(username, after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes(), username);
 			}
 		}
 			
@@ -433,6 +433,43 @@ public class DatabaseAccess
 		catch(SQLException sqle)
 		{
 			System.out.println("sqle: " + sqle.getMessage());
+		}
+		return result;
+	}
+	
+	public EventInfo getEventWithIDUsername(int id, String username)
+	{
+		if(userExists(username) == false)
+			return null;
+		
+		EventInfo result = new EventInfo(0,"","","","","");
+		boolean initialized = false;
+		try {
+			ps = conn.prepareStatement("SELECT * FROM User_Events WHERE Event_ID="+id+" AND User_ID="+getIDFromUsername(username));
+			rs = ps.executeQuery();			
+			
+			while(rs.next())
+			{
+				int user_ID = rs.getInt("User_ID");
+				String eventname = rs.getString("Event_name");
+				String location = rs.getString("location");
+				String start = rs.getString("Start_time");
+				String end = rs.getString("End_time");
+				String notes = rs.getString("notes");
+				EventInfo newEventInfo = new EventInfo(user_ID, eventname, location, start, end, notes);
+				result = newEventInfo;
+				initialized = true;
+			}
+		}
+		
+		catch(SQLException sqle)
+		{
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+		
+		if(initialized == false)
+		{
+			return null;
 		}
 		return result;
 	}
