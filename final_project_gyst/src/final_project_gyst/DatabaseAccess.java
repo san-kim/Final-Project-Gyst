@@ -32,6 +32,11 @@ public class DatabaseAccess
 		{
 			System.out.println("cnfe: " + cnfe.getMessage());
 		}
+		
+		if(!userExists("guest"))
+		{
+			createAccount("guest", "impossiblestring123456789765432345654345434543");
+		}
 	}
 	
 	//validate
@@ -536,6 +541,26 @@ public class DatabaseAccess
 			//after ? comes the value user input 
 			//where not exists, only insert row
 			ps = conn.prepareStatement("DELETE FROM ToDoEvents WHERE ToDoEvent_ID="+EventID);
+			ps.executeUpdate();
+		}
+		
+		catch(SQLException sqle)
+		{
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+	} 
+	
+	//removes all events with this event ID
+	public void removeForGuestLogout()
+	{
+		int userID = getIDFromUsername("guest");
+		try {
+			//after ? comes the value user input 
+			//where not exists, only insert row
+			ps = conn.prepareStatement("DELETE FROM ToDoEvents WHERE User_ID="+userID);
+			ps.executeUpdate();
+			
+			ps = conn.prepareStatement("DELETE FROM User_Events WHERE User_ID="+userID);
 			ps.executeUpdate();
 		}
 		
