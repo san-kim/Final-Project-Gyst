@@ -121,6 +121,19 @@ public class account_servlet extends HttpServlet
 			}
 			System.out.println(session.getAttribute("currentuser"));
 		}
+		
+		String getcurrentID = request.getParameter("getcurrentID");
+		if(getcurrentID != null)
+		{
+			if(getcurrentID.trim().equals("true"))
+			{
+				DatabaseAccess am = new DatabaseAccess();
+				int userID = am.getIDFromUsername((String)session.getAttribute("currentuser"));
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				out.println(userID);
+			}
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
