@@ -32,7 +32,8 @@ app.get('/getevents', (req, res) => {
                 title: result[i].Event_name,
                 start: result[i].Start_time,
                 end: result[i].End_time,
-                id: result[i].Event_ID
+                id: result[i].Event_ID,
+                url: "javascript: displayEventDetails("+result[i].Event_ID+")"
             };
             array.push(topush);
             // console.log(array[i]);
@@ -47,9 +48,9 @@ app.get('/addevent', (req, res) => {
     var start = req.query.start;
     var end = req.query.end;
     var notes = req.query.notes;
-    var id = 3003932;
+    var id = req.query.id;
     var eventid = generateID();
-    var query = 'INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES('+eventid+','+id+',\''+name+'\',\''+loc+'\',\''+start+'\',\''+end+'\',\''+notes+'\',0)';
+    var query = "INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+eventid+","+id+","+name+","+loc+","+start+","+end+","+notes+","+0+")";
     var values = [];
     values.push([
         eventid,
@@ -109,6 +110,7 @@ function createAccount(username, password){
      });
 }
 
+/*
 app.get('/account_servlet', (req, res) => {
     var registering = req.param.registering;
     if (registering != null){
@@ -129,7 +131,7 @@ app.get('/account_servlet', (req, res) => {
         }
     }
 });
+*/
 
 
 app.listen(port, () => console.log(`NODE TEST SERVER HOSTED ON PORT ${port}!`));
-
