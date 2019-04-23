@@ -1,6 +1,7 @@
 package final_project_gyst;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -33,12 +34,78 @@ public class todoevents_servlet extends HttpServlet
 				
 				//successfully got the ArrayList of todoevents onload of the calendar page
 				//STYLE THIS AND ADD IT
-				if(currentuser.length() != 0 && !currentuser.equals("guest"))
+				ArrayList<ToDoEventInfo>todoevents = am.getToDoEvents(currentuser);
+				String responsetext = "";
+
+				if(todoevents != null)
 				{
-					ArrayList<ToDoEventInfo>todoevents = am.getToDoEvents(currentuser);
+					for(int i = 0; i<todoevents.size(); i++)
+					{
+						responsetext += "<a onclick='showtodoinfo("+i+");'>"+ todoevents.get(i).eventname +"</a><br>";
+					}
 				}
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				out.println(responsetext);
 			}
 		}
+		
+		String getnexttodo = request.getParameter("getnexttodo");
+		if(getnexttodo != null)
+		{
+			if(getnexttodo.trim().equals("true"))
+			{
+				DatabaseAccess am = new DatabaseAccess();
+				
+				//successfully got the ArrayList of todoevents onload of the calendar page
+				//STYLE THIS AND ADD IT
+				ArrayList<ToDoEventInfo>todoevents = am.getToDoEvents(currentuser);
+				String responsetext = "";
+
+				if(todoevents != null)
+				{
+					if(todoevents.size() > 0)
+						responsetext = todoevents.get(0).eventname;
+				}
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				out.println(responsetext);
+			}
+		}
+		
+		String showtodoinfo = request.getParameter("showtodoinfo");
+		if(showtodoinfo != null)
+		{
+			if(showtodoinfo.trim().equals("true"))
+			{
+				int index = Integer.parseInt((String)request.getParameter("index"));
+				DatabaseAccess am = new DatabaseAccess();
+				
+				//successfully got the ArrayList of todoevents onload of the calendar page
+				//STYLE THIS AND ADD IT
+				ArrayList<ToDoEventInfo>todoevents = am.getToDoEvents(currentuser);
+				String responsetext = "";
+
+				if(todoevents != null)
+				{
+					if(todoevents.size() > index)
+					{
+						responsetext += "<p id='todotitle'>To Do Event Details</p>";
+				        responsetext += "<p>event name: "+todoevents.get(index).eventname+"</p>";
+				        responsetext += "<p>location: "+todoevents.get(index).location+"</p>";
+				        responsetext += "<p>start: "+todoevents.get(index).start+"</p>";
+				        responsetext += "<p>end: "+todoevents.get(index).end+"</p>";
+				        responsetext += "<p>notes: "+todoevents.get(index).notes+"</p>";
+				        responsetext += "<button id='closebutton' onclick='exittodoinfo();'>close</button>";
+					}
+				}
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				out.println(responsetext);
+			}
+		}
+		
+		
 		
 		String addtodo = request.getParameter("addtodo");
 		if(addtodo != null)
@@ -56,6 +123,8 @@ public class todoevents_servlet extends HttpServlet
 				//SUCCESSFULLY ADDS TO DATABASE
 			}
 		}
+		
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
