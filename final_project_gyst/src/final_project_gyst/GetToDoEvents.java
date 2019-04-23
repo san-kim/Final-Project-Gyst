@@ -2,6 +2,7 @@ package final_project_gyst;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.servlet.ServletException;
@@ -28,7 +29,7 @@ public class GetToDoEvents extends HttpServlet {
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		
-		HashSet<ToDoEventInfo> eventsToSend = d.getToDoEvents(username);
+		ArrayList<ToDoEventInfo> eventsToSend = d.getToDoEvents(username);
 		String eventJSON = new Gson().toJson(eventsToSend);
 		response.setStatus(HttpServletResponse.SC_OK);
 		out.write(eventJSON);

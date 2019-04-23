@@ -9,6 +9,7 @@ const con = mysql.createConnection({
     database: "Gyst",
     insecureAuth: true
 });
+var current_user;
 
 
 function initializeMySQL(){
@@ -34,7 +35,7 @@ app.get('/getevents', (req, res) => {
                 id: result[i].Event_ID
             };
             array.push(topush);
-            console.log(array[i]);
+            // console.log(array[i]);
         }
         res.json(array);
     });    
@@ -48,7 +49,7 @@ app.get('/addevent', (req, res) => {
     var notes = req.query.notes;
     var id = 3003932;
     var eventid = generateID();
-    var query = 'INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes) VALUES ?';
+    var query = 'INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES('+eventid+','+id+',\''+name+'\',\''+loc+'\',\''+start+'\',\''+end+'\',\''+notes+'\',0)';
     var values = [];
     values.push([
         eventid,
@@ -59,12 +60,14 @@ app.get('/addevent', (req, res) => {
         end,
         notes
     ]);
-    con.query(query, values, function(err, result) {
+    con.escape(query);
+    con.query(query, function(err, result) {
         if (err) throw err;
         console.log('added event with id ' + eventid);
     });
     res.location('calendar.html');
 });
+
 
 
 function generateID(){
@@ -76,7 +79,7 @@ function generateID(){
 }
 
 function idExists(id){
-    var query = 'SELECT * FROM User_Events where Event_ID=' + id;
+    var query = 'SELECT * FROM User_Events WHERE Event_ID=' + id;
     con.query(query, function (err, result) {
         if (err) throw err;
         if (result.length > 0){
@@ -85,6 +88,47 @@ function idExists(id){
     });
     return false;
 }
+
+function usernameExists(username){
+    var query = 'SELECT * FROM UserInfo WHERE Username=' + username;
+    con.query(query, function (err, result) {
+        if (err) throw err;
+        if (result.length > 0) {
+            return true;
+        }
+    });
+    return false;
+}
+
+function createAccount(username, password){
+    var id = generateID();
+    var query = 'INSERT INTO UserInfo(User_ID, Username, User_Password) VALUES(' + id + ',\'' + username + '\',\'' + password + '\')';
+     con.query(query, function (err, result) {
+         if (err) throw err;
+         console.log('added user with id ' + id);
+     });
+}
+
+app.get('/account_servlet', (req, res) => {
+    var registering = req.param.registering;
+    if (registering != null){
+        var response = "";
+        if (registering.equals('true')){
+            var username = req.param.username;
+            var password = req.param.password;
+            var confirimpassword = request.param.confirmpassword;
+            if (usernameExists(username)){
+                response  += "This username is already taken. ";
+            }
+            else if (!password.equals(confirmpassword)){
+                response += "The passwords do not match.";
+            }
+            else{
+                response += 
+            }
+        }
+    }
+});
 
 
 app.listen(port, () => console.log(`NODE TEST SERVER HOSTED ON PORT ${port}!`));
