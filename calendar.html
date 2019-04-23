@@ -584,6 +584,21 @@
             
             document.getElementById("todolist").innerHTML = xhttp.responseText;
             getNextEvent();
+            guestrestrictionsharingevents();
+        }
+        
+        function guestrestrictionsharingevents()
+        {
+            var xhttpd = new XMLHttpRequest();
+            xhttpd.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?getcurrentusername=true", false);
+            xhttpd.send();            
+            var currentUsername = xhttpd.responseText;
+
+            if(currentUsername.trim() == 'guest')
+            {
+                document.getElementById("shareeventp").style.display = "none";
+                document.getElementById("eventsharedwith").style.display = "none";
+            }
         }
         
         function getNextEvent()
@@ -802,7 +817,7 @@
         <input type="datetime-local" name="end" id="eventend">
         <p>Notes</p>
 		<input type="text" name="notes" id="eventnotes">
-        <p>Share event with:</p>
+        <p id="shareeventp">Share event with:</p>
         <input type="text" name="sharedwith" id="eventsharedwith">
         <input type="submit" id="eventsubmitbutton" name="submit" value="add event">
     </form> 
