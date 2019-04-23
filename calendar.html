@@ -296,6 +296,7 @@
         #eventsubmitbutton
 		{
 			width: 200px;
+            font-size: 20px !important;
 			height:5vh;
 			margin-left: calc(50%-100px);
 			margin-top: 2vh;
@@ -310,6 +311,7 @@
 		#eventsubmitbutton:active
 		{
 			width: 200px;
+            font-size: 20px !important;
 			height:5vh;
 			margin-left: calc(50% - 100px);
 			margin-top: 2vh;
@@ -333,6 +335,7 @@
 			box-shadow: 2px 3px 5px 0px #ccc;
 			outline:none;
             background-color: #DEF6FA;
+            font-size: 20px !important;
 		}
 		
 		#todoeventsubmitbutton:active
@@ -347,6 +350,7 @@
 			box-shadow: inset 0 0 5px #aaaaaa;
 			outline:none;
             background-color: #DEF6FA;
+            font-size: 20px !important;
 		}
         
         #eventpopupdiv
@@ -364,12 +368,12 @@
             background-color: white;
             z-index: 1000001;
             width: 40vw;
-            height: calc(40vw + 100px);
+            height: 40vw;
             position: absolute;
             display:none;
             border-radius: 10px;
             margin-left: 30vw;
-            margin-top: calc(50vh - 20vw - 50px);
+            margin-top: calc(50vh - 20vw);
         }
         
         #eventform .neweventformp
@@ -488,6 +492,7 @@
             float: right;
             margin-right: 10px;
             font-weight: 200;
+            display:none;
         }
         
         #todolist
@@ -529,7 +534,7 @@
         {
             return new Promise( function (resolve, reject) {
                 var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", "account_servlet?logout=true", false);
+                xhttp.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?logout=true", false);
                 xhttp.send();
                 resolve();
             });
@@ -541,9 +546,128 @@
                 window.location.href = "login.html";
             });
         }
+    </script>
+    <script>
+        function addtodoevent()
+        {
+            var name = document.getElementById("todoeventname").value;
+            var location = document.getElementById("todolocation").value;
+            var start = document.getElementById("todostart").value;
+            var end = document.getElementById("todoend").value;
+            var notes = document.getElementById("todonotesinput").value;
+
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?addtodo=true&name="+name+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes, false);
+            xhttp.send();
+            
+            getEvents();
+        }
+        
+        function getEvents() 
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?gettodo=true", false);
+            xhttp.send();
+            
+            document.getElementById("todolist").innerHTML = xhttp.responseText;
+            getNextEvent();
+        }
+        
+        function getNextEvent()
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?getnexttodo=true", false);
+            xhttp.send();
+            
+            document.getElementById("nexteventname").innerHTML = xhttp.responseText;
+        }
 	</script>
+    <script>
+        function showtodoinfo(eventindex)
+        {   
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?showtodoinfo=true&index="+eventindex, false);
+            xhttp.send();
+            document.getElementById("todoeventinfopopup").innerHTML = xhttp.responseText;
+            
+            document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("todoeventinfopopup").style.display = "block";
+        }
+    </script>
+    <script>
+        function exittodoinfo()
+        {
+			document.getElementById("eventpopupdiv").style.display = "none";
+			document.getElementById("todoeventinfopopup").style.display = "none";
+        }
+    </script>
+    <style>
+        #todoeventinfopopup
+        {
+            position:absolute;
+            z-index: 2000002;
+            background-color: #DEF6FA;
+            width: 40vw;
+            height: 400px;
+            margin-left: 30vw;
+            margin-top: calc(27% - 200px);
+            font-family: 'Avenir Next';
+            font-weight: 200;
+            font-size: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        #todoeventinfopopup p
+        {
+            color: black;
+            text-align: center;
+            font-family: 'Avenir Next';
+            font-weight: 200;
+            font-size: 20px;
+        }
+        
+        #todoeventinfopopup #todotitle
+        {
+            color: black;
+            text-align: center;
+            font-family: 'Avenir Next';
+            font-weight: 300;
+            font-size: 30px;
+            margin-top: 20px;
+        }
+        
+        #closebutton
+		{
+            width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
+		
+		#closebutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
+    </style>
 </head>
-<body>
+<body onload="getEvents();">
 	<div id="tododiv">
 		<p id="todop">To Do</p>
 		<div id="todolistdiv">
@@ -562,7 +686,7 @@
 	<div id="calendar"></div>
 	<div id="nexteventdiv">
         <p id="nexteventleft">next event:</p>
-        <p id="nexteventname">todo 1</p>
+        <p id="nexteventname"></p>
         <p id="remainingtime">5:00 remaining</p>
     </div>
 	<div id="monthdiv">
@@ -570,19 +694,17 @@
 	</div>
     <button id="addeventbutton" onclick="showEventpopup()">Add Calendar Event</button>
 	<!-- darker background -->
-	<div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup();"></div>
+  <div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup(); exittodoinfo();"></div>
 	<form id="eventform" action="http://localhost:3000/addevent" method="GET" onsubmit="exitEventPopup();">
         <p class="neweventformp">New Event</p>
         <p>Event Name</p>
         <input type="text" name="eventname" id="eventname">
         <p>Location</p>
-        <input type="text" name="location" id="location">
-        <p>Date</p>
-        <input type="date" name="date">
+        <input type="text" name="location">
         <p>Start</p>
-        <input type="datetime-local" name="start" id="start">
+        <input type="datetime-local" name="start">
         <p>End</p>
-        <input type="datetime-local" name="end" id="end">
+        <input type="datetime-local" name="end">
         <p>Notes</p>
 		<input type="text" name="notes" id="notes">
         <p>Share event with:</p>
@@ -590,22 +712,29 @@
         <input type="submit" id="eventsubmitbutton" name="submit" value="add event">
     </form> 
     
-    <form id="todoeventform">
+    <form id="todoeventform" onsubmit="return addtodoevent();">
         <p class="neweventformp">New To Do Event</p>
         <p>Event Name</p>
-        <input type="text" name="todoeventname">
+        <input type="text" name="todoeventname" id="todoeventname">
         <p>Location</p>
-        <input type="text" name="location">
-        <p>Date</p>
-        <input type="date" name="date">
+        <input type="text" name="location" id="todolocation">
         <p>Start</p>
-        <input type="time" name="start">
+        <input type="datetime-local" name="start" id="todostart">
         <p>End</p>
-        <input type="time" name="end">
+        <input type="datetime-local" name="end" id="todoend">
         <p>Notes</p>
         <input type="text" id="todonotesinput" name="notes">
         <input type="submit" id="todoeventsubmitbutton" name="submit" value="add to do event">
     </form> 
+    <form id="todoeventinfopopup" onsubmit="return exittodoinfo();">
+        <p id="todotitle">To Do Event Details</p>
+        <p>event name: testttt</p>
+        <p>location: testttt</p>
+        <p>start: testttt</p>
+        <p>end: testttt</p>
+        <p>notes: testttt</p>
+        <input type="submit" value="close" id="closebutton">
+    </form>
 </body>
 </html>
  

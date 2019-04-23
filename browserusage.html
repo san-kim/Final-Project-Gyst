@@ -40,13 +40,522 @@
 
         }
     </script>
+    <style>
+		html body
+		{
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			padding: 0px;
+			font-family: Avenir Next;
+		}
+		
+		#tododiv
+		{
+			position:absolute;
+			width: 14vw;
+			height: 96vh;
+			margin-left: 2vw;
+			margin-top: 2vh;	
+			border-radius: 10px;
+			background-color: #B9DEE4;
+		}
+		
+		#todop
+		{
+			text-align: center;
+			font-weight:300;
+			font-size:27px;
+			height:5vh;
+			margin-top:calc(3.5vh - 18.125px);
+			margin-left: calc(50% - 36.492px);
+			position:absolute;
+		}
+		
+		#todolistdiv
+		{
+			position: absolute;
+			border-radius:10px;
+			background-color:white;
+			width: calc(100% - 34px);
+			height: 60%;
+			margin-top: 7vh;
+			margin-left:17px;
+			margin-right:17px;
+		}
+        
+        #chartdiv
+        {
+            border: 1px solid grey;
+			position:absolute;
+			width: 80vw;
+			height: calc(89vh - 20px);
+			margin-left: 18vw;
+			margin-right: 2vw; 
+			margin-top: 9vh; 
+			
+			border-radius: 10px;
+            padding-top:10px;
+            padding-bottom:10px;
+            overflow:scroll;
+            padding: 10px;
+        }
+        
+		#chartContainer
+		{
+			width: 80%;
+            height: 80%;
+            margin-left: 10%;
+            margin-top: 5%;
+            position: absolute;
+		}
+        
+        #chartblock1
+        {
+            width: 20%;
+            height: 20%;
+            position: absolute;
+            margin-top: 45%;
+            margin-left: 5%;
+            z-index 2000000;
+            background-color: white;
+        }
+		
+        #chartblock2
+        {
+            width: 20%;
+            height: 20%;
+            position: absolute;
+            margin-top: 45%;
+            margin-left: 75%;
+            z-index 2000000;
+            background-color: white;
+        }
+		
+		#nexteventdiv
+		{
+			position:absolute;
+			width: 30vw;
+			height: 5vh;
+			margin-top:2vh;
+			margin-left:18vw;
+			border-radius: 10px;
+			background-color: #ededed;
+		}
+		
+		#monthdiv
+		{
+			position: absolute;
+			width: 80vw;
+			height: 9vh;
+			margin-left: 18vw;
+		}
+		
+		#monthp
+		{
+			text-align: center;
+			font-family:'Avenir Next';
+			font-size: 50px;
+			font-weight:300;
+			margin-top: calc(4.5vh - 34px);
+		}
+		
+		#browsingtimebutton
+		{
+			position: absolute;
+			width: calc(100% - 34px);
+			height:5vh;
+			margin-left: 17px;
+			margin-top: calc(86vh - 34px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			font-size: 20px;
+			font-weight:100;
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+			background-color:#F5FCFD;
+		}
+		
+		#browsingtimebutton:active
+		{
+			position: absolute;
+			width: calc(100% - 34px);
+			height:5vh;
+			margin-left: 17px;
+			margin-top: calc(86vh - 34px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			font-size: 20px;
+			font-weight:100;
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+			background-color:#F5FCFD;
+		}
+		
+		#logoutbutton
+		{
+			position: absolute;
+			width: calc(100% - 34px);
+			height:5vh;
+			margin-left: 17px;
+			margin-top: calc(91vh - 17px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			font-size: 20px;
+			font-weight:100;
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+			background-color:#DEF6FA;
+		}
+		
+		#logoutbutton:active
+		{
+			position: absolute;
+			width: calc(100% - 34px);
+			height:5vh;
+			margin-left: 17px;
+			margin-top: calc(91vh - 17px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			font-size: 20px;
+			font-weight:100;
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+			background-color:#DEF6FA;
+		}
+		
+		#addeventbutton
+		{
+			position: absolute;
+			width: 200px;
+			height:5vh;
+			margin-left: calc(98vw - 200px);
+			margin-top: 2vh;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			font-size: 20px;
+			font-weight:100;
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+		}
+		
+		#addeventbutton:active
+		{
+			position: absolute;
+			width: 200px;
+			height:5vh;
+			margin-left: calc(98vw - 200px);
+			margin-top: 2vh;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			font-size: 20px;
+			font-weight:100;
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+		}
+        
+        #eventsubmitbutton
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50%-100px);
+			margin-top: 2vh;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #DEF6FA;
+		}
+		
+		#eventsubmitbutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			margin-top: 2vh;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #DEF6FA;
+		}
+        
+        #todoeventsubmitbutton
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50%-100px);
+			margin-top: 100px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #DEF6FA;
+		}
+		
+		#todoeventsubmitbutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			margin-top: 100px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #DEF6FA;
+		}
+        
+        #eventpopupdiv
+		{
+			position:absolute;
+			background-color: rgba(0,0,0,0.4);
+			width:100vw;
+			height:100vh;
+			display:none;
+            z-index: 1000000;
+		}
+		
+        #eventform
+        {
+            background-color: white;
+            z-index: 1000001;
+            width: 40vw;
+            height: calc(40vw + 100px);
+            position: absolute;
+            display:none;
+            border-radius: 10px;
+            margin-left: 30vw;
+            margin-top: calc(50vh - 20vw - 50px);
+        }
+        
+        #eventform .neweventformp
+        {
+            text-align:center;
+            font-size: 40px;
+            font-weight:300;
+            margin-bottom: -10px;
+            margin-left: 0px;
+        }
+        
+        #eventform p
+        {
+            font-size: 20px;
+            font-weight:200;
+            margin-bottom: 5px;
+            text-align:center;
+            margin-top: 20px;
+        }
+        #eventform input
+        {
+            font-size: 14px;
+            font-weight:200;
+            margin-bottom: 5px;
+            width: 200px;
+            margin-left: calc(50% - 100px);
+        }
+        
+        #eventsubmitbutton
+        {
+            margin-left: calc(50% - 100px) !important;
+            width:200px !important;
+            margin-top: 30px !important;
+        }
+        
+        
+        #todoeventform
+        {
+            background-color: white;
+            z-index: 1000001;
+            width: 40vw;
+            height:40vw;
+            position: absolute;
+            display:none;
+            border-radius: 10px;
+            margin-left: 30vw;
+            margin-top: calc(50vh - 20vw);
+        }
+        
+        #todoeventform .neweventformp
+        {
+            text-align:center;
+            font-size: 40px;
+            font-weight:300;
+            margin-bottom: -10px;
+            margin-left: 0px;
+        }
+        
+        #todoeventform p
+        {
+            font-size: 20px;
+            font-weight:200;
+            margin-bottom: 5px;
+            text-align:center;
+            margin-top: 20px;
+        }
+        #todoeventform input
+        {
+            font-size: 14px;
+            font-weight:200;
+            margin-bottom: 5px;
+            width: 200px;
+            margin-left: calc(50% - 100px);
+        }
+        
+        #todoeventsubmitbutton
+        {
+            margin-left: calc(50% - 100px) !important;
+            width:200px !important;
+            margin-top: 30px !important;
+        }
+        
+        #todonotesinput
+        {
+            margin-bottom: 1000px;
+        }
+        
+        #todolistdiv a
+        {
+            text-decoration: none;
+            margin-left: 20px;
+            color:black;
+        }
+        
+        #nexteventdiv p
+        {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+        
+        #nexteventleft
+        {
+            float: left;
+            margin-left: 10px
+        }
+        
+        #nexteventname
+        {
+            position: absolute;
+            margin-left: 120px;
+            font-weight: 200;
+        }
+        
+        #remainingtime
+        {
+            float: right;
+            margin-right: 10px;
+            font-weight: 200;
+        }
+        
+        #todolist
+        {
+            width:100%;
+            height: 80%;
+            position:absolute;
+            margin-top: 0px;
+            overflow: scroll;
+        }
+        
+    </style>
+    <script>
+		function showEventpopup()
+		{
+			document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("eventform").style.display = "block";			
+		}
+		
+		function exitEventpopup()
+		{
+			document.getElementById("eventpopupdiv").style.display = "none";
+            document.getElementById("eventform").style.display = "none";			
+		}
+        
+        function showTodoeventpopup()
+        {
+            document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("todoeventform").style.display = "block";	
+        }
+        
+        function exitTodoeventpopup()
+		{
+			document.getElementById("eventpopupdiv").style.display = "none";
+            document.getElementById("todoeventform").style.display = "none";			
+		}
+	</script>
+    <script>
+        function logout2()
+        {
+            return new Promise( function (resolve, reject) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("POST", "http://localhost:8080/final_project_gyst/account_servlet?logout=true", false);
+                xhttp.send();
+                resolve();
+            });
+
+        }
+
+        function doLogout2() {
+            logout2().then(function(){
+                window.location.href = "login.html";
+            });
+        }
+    </script>
 </head>
 
 <body>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-    <script>
-       
-    </script>
+    <div id="tododiv">
+		<p id="todop">To Do</p>
+		<div id="todolistdiv">
+			<!-- POPULATE TABLE HERE -->
+            <br>
+            <div id="todolist">
+                <a href="" action="">todo 1</a><br>
+                <a href="" action="">todo 2</a><br>
+                <a href="" action="">todo 3</a><br>
+            </div>
+		</div>
+		<button id="browsingtimebutton" onclick="location.href='calendar.html';">calendar</button>
+		<button id="logoutbutton" onclick="doLogout2();">log out</button>
+	</div>
+    
+    <div id="chartdiv">
+        <div id="chartContainer"></div>
+        <div id="chartblock1"></div>
+        <div id="chartblock2"></div>
+    </div>
+
+	<div id="monthdiv">
+		<p id="monthp">Browsing Time</p>
+	</div>
+	<!-- darker background -->
+	<div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup();"></div>
+    
+    <form id="todoeventform">
+        <p class="neweventformp">New To Do Event</p>
+        <p>Event Name</p>
+        <input type="text" name="todoeventname">
+        <p>Location</p>
+        <input type="text" name="location">
+        <p>Date</p>
+        <input type="date" name="date">
+        <p>Start</p>
+        <input type="time" name="start">
+        <p>End</p>
+        <input type="time" name="end">
+        <p>Notes</p>
+        <input type="text" id="todonotesinput" name="notes">
+        <input type="submit" id="todoeventsubmitbutton" name="submit" value="add to do event">
+    </form> 
 </body>
 
 </html>
