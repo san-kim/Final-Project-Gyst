@@ -123,8 +123,6 @@ public class todoevents_servlet extends HttpServlet
 				//SUCCESSFULLY ADDS TO DATABASE
 			}
 		}
-		
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
