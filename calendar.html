@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Calendar</title>
-	<script>
+	<script>        
 		function getEvents(){
 			var xhttp = new XMLHttpRequest();
 			xhttp.open('GET', "localhost:3000/getevents", false);
@@ -12,20 +12,23 @@
 			return xhttp.responseText;
 		}
 		function sendEvent(){
-			var xhttp = new XMLHttpRequest();
-			xhttp.open('POST', 'localhost:3000/addevent', true);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			var eventname = "eventname=" + document.getElementById('eventname').value;
-			var location = "&location=" + document.getElementById('location').value;
-			var start = "&start=" + document.getElementById('start').value;
-			var end = "&end=" + document.getElementById('end').value;
-			var notes = "&notes=" + document.getElementById('notes').value;
-			var requestString = eventname + location + start + end + notes;
-			xhttp.send(requestString);
+            
+            var xhttpb = new XMLHttpRequest();
+            xhttpb.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?getcurrentID=true", false);
+            xhttpb.send();            
+            var currentUserID = xhttpb.responseText;
 
-			xhttp.onreadystatechange = function(){
-				console.log('xhttp request changing');
-			}
+            var eventname = document.getElementById("eventname").value;
+			var location = document.getElementById("eventlocation").value;
+			var start = document.getElementById("eventstart").value;
+			var end = document.getElementById("eventend").value;
+			var notes = document.getElementById("eventnotes").value;
+            var sharedwith = document.getElementById("eventsharedwith").value; 
+            var id = currentUserID;
+                
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/events_servlet?addingevent=true&eventname="+eventname+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes+"&id="+id+"&sharedwith="+sharedwith, false);
+            xhttp.send();
 		}
 	</script>
 	<link href='./assets/css/sb-admin-2.css' rel='stylesheet'>
@@ -42,10 +45,17 @@
 		var event_source;
 		document.addEventListener('DOMContentLoaded', function () {
 			var calendarEl = document.getElementById('calendar');
+            
+            
+            var xhttpa = new XMLHttpRequest();
+            xhttpa.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?getcurrentID=true", false);
+            xhttpa.send();            
+            var currentUserID = xhttpa.responseText;            
+            
 			var xhttp = new XMLHttpRequest();
 
 			// asynchronous request
-			xhttp.open('GET', "http://localhost:3000/getevents?id=3003932", true);
+			xhttp.open('GET', "http://localhost:3000/getevents?id="+currentUserID, true);
 			xhttp.send();
 
 			xhttp.onreadystatechange = function () {
@@ -530,6 +540,8 @@
             document.getElementById("todoeventform").style.display = "none";			
 		}
         
+        
+        
         function logout()
         {
             return new Promise( function (resolve, reject) {
@@ -594,12 +606,32 @@
             document.getElementById("eventpopupdiv").style.display = "block";
 			document.getElementById("todoeventinfopopup").style.display = "block";
         }
+        
+        function displayEventDetails(eventID)
+        {
+            alert(eventID);
+            
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/events_servlet?showeventinfo=true&id="+eventID, false);
+            alert("check1");
+            xhttp.send();
+            document.getElementById("eventinfopopup").innerHTML = xhttp.responseText;
+
+            document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("eventinfopopup").style.display = "block";
+        }
+        
     </script>
     <script>
         function exittodoinfo()
         {
 			document.getElementById("eventpopupdiv").style.display = "none";
 			document.getElementById("todoeventinfopopup").style.display = "none";
+        }
+        
+        function exiteventinfo()
+        {
+			document.getElementById("eventpopupdiv").style.display = "none";
+			document.getElementById("eventinfopopup").style.display = "none";
         }
     </script>
     <style>
@@ -665,6 +697,69 @@
             background-color: white;
             font-size: 20px !important;
 		}
+        
+        #eventinfopopup
+        {
+            position:absolute;
+            z-index: 2000002;
+            background-color: #DEF6FA;
+            width: 40vw;
+            height: 400px;
+            margin-left: 30vw;
+            margin-top: calc(27% - 200px);
+            font-family: 'Avenir Next';
+            font-weight: 200;
+            font-size: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        #eventinfopopup p
+        {
+            color: black;
+            text-align: center;
+            font-family: 'Avenir Next';
+            font-weight: 200;
+            font-size: 20px;
+        }
+        
+        #eventinfopopup #eventtitle
+        {
+            color: black;
+            text-align: center;
+            font-family: 'Avenir Next';
+            font-weight: 300;
+            font-size: 30px;
+            margin-top: 20px;
+        }
+        
+        #closebutton1
+		{
+            width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
+		
+		#closebutton1:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
     </style>
 </head>
 <body onload="getEvents();">
@@ -674,9 +769,11 @@
 			<!-- POPULATE TABLE HERE -->
             <br>
             <div id="todolist">
+                <!--
                 <a href="" action="">todo 1</a><br>
                 <a href="" action="">todo 2</a><br>
                 <a href="" action="">todo 3</a><br>
+                -->
             </div>
 			<button id="addtodobutton" onclick="showTodoeventpopup();">+</button>
 		</div>
@@ -695,20 +792,20 @@
     <button id="addeventbutton" onclick="showEventpopup()">Add Calendar Event</button>
 	<!-- darker background -->
   <div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup(); exittodoinfo();"></div>
-	<form id="eventform" action="http://localhost:3000/addevent" method="GET" onsubmit="exitEventPopup();">
+	<form id="eventform" action="" method="GET" onsubmit="sendEvent(); exitEventPopup();">
         <p class="neweventformp">New Event</p>
         <p>Event Name</p>
         <input type="text" name="eventname" id="eventname">
         <p>Location</p>
-        <input type="text" name="location">
+        <input type="text" name="location" id="eventlocation">
         <p>Start</p>
-        <input type="datetime-local" name="start">
+        <input type="datetime-local" name="start" id="eventstart">
         <p>End</p>
-        <input type="datetime-local" name="end">
+        <input type="datetime-local" name="end" id="eventend">
         <p>Notes</p>
-		<input type="text" name="notes" id="notes">
+		<input type="text" name="notes" id="eventnotes">
         <p>Share event with:</p>
-        <input type="text" name="sharedwith">
+        <input type="text" name="sharedwith" id="eventsharedwith">
         <input type="submit" id="eventsubmitbutton" name="submit" value="add event">
     </form> 
     
@@ -727,6 +824,7 @@
         <input type="submit" id="todoeventsubmitbutton" name="submit" value="add to do event">
     </form> 
     <form id="todoeventinfopopup" onsubmit="return exittodoinfo();">
+        <!--
         <p id="todotitle">To Do Event Details</p>
         <p>event name: testttt</p>
         <p>location: testttt</p>
@@ -734,6 +832,18 @@
         <p>end: testttt</p>
         <p>notes: testttt</p>
         <input type="submit" value="close" id="closebutton">
+        -->
+    </form>
+    <form id="eventinfopopup" onsubmit="return exiteventinfo();">
+        <!--
+        <p id="todotitle">To Do Event Details</p>
+        <p>event name: testttt</p>
+        <p>location: testttt</p>
+        <p>start: testttt</p>
+        <p>end: testttt</p>
+        <p>notes: testttt</p>
+        <input type="submit" value="close" id="closebutton1">
+        -->
     </form>
 </body>
 </html>
