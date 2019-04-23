@@ -107,6 +107,28 @@ function createAccount(username, password){
          if (err) throw err;
          console.log('added user with id ' + id);
      });
+     return id;
+}
+
+function validatePassword(username, password){
+    var query = 'SELECT * FROM UserInfo WHERE Username=' + username + ' AND User_Password=' + password;
+    con.query(query, function (err, result) {
+        if (err) throw err;
+        if (result.length > 0) {
+            return true;
+        }
+    });
+    return false;
+}
+
+function getIdFromName(username){
+    var query = 'SELECT * FROM UserInfo WHERE Username=' + username;
+    con.query(query, function (err, result) {
+        if (err) throw err;
+        if (result.length > 0) {
+            return result[0].Username;
+        }
+    });
 }
 
 app.get('/account_servlet', (req, res) => {
@@ -114,9 +136,9 @@ app.get('/account_servlet', (req, res) => {
     if (registering != null){
         var response = "";
         if (registering.equals('true')){
-            var username = req.param.username;
-            var password = req.param.password;
-            var confirimpassword = request.param.confirmpassword;
+            let username = req.param.username;
+            let password = req.param.password;
+            let confirmpassword = request.param.confirmpassword;
             if (usernameExists(username)){
                 response  += "This username is already taken. ";
             }
@@ -124,8 +146,40 @@ app.get('/account_servlet', (req, res) => {
                 response += "The passwords do not match.";
             }
             else{
-                response += 
+                var id = createAccount(username, password);
+                response = {username: username,
+                            id: id};
             }
+            res.send(response);
+        }
+    }
+    var login = req.param.login;
+    if (login != null){
+        let response;
+        if (login.equals('true')){
+            let username = req.param.username;
+            let password = req.param.password;
+
+            if (!usernameExists(username)){
+                repsonse = "This user does not exist.";
+            }
+            else if (!validatePassword(username, password)){
+                response = "Incorrect password.";
+            }
+            else{
+                response = {username: username,
+                            id: getIdFromName(username)};
+            }
+            res.send(response);
+        }
+    }
+
+    var guestlogin = req.param.guestlogin;
+    if (guestlogin != null){
+        let response;
+        if (guestlogin.trim().equals('true')){
+            response = {username: 'guest',
+                        id: null};
         }
     }
 });
