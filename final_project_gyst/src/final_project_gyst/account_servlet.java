@@ -114,6 +114,9 @@ public class account_servlet extends HttpServlet
 			if(logout.trim().equals("true"))
 			{
 				//let session know currentuser is a guest, do not create an account
+				DatabaseAccess da = new DatabaseAccess();
+				//delete all of the guest's stuff
+				da.removeForGuestLogout();
 				session.setAttribute("currentuser", "");
 			}
 			System.out.println(session.getAttribute("currentuser"));
