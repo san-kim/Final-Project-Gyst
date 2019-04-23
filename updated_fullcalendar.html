@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+
+    <link href='./assets/css/sb-admin-2.css' rel='stylesheet'>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet' />
+
+    <link href='./assets/js/fullcalendar/core/main.css' rel='stylesheet' />
+    <link href='./assets/js/fullcalendar/daygrid/main.css' rel='stylesheet' />
+    <link href='./assets/js/fullcalendar/timegrid/main.css' rel='stylesheet' />
+
+    <script src='./assets/js/fullcalendar/core/main.js'></script>
+    <script src='./assets/js/fullcalendar/daygrid/main.js'></script>
+    <script src='./assets/js/fullcalendar/timegrid/main.js'></script>
+    
+
+
+    <script>
+        var event_source;
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var xhttp = new XMLHttpRequest();
+
+            // asynchronous request
+            xhttp.open('GET', "http://localhost:3000/getevents?id=3003932", true);
+            xhttp.send();
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200){
+                    console.log(xhttp.response);
+                    var event_objects = JSON.parse(xhttp.response);
+                    console.log("eventobjects");
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        header: {
+                        left: 'title',
+                        center: 'agendaDay,agendaWeek,month',
+                        right: 'prev,next today'
+                        },
+                        plugins: ['dayGrid', 'timeGrid', 'bootstrap'],
+                        defaultView: 'timeGridWeek', // timeGridDay --> also option
+                        events: event_objects,
+                        themeSystem: 'bootstrap'
+                    });
+
+                    calendar.render();
+                }
+            };
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <div id='calendar'></div>
+
+</body>
+
+</html>
