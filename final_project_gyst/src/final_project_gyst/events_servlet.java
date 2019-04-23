@@ -62,15 +62,13 @@ public class events_servlet extends HttpServlet {
 			}
 		}
 		
-		System.out.println("check0");
 
 		String showeventinfo = request.getParameter("showeventinfo");
 		if(showeventinfo != null)
 		{
-			System.out.println("check1");
 			if(showeventinfo.trim().equals("true"))
-			{
-				int id = Integer.parseInt((String)request.getParameter("id"));
+			{				
+				int id = Integer.parseInt(request.getParameter("eventidinput").trim());
 				DatabaseAccess am = new DatabaseAccess();
 				
 				//successfully got the ArrayList of todoevents onload of the calendar page
@@ -80,7 +78,6 @@ public class events_servlet extends HttpServlet {
 
 				if(info != null)
 				{
-
 					responsetext += "<p id='eventtitle'>Event Details</p>";
 			        responsetext += "<p>event name: "+info.eventname+"</p>";
 			        responsetext += "<p>location: "+info.location+"</p>";
@@ -88,11 +85,11 @@ public class events_servlet extends HttpServlet {
 			        responsetext += "<p>end: "+info.end+"</p>";
 			        responsetext += "<p>notes: "+info.notes+"</p>";
 			        responsetext += "<button id='closebutton1' onclick='exiteventinfo();'>close</button>";
+			        
 				}
 				response.setContentType("text/html");
 				PrintWriter out = response.getWriter();
 				out.println(responsetext);
-				System.out.println(responsetext);
 			}
 		}
 	}
