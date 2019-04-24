@@ -39,7 +39,9 @@ public class events_servlet extends HttpServlet {
 				String notes = request.getParameter("notes");
 				int id = Integer.parseInt(request.getParameter("id"));
 				
-				am.addEvent(am.getUsernameFromID(id), eventname, location, start, end, notes, am.getUsernameFromID(id));
+				int eventID = am.generateEvent_ID();
+				
+				am.addEvent(eventID, am.getUsernameFromID(id), eventname, location, start, end, notes, am.getUsernameFromID(id));
 				
 				String sharedwith = request.getParameter("sharedwith");
 				if(sharedwith != null)
@@ -48,13 +50,30 @@ public class events_servlet extends HttpServlet {
 					if(sharedwith.length() > 0)
 					{
 						String [] users = getUsersFromLine(sharedwith);
+						int validsharedusers = 0;
 						for(int i = 0; i<users.length; i++)
 						{
 							//check if username exists
 							if(am.userExists(users[i]))
 							{
+								validsharedusers++;
 								//host remains the same but update all others
-								am.addEvent(users[i], eventname, location, start, end, notes, am.getUsernameFromID(id));
+								am.addEvent(eventID, users[i], eventname, location, start, end, notes, am.getUsernameFromID(id));
+							}
+						}
+						
+						//if it is shared with at least 1 valid user
+						if(validsharedusers >= 1)
+						{
+							for(int i = 0; i<users.length; i++)
+							{
+								//check if username exists
+								if(am.userExists(users[i]))
+								{
+									validsharedusers++;
+									//host remains the same but update all others
+									am.addToSharedEvents(eventID, users[i]);
+								}
 							}
 						}
 					}
