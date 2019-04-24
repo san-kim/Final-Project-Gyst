@@ -91,11 +91,12 @@ public class todoevents_servlet extends HttpServlet
 					if(todoevents.size() > index)
 					{
 						responsetext += "<p id='todotitle'>To Do Event Details</p>";
-				        responsetext += "<p>event name: "+todoevents.get(index).eventname+"</p>";
-				        responsetext += "<p>location: "+todoevents.get(index).location+"</p>";
-				        responsetext += "<p>start: "+todoevents.get(index).start+"</p>";
-				        responsetext += "<p>end: "+todoevents.get(index).end+"</p>";
-				        responsetext += "<p>notes: "+todoevents.get(index).notes+"</p>";
+				        responsetext += "<p id='todoname1'>event name: "+todoevents.get(index).eventname+"</p>";
+				        responsetext += "<p id='todolocation1'>location: "+todoevents.get(index).location+"</p>";
+				        responsetext += "<p id='todostart1'>start: "+todoevents.get(index).start+"</p>";
+				        responsetext += "<p id='todoend1'>end: "+todoevents.get(index).end+"</p>";
+				        responsetext += "<p id='todonotes1'>notes: "+todoevents.get(index).notes+"</p>";
+				        responsetext += "<button id='edittodobutton' onclick='showchangetodo();'>edit</button>";
 				        responsetext += "<button id='closebutton' onclick='exittodoinfo();'>close</button>";
 					}
 				}
@@ -123,6 +124,82 @@ public class todoevents_servlet extends HttpServlet
 				//SUCCESSFULLY ADDS TO DATABASE
 			}
 		}
+		
+		String changetodo = request.getParameter("changetodo");
+		if(changetodo != null)
+		{
+			if(changetodo.trim().equals("true"))
+			{
+				int index = Integer.parseInt((String)request.getParameter("index"));
+				DatabaseAccess am = new DatabaseAccess();
+								
+				//successfully got the ArrayList of todoevents onload of the calendar page
+				//STYLE THIS AND ADD IT
+				ArrayList<ToDoEventInfo>todoevents = am.getToDoEvents(currentuser);
+				String responsetext = "";
+
+				if(todoevents != null)
+				{
+					if(todoevents.size() > index)
+					{
+						responsetext += "<p class='neweventformp'>Edit To Do Event</p>";
+						responsetext += "<p>Event Name</p>";
+						responsetext += "<input type='text' name='todoeventname' id='changetodoeventname' value="+todoevents.get(index).eventname+">";
+						responsetext += "<p>Location</p>";
+						responsetext += "<input type='text' name='location' id='changetodolocation' value="+todoevents.get(index).location+">";
+						responsetext += "<p>Start</p>";
+						responsetext += "<input type='datetime-local' name='start' id='changetodostart' value="+todoevents.get(index).start.trim()+">";
+						responsetext += "<p>End</p>";
+						responsetext += "<input type='datetime-local' name='end' id='changetodoend' value="+todoevents.get(index).end.trim()+">";
+						responsetext += "<p>Notes</p>";
+						responsetext += "<input type='text' id='changetodonotesinput' name='notes' value="+todoevents.get(index).notes+">";
+						responsetext += "<input type='submit' id='changetodoeventsubmitbutton' name='submit' value='save' onclick=changetodoevent("+index+");>";
+						responsetext += "<input type='submit' id='deletetodoeventsubmitbutton' name='submit' value='delete' onclick=deletetodoevent("+index+");>";
+
+					}
+				}
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				out.println(responsetext);
+			}
+		}
+		
+		String changetododatabase = request.getParameter("changetododatabase");
+		if(changetododatabase != null)
+		{
+			if(changetododatabase.trim().equals("true"))
+			{
+				DatabaseAccess am = new DatabaseAccess();
+				
+				int index = Integer.parseInt(request.getParameter("index"));
+				ArrayList<ToDoEventInfo>todoevents = am.getToDoEvents(currentuser);
+				int todoID = todoevents.get(index).event_ID;
+				String name = request.getParameter("name");
+				String location = request.getParameter("location");
+				String start = request.getParameter("start");
+				String end = request.getParameter("end");
+				String notes = request.getParameter("notes");
+				ToDoEventInfo tdei = new ToDoEventInfo(todoID, am.getIDFromUsername(currentuser), name, location, start, end, false, notes);
+				am.changeToDoEvent(currentuser, tdei);
+				//SUCCESSFULLY CHANGES TO DATABASE
+			}
+		}
+		
+		String deletetododatabase = request.getParameter("deletetododatabase");
+		if(deletetododatabase != null)
+		{
+			if(deletetododatabase.trim().equals("true"))
+			{
+				DatabaseAccess am = new DatabaseAccess();
+				
+				int index = Integer.parseInt(request.getParameter("index"));
+				ArrayList<ToDoEventInfo>todoevents = am.getToDoEvents(currentuser);
+				int todoID = todoevents.get(index).event_ID;
+				am.removeOneToDoEvent_eventIDusername(todoID, currentuser.trim());
+				//SUCCESSFULLY DELETES THIS EVENT FROM DATABASE
+			}
+		}
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
