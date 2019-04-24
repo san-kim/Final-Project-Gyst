@@ -81,7 +81,7 @@ function createAccount(username, password){
             console.log('added user with id ' + id);
             resolve(id);
         });
-    })
+    });
 }
 
 function validatePassword(username, password){
@@ -91,27 +91,12 @@ function validatePassword(username, password){
             if (err) throw err;
             console.log(result);
             if (result.length > 0) {
-                resolve(true);
+                resolve(result[0].User_ID);
             } else {
                 resolve(false);
             }
         });
     });
-}
-
-function getIdFromName(username){
-    return new Promise( (resolve, reject) => {
-        var query = 'SELECT * FROM UserInfo WHERE Username=\'' + username + '\'';
-        con.query(query, function (err, result) {
-            if (err) throw err;
-            if (result.length > 0) {
-                resolve(result[0].Username);
-            } else {
-                reject("errorstring");
-            }
-        });
-    })
-    
 }
 
 // login servlet
@@ -122,30 +107,28 @@ app.get('/login', (req, res) => {
     console.log('pword: ' + password);
     let response = "";
 
-    usernameExists(username).then((uname) => {
+   /* usernameExists(username).then((uname) => {
         if (uname) {
             response = "uname";
         }
-        res.send(response);
-    });
+    });*/
 
     validatePassword(username, password).then((valid) => {
         if (valid) {
-            getIdFromName(username).then((uname) => {
-                response = {
-                    username: username,
-                    id: uname
-                };
-            }).catch((error) => {
-                console.log(error);
-            });
-        } 
-        else {
-            response = "pword";
+            response = {
+                username: username,
+                id: valid
+            };
+            console.log('response:');
+            console.log(response);
         }
-        console.log(response);
+        else{
+            response = "pword";
+        } 
+
         res.send(response);
     });
+    
 });
 
 // registration servlet

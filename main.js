@@ -17,7 +17,7 @@ const INSTAGRAM = 5;
 const NETFLIX = 6;
 const TWITCH = 7;
 
-console.log('hello world');
+
 
 
 ipcMain.on('gethistory', (event, arg) => {
@@ -25,10 +25,12 @@ ipcMain.on('gethistory', (event, arg) => {
 });
 
 ipcMain.on('user', (event, arg) => {
+    console.log('hello worlda');
     current_user = arg;
 });
 
 ipcMain.on('getuser', (event, arg) =>{
+    console.log('hello worldb');
     event.returnValue = current_user;
 });
 
