@@ -84,12 +84,80 @@ public class events_servlet extends HttpServlet {
 			        responsetext += "<p>start: "+info.start+"</p>";
 			        responsetext += "<p>end: "+info.end+"</p>";
 			        responsetext += "<p>notes: "+info.notes+"</p>";
+			        responsetext += "<button id='editeventbutton' onclick='showchangeevent();'>edit</button>";
 			        responsetext += "<button id='closebutton1' onclick='exiteventinfo();'>close</button>";
 			        
 				}
 				response.setContentType("text/html");
 				PrintWriter out = response.getWriter();
 				out.println(responsetext);
+			}
+		}
+		
+		String changeeventfill = request.getParameter("changeeventfill");
+		if(changeeventfill != null)
+		{
+			if(changeeventfill.trim().equals("true"))
+			{
+				int eventID = Integer.parseInt((String)request.getParameter("eventID"));
+				DatabaseAccess am = new DatabaseAccess();
+								
+				//successfully got the ArrayList of todoevents onload of the calendar page
+				//STYLE THIS AND ADD IT
+				EventInfo event = am.getOneEvent(eventID, currentuser);
+				String responsetext = "";
+
+				if(event != null)
+				{
+					responsetext += "<p class='neweventformp'>Edit Event</p>";
+					responsetext += "<p>Event Name</p>";
+					responsetext += "<input type='text' name='eventname' id='changeeventname' value="+event.eventname+">";
+					responsetext += "<p>Location</p>";
+					responsetext += "<input type='text' name='location' id='changeeventlocation' value="+event.location+">";
+					responsetext += "<p>Start</p>";
+					responsetext += "<input type='datetime-local' name='start' id='changeeventstart' value="+event.start+">";
+					responsetext += "<p>End</p>";
+					responsetext += "<input type='datetime-local' name='end' id='changeeventend' value="+event.end+">";
+					responsetext += "<p>Notes</p>";
+					responsetext += "<input type='text' name='notes' id='changeeventnotes' value="+event.notes+">";
+					responsetext += "<input type='submit' id='changeeventsubmitbutton' name='submit' value='save' onclick=changeevent("+eventID+")>";
+					responsetext += "<input type='submit' id='deleteeventsubmitbutton' name='submit' value='delete' onclick=deleteevent("+eventID+")>";
+				}
+				response.setContentType("text/html");
+				PrintWriter out = response.getWriter();
+				out.println(responsetext);
+			}
+		}
+		
+		String changeeventdatabase = request.getParameter("changeeventdatabase");
+		if(changeeventdatabase != null)
+		{
+			if(changeeventdatabase.trim().equals("true"))
+			{
+				DatabaseAccess am = new DatabaseAccess();
+								
+				int eventID = Integer.parseInt(request.getParameter("eventID"));
+				String name = request.getParameter("name");
+				String location = request.getParameter("location");
+				String start = request.getParameter("start");
+				String end = request.getParameter("end");
+				String notes = request.getParameter("notes");
+				EventInfo ei = new EventInfo(am.getIDFromUsername(currentuser), name, location, start, end, notes);
+				am.changeEventInfo(currentuser, ei, eventID);
+				//SUCCESSFULLY CHANGES TO DATABASE
+			}
+		}
+		
+		String deleteeventdatabase = request.getParameter("deleteeventdatabase");
+		if(deleteeventdatabase != null)
+		{
+			if(deleteeventdatabase.trim().equals("true"))
+			{
+				DatabaseAccess am = new DatabaseAccess();
+				
+				int eventID = Integer.parseInt(request.getParameter("eventID"));
+				am.removeOneEvent(eventID, currentuser.trim());
+				//SUCCESSFULLY DELETES THIS EVENT FROM DATABASE
 			}
 		}
 	}
