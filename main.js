@@ -236,12 +236,10 @@ function createWindow() {
     // this can change depending on CSS, etc.
     // leave as 720p until needed
     
-    let w = 1280;
-    let h = 720;
     initHistory();
     // getHistory();
-    win = new BrowserWindow({ width: w, height: h });
-
+    win = new BrowserWindow();
+    win.maximize();
     // Load index.html in window
     win.loadFile('index.html');
 
@@ -254,7 +252,7 @@ function createWindow() {
     // win.loadURL(appURL);
 
     // Open the DevTools.
-    win.webContents.openDevTools();
+    //win.webContents.openDevTools();
 
     // Emitted when the window is closed.
     win.on('closed', () => {
