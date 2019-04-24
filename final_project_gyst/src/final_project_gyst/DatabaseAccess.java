@@ -136,7 +136,7 @@ public class DatabaseAccess
 			boolean matchExists = false;
 			while(rs.next())
 			{
-				matchExists = (rs.getInt(1) == 1);
+				matchExists = (rs.getInt(1) > 0);
 			}
 			
 			return matchExists;
@@ -316,12 +316,12 @@ public class DatabaseAccess
 	}
 	
 	//keep it this syntax because we will likely need to update the database without rewriting every time
-	public void addEvent(String username, String eventname, String location, String start, String end, String notes)
+	public void addEvent(String username, String eventname, String location, String start, String end, String notes, String host)
 	{
 		try {
 			//after ? comes the value user input 
 			//where not exists, only insert row
-			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes) VALUES("+ generateEvent_ID() +","+getIDFromUsername(username)+",?,?,?,?,?)");
+			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+ generateEvent_ID() +","+getIDFromUsername(username)+",?,?,?,?,?,"+getIDFromUsername(host)+")");
 			//replace first question mark with the firstName variable. question mark means a variable will go there
 		
 			/*
@@ -377,6 +377,19 @@ public class DatabaseAccess
 		}
 	} 
 	
+	public void removeOneEvent(int eventID, String username)
+	{
+		try {
+			ps = conn.prepareStatement("DELETE FROM User_Events WHERE Event_ID="+eventID+" AND User_ID="+getIDFromUsername(username));
+			ps.executeUpdate();
+		}
+		
+		catch(SQLException sqle)
+		{
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+	}
+	
 	//make sure you store before as before=this; then do whatever change then after=this
 	public void changeEvent(String username, Event after)
 	{
@@ -397,8 +410,37 @@ public class DatabaseAccess
 				//delete all old instances of this
 				removeEvent(after);
 				//to update, add updated information
-				addEvent(username, after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes());
+				addEvent(username, after.getEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getNotes(), username);
 			}
+		}
+			
+		catch(SQLException sqle)
+		{
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+	}
+	
+	public void changeEventInfo(String username, EventInfo after, int eventID)
+	{
+		username = username.trim();
+		if(userExists(username) == false || EventID_Exists(eventID) == false)
+		{
+			return;
+		}
+		
+		try {
+			//delete
+			ps = conn.prepareStatement("DELETE FROM User_Events WHERE Event_ID="+eventID+" AND User_ID="+getIDFromUsername(username));
+			ps.executeUpdate();
+			
+			//then insert
+			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+eventID+","+getIDFromUsername(username)+",?,?,?,?,?,"+getIDFromUsername(username)+")");
+			ps.setString(1, after.eventname);
+			ps.setString(2, after.location);
+			ps.setString(3, after.start);
+			ps.setString(4, after.end);			
+			ps.setString(5, after.notes);			
+			ps.executeUpdate();
 		}
 			
 		catch(SQLException sqle)
@@ -433,6 +475,75 @@ public class DatabaseAccess
 		catch(SQLException sqle)
 		{
 			System.out.println("sqle: " + sqle.getMessage());
+		}
+		return result;
+	}
+	
+	public EventInfo getOneEvent(int eventID, String username)
+	{
+		username = username.trim();
+		if(userExists(username) == false)
+			return null;
+		
+		EventInfo result = null;
+		
+		try {
+			ps = conn.prepareStatement("SELECT * FROM User_Events WHERE User_ID="+getIDFromUsername(username)+" AND Event_ID="+eventID);
+			rs = ps.executeQuery();			
+			
+			while(rs.next())
+			{
+				int user_ID = rs.getInt("User_ID");
+				String eventname = rs.getString("Event_name");
+				String location = rs.getString("location");
+				String start = rs.getString("Start_time");
+				String end = rs.getString("End_time");
+				String notes = rs.getString("notes");
+				EventInfo newEventInfo = new EventInfo(user_ID, eventname, location, start, end, notes);
+				result = newEventInfo;
+			}
+		}
+		
+		catch(SQLException sqle)
+		{
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+		return result;
+	}
+	
+	public EventInfo getEventWithIDUsername(int id, String username)
+	{
+		if(userExists(username) == false)
+			return null;
+		
+		EventInfo result = new EventInfo(0,"","","","","");
+		boolean initialized = false;
+		try {
+			ps = conn.prepareStatement("SELECT * FROM User_Events WHERE Event_ID="+id+" AND User_ID="+getIDFromUsername(username));
+			rs = ps.executeQuery();			
+			
+			while(rs.next())
+			{
+				int user_ID = rs.getInt("User_ID");
+				String eventname = rs.getString("Event_name");
+				String location = rs.getString("location");
+				String start = rs.getString("Start_time");
+				String end = rs.getString("End_time");
+				String notes = rs.getString("notes");
+				EventInfo newEventInfo = new EventInfo(user_ID, eventname, location, start, end, notes);
+				result = newEventInfo;
+				initialized = true;
+			}
+		}
+		
+		catch(SQLException sqle)
+		{
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+		
+		if(initialized == false)
+		{
+			return null;
 		}
 		return result;
 	}
@@ -515,9 +626,29 @@ public class DatabaseAccess
 		}
 	}
 	
-	public void removeOneToDoEvent(Event event, String username)
+	public void removeOneToDoEvent(ToDoEventInfo event, String username)
 	{
-		int EventID = (int)event.getId();
+		username = username.trim();
+		int EventID = event.event_ID;
+		if(!userExists(username))
+			return;
+		try {
+			//after ? comes the value user input 
+			//where not exists, only insert row
+			ps = conn.prepareStatement("DELETE FROM ToDoEvents WHERE ToDoEvent_ID="+EventID+" AND User_ID="+getIDFromUsername(username));
+			ps.executeUpdate();
+		}
+		
+		catch(SQLException sqle)
+		{
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+	} 
+	
+	public void removeOneToDoEvent_eventIDusername(int eventID, String username)
+	{
+		username = username.trim();
+		int EventID = eventID;
 		if(!userExists(username))
 			return;
 		try {
@@ -570,15 +701,13 @@ public class DatabaseAccess
 		}
 	} 
 	
-	//make sure you store before as before=this; then do whatever change then after=this
-	public void changeToDoEvent(String username, ToDoEvent after)
+	public void changeToDoEvent(String username, ToDoEventInfo after)
 	{
+		username = username.trim();
 		try {
-			ps = conn.prepareStatement("SELECT COUNT(*) FROM ToDoEvents WHERE ToDoEvent_ID="+after.getId());
+			ps = conn.prepareStatement("SELECT COUNT(*) FROM ToDoEvents WHERE ToDoEvent_ID="+after.event_ID+" AND User_ID="+getIDFromUsername(username));
 			rs = ps.executeQuery();			
 				
-			//as long as there are more rows, as select will return a table
-			//the table is a count of how many successful username password combos there are, should be 1 or 0
 			boolean matchExists = false;
 			while(rs.next())
 			{
@@ -587,7 +716,9 @@ public class DatabaseAccess
 			
 			if(matchExists)
 			{
-				addToDoEvent((int)after.getId(), username, after.getToDoEventName(), after.getLocation(), after.getStart(), after.getEnd(), after.getBlock(), after.getNotes());
+				ToDoEventInfo toremove = new ToDoEventInfo(after.event_ID, getIDFromUsername(username), after.eventname, after.location, after.start, after.end, after.block, after.notes);
+				removeOneToDoEvent(toremove, username);
+				addToDoEvent(after.event_ID, username, after.eventname, after.location, after.start, after.end, after.block, after.notes);
 			}
 		}
 			
@@ -609,7 +740,7 @@ public class DatabaseAccess
 			
 			while(rs.next())
 			{
-				String todoEventID = rs.getString("ToDoEvent_ID");
+				int todoEventID = rs.getInt("ToDoEvent_ID");
 				int user_ID = rs.getInt("User_ID");
 				String eventname = rs.getString("Event_name");
 				String location = rs.getString("location");
@@ -617,7 +748,7 @@ public class DatabaseAccess
 				String end = rs.getString("End_time");
 				boolean block = rs.getBoolean("User_block");
 				String notes = rs.getString("notes");
-				ToDoEventInfo newEventInfo = new ToDoEventInfo(user_ID, eventname, location, start, end, block, notes);
+				ToDoEventInfo newEventInfo = new ToDoEventInfo(todoEventID, user_ID, eventname, location, start, end, block, notes);
 				result.add(newEventInfo);
 			}
 		}

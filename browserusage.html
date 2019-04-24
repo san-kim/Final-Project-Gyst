@@ -38,8 +38,10 @@
             });
             chart.render();
 
+            getEvents();
         }
     </script>
+    
     <style>
 		html body
 		{
@@ -428,6 +430,7 @@
         {
             text-decoration: none;
             margin-left: 20px;
+            margin-bottom:5px;
             color:black;
         }
         
@@ -466,20 +469,144 @@
             overflow: scroll;
         }
         
-    </style>
-    <script>
-		function showEventpopup()
+        #changetodoeventform
+        {
+            background-color: white;
+            z-index: 1000001;
+            width: 40vw;
+            height:40vw;
+            position: absolute;
+            display:none;
+            border-radius: 10px;
+            margin-left: 30vw;
+            margin-top: calc(50vh - 20vw);
+            z-index: 2000100;
+        }
+        
+        #changetodoeventform .neweventformp
+        {
+            text-align:center;
+            font-size: 40px;
+            font-weight:300;
+            margin-bottom: -10px;
+            margin-left: 0px;
+        }
+        
+        #changetodoeventform p
+        {
+            font-size: 20px;
+            font-weight:200;
+            margin-bottom: 5px;
+            text-align:center;
+            margin-top: 20px;
+        }
+        #changetodoeventform input
+        {
+            font-size: 14px;
+            font-weight:200;
+            margin-bottom: 5px;
+            width: 200px;
+            margin-left: calc(50% - 100px);
+        }
+        
+        #deletetodoeventsubmitbutton
 		{
-			document.getElementById("eventpopupdiv").style.display = "block";
-			document.getElementById("eventform").style.display = "block";			
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50%-100px);
+			margin-top: 10px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #F68B8B;
+            font-size: 20px !important;
 		}
 		
-		function exitEventpopup()
+		#deletetodoeventsubmitbutton:active
 		{
-			document.getElementById("eventpopupdiv").style.display = "none";
-            document.getElementById("eventform").style.display = "none";			
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			margin-top: 10px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #F68B8B;
+            font-size: 20px !important;
 		}
         
+        #changetodoeventsubmitbutton
+        {
+            margin-left: calc(50% - 100px) !important;
+            width:200px !important;
+            margin-top: 30px !important;
+        }
+        
+        #changetodoeventsubmitbutton
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50%-100px);
+			margin-top: 100px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #DEF6FA;
+            font-size: 20px !important;
+		}
+		
+		#changetodoeventsubmitbutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			margin-top: 100px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #DEF6FA;
+            font-size: 20px !important;
+		}
+        
+        #edittodobutton
+		{
+            width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+            margin-bottom: 20px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
+		
+		#edittodobutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+            margin-bottom: 20px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
+    </style>
+    <script>
         function showTodoeventpopup()
         {
             document.getElementById("eventpopupdiv").style.display = "block";
@@ -491,7 +618,175 @@
 			document.getElementById("eventpopupdiv").style.display = "none";
             document.getElementById("todoeventform").style.display = "none";			
 		}
+        
+        function showchangetodo()
+        {   
+            document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("changetodoeventform").style.display = "block";	
+        }
+        
+        function exitchangeeventpopup()
+		{
+			document.getElementById("eventpopupdiv").style.display = "none";
+            document.getElementById("changetodoeventform").style.display = "none";		
+            document.getElementById("eventpopupdiv").style.display = "none";
+			document.getElementById("todoeventinfopopup").style.display = "none";
+		}
+        
+        function logout()
+        {
+            return new Promise( function (resolve, reject) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?logout=true", false);
+                xhttp.send();
+                resolve();
+            });
+
+        }
+
+        function doLogout() {
+            logout().then(function(){
+                window.location.href = "login.html";
+            });
+        }
 	</script>
+    <script>
+        function changetodoevent(index)
+        {
+            var name = document.getElementById("changetodoeventname").value;
+            var location = document.getElementById("changetodolocation").value;
+            var start = document.getElementById("changetodostart").value;
+            var end = document.getElementById("changetodoend").value;
+            var notes = document.getElementById("changetodonotesinput").value;
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?changetododatabase=true&name="+name+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes+"&index="+index, false);
+            xhttp.send();
+            
+            getEvents();
+        }
+        
+        function deletetodoevent(index)
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?deletetododatabase=true&index="+index, false);
+            xhttp.send();
+            
+            getEvents();
+        }
+    </script>
+    <style>
+        #todoeventinfopopup
+        {
+            position:absolute;
+            z-index: 2000002;
+            background-color: #DEF6FA;
+            width: 40vw;
+            height: 470px;
+            margin-left: 30vw;
+            margin-top: calc(27% - 235px);
+            font-family: 'Avenir Next';
+            font-weight: 200;
+            font-size: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        #todoeventinfopopup p
+        {
+            color: black;
+            text-align: center;
+            font-family: 'Avenir Next';
+            font-weight: 200;
+            font-size: 20px;
+        }
+        
+        #todoeventinfopopup #todotitle
+        {
+            color: black;
+            text-align: center;
+            font-family: 'Avenir Next';
+            font-weight: 300;
+            font-size: 30px;
+            margin-top: 20px;
+        }
+        
+        #closebutton
+		{
+            width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #DEF6FA;
+            font-size: 20px !important;
+		}
+		
+		#closebutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #DEF6FA;
+            font-size: 20px !important;
+		}
+    </style>
+    <script>
+        function showtodoinfo(eventindex)
+        {   
+            var xhttp3 = new XMLHttpRequest();
+            xhttp3.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?showtodoinfo=true&index="+eventindex, false);
+            xhttp3.send();
+            document.getElementById("todoeventinfopopup").innerHTML = xhttp3.responseText;
+            
+            //create the edit form but don't display
+            changetodo(eventindex);
+            
+            document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("todoeventinfopopup").style.display = "block";
+        }
+        
+        function changetodo(index)
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?changetodo=true&index="+index, false);
+            xhttp.send();
+            document.getElementById("changetodoeventform").innerHTML = xhttp.responseText;
+        }
+        
+        function exittodoinfo()
+        {
+			document.getElementById("eventpopupdiv").style.display = "none";
+			document.getElementById("todoeventinfopopup").style.display = "none";
+        }
+        
+        function getEvents() 
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?gettodo=true", false);
+            xhttp.send();
+            
+            document.getElementById("todolist").innerHTML = xhttp.responseText;
+            //getNextEvent();
+        }
+    </script>
+    <script>
+        function exittodoinfo()
+        {
+			document.getElementById("eventpopupdiv").style.display = "none";
+			document.getElementById("todoeventinfopopup").style.display = "none";
+            document.getElementById("eventpopupdiv").style.display = "none";
+            document.getElementById("changetodoeventform").style.display = "none";			
+        }
+    </script>
     <script>
         function logout2()
         {
@@ -527,7 +822,7 @@
 		<button id="browsingtimebutton" onclick="location.href='calendar.html';">calendar</button>
 		<button id="logoutbutton" onclick="doLogout2();">log out</button>
 	</div>
-    
+    <div id="eventpopupdiv" onclick="exitTodoeventpopup(); exittodoinfo();"></div>
     <div id="chartdiv">
         <div id="chartContainer"></div>
         <div id="chartblock1"></div>
@@ -538,8 +833,7 @@
 		<p id="monthp">Browsing Time</p>
 	</div>
 	<!-- darker background -->
-	<div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup();"></div>
-    
+	<div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup(); exittodoinfo();"></div>
     <form id="todoeventform">
         <p class="neweventformp">New To Do Event</p>
         <p>Event Name</p>
@@ -555,6 +849,35 @@
         <p>Notes</p>
         <input type="text" id="todonotesinput" name="notes">
         <input type="submit" id="todoeventsubmitbutton" name="submit" value="add to do event">
+    </form> 
+    
+    <div id="todoeventinfopopup">
+        <!-- sample input, to be populated
+        <p id="todotitle">To Do Event Details</p>
+        <p>event name: testttt</p>
+        <p>location: testttt</p>
+        <p>start: testttt</p>
+        <p>end: testttt</p>
+        <p>notes: testttt</p>
+        <input type="submit" value="close" id="closebutton">
+        -->
+    </div>
+    
+    <form id="changetodoeventform">
+        <!-- sample input, to be populated
+        <p class="neweventformp">Edit To Do Event</p>
+        <p>Event Name</p>
+        <input type="text" name="todoeventname" id="changetodoeventname">
+        <p>Location</p>
+        <input type="text" name="location" id="changetodolocation">
+        <p>Start</p>
+        <input type="datetime-local" name="start" id="changetodostart">
+        <p>End</p>
+        <input type="datetime-local" name="end" id="changetodoend">
+        <p>Notes</p>
+        <input type="text" id="changetodonotesinput" name="notes">
+        <input type="submit" id="changetodoeventsubmitbutton" name="submit" value="save">
+        -->
     </form> 
 </body>
 

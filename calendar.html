@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Calendar</title>
-	<script>
+	<script>        
 		function getEvents(){
 			var xhttp = new XMLHttpRequest();
 			xhttp.open('GET', "localhost:3000/getevents", false);
@@ -12,20 +12,23 @@
 			return xhttp.responseText;
 		}
 		function sendEvent(){
-			var xhttp = new XMLHttpRequest();
-			xhttp.open('POST', 'localhost:3000/addevent', true);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			var eventname = "eventname=" + document.getElementById('eventname').value;
-			var location = "&location=" + document.getElementById('location').value;
-			var start = "&start=" + document.getElementById('start').value;
-			var end = "&end=" + document.getElementById('end').value;
-			var notes = "&notes=" + document.getElementById('notes').value;
-			var requestString = eventname + location + start + end + notes;
-			xhttp.send(requestString);
+            
+            var xhttpb = new XMLHttpRequest();
+            xhttpb.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?getcurrentID=true", false);
+            xhttpb.send();            
+            var currentUserID = xhttpb.responseText;
 
-			xhttp.onreadystatechange = function(){
-				console.log('xhttp request changing');
-			}
+            var eventname = document.getElementById("eventname").value;
+			var location = document.getElementById("eventlocation").value;
+			var start = document.getElementById("eventstart").value;
+			var end = document.getElementById("eventend").value;
+			var notes = document.getElementById("eventnotes").value;
+            var sharedwith = document.getElementById("eventsharedwith").value; 
+            var id = currentUserID;
+                
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/events_servlet?addingevent=true&eventname="+eventname+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes+"&id="+id+"&sharedwith="+sharedwith, false);
+            xhttp.send();
 		}
 	</script>
 	<link href='./assets/css/sb-admin-2.css' rel='stylesheet'>
@@ -42,10 +45,17 @@
 		var event_source;
 		document.addEventListener('DOMContentLoaded', function () {
 			var calendarEl = document.getElementById('calendar');
+            
+            
+            var xhttpa = new XMLHttpRequest();
+            xhttpa.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?getcurrentID=true", false);
+            xhttpa.send();            
+            var currentUserID = xhttpa.responseText;            
+            
 			var xhttp = new XMLHttpRequest();
 
 			// asynchronous request
-			xhttp.open('GET', "http://localhost:3000/getevents?id=3003932", true);
+			xhttp.open('GET', "http://localhost:3000/getevents?id="+currentUserID, true);
 			xhttp.send();
 
 			xhttp.onreadystatechange = function () {
@@ -323,6 +333,36 @@
             background-color: #DEF6FA;
 		}
         
+        #changeeventsubmitbutton
+		{
+			width: 200px;
+            font-size: 20px !important;
+			height:5vh;
+			margin-left: calc(50%-100px);
+			margin-top: 30px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #DEF6FA;
+		}
+		
+		#changeeventsubmitbutton:active
+		{
+			width: 200px;
+            font-size: 20px !important;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			margin-top: 30px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #DEF6FA;
+		}
+        
         #todoeventsubmitbutton
 		{
 			width: 200px;
@@ -353,6 +393,96 @@
             font-size: 20px !important;
 		}
         
+        #changetodoeventsubmitbutton
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50%-100px);
+			margin-top: 100px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #DEF6FA;
+            font-size: 20px !important;
+		}
+		
+		#changetodoeventsubmitbutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			margin-top: 100px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #DEF6FA;
+            font-size: 20px !important;
+		}
+        
+        #deletetodoeventsubmitbutton
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50%-100px);
+			margin-top: 10px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #F68B8B;
+            font-size: 20px !important;
+		}
+		
+		#deletetodoeventsubmitbutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			margin-top: 10px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #F68B8B;
+            font-size: 20px !important;
+		}
+        
+        #deleteeventsubmitbutton
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50%-100px);
+			margin-top: 10px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #F68B8B;
+            font-size: 20px !important;
+		}
+		
+		#deleteeventsubmitbutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			margin-top: 10px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #F68B8B;
+            font-size: 20px !important;
+		}
+        
         #eventpopupdiv
 		{
 			position:absolute;
@@ -368,12 +498,12 @@
             background-color: white;
             z-index: 1000001;
             width: 40vw;
-            height: 40vw;
+            height: calc(40vw + 70px);
             position: absolute;
             display:none;
             border-radius: 10px;
             margin-left: 30vw;
-            margin-top: calc(50vh - 20vw);
+            margin-top: calc(50vh - 20vw - 35px);
         }
         
         #eventform .neweventformp
@@ -449,7 +579,94 @@
             margin-left: calc(50% - 100px);
         }
         
+        #changetodoeventform
+        {
+            background-color: white;
+            z-index: 1000001;
+            width: 40vw;
+            height:40vw;
+            position: absolute;
+            display:none;
+            border-radius: 10px;
+            margin-left: 30vw;
+            margin-top: calc(50vh - 20vw);
+            z-index: 2000100;
+        }
+        
+        #changetodoeventform .neweventformp
+        {
+            text-align:center;
+            font-size: 40px;
+            font-weight:300;
+            margin-bottom: -10px;
+            margin-left: 0px;
+        }
+        
+        #changetodoeventform p
+        {
+            font-size: 20px;
+            font-weight:200;
+            margin-bottom: 5px;
+            text-align:center;
+            margin-top: 20px;
+        }
+        #changetodoeventform input
+        {
+            font-size: 14px;
+            font-weight:200;
+            margin-bottom: 5px;
+            width: 200px;
+            margin-left: calc(50% - 100px);
+        }
+        
+        #changeeventform
+        {
+            background-color: white;
+            z-index: 1000001;
+            width: 40vw;
+            height: calc(40vw + 10px);
+            position: absolute;
+            display:none;
+            border-radius: 10px;
+            margin-left: 30vw;
+            margin-top: calc(50vh - 20vw - 5px);
+            z-index: 2000101;
+        }
+        
+        #changeeventform .neweventformp
+        {
+            text-align:center;
+            font-size: 40px;
+            font-weight:300;
+            margin-bottom: -10px;
+            margin-left: 0px;
+        }
+        
+        #changeeventform p
+        {
+            font-size: 20px;
+            font-weight:200;
+            margin-bottom: 5px;
+            text-align:center;
+            margin-top: 20px;
+        }
+        #changeeventform input
+        {
+            font-size: 14px;
+            font-weight:200;
+            margin-bottom: 5px;
+            width: 200px;
+            margin-left: calc(50% - 100px);
+        }
+        
         #todoeventsubmitbutton
+        {
+            margin-left: calc(50% - 100px) !important;
+            width:200px !important;
+            margin-top: 30px !important;
+        }
+        
+        #changetodoeventsubmitbutton
         {
             margin-left: calc(50% - 100px) !important;
             width:200px !important;
@@ -530,6 +747,34 @@
             document.getElementById("todoeventform").style.display = "none";			
 		}
         
+        function showchangetodo()
+        {   
+            document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("changetodoeventform").style.display = "block";	
+        }
+        
+        function exitchangeeventpopup()
+		{
+			document.getElementById("eventpopupdiv").style.display = "none";
+            document.getElementById("changetodoeventform").style.display = "none";		
+            document.getElementById("eventpopupdiv").style.display = "none";
+			document.getElementById("todoeventinfopopup").style.display = "none";
+		}
+        
+        function showchangeevent()
+        {   
+            document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("changeeventform").style.display = "block";	
+        }
+        
+        function exitchangeeventpopup2()
+		{
+			document.getElementById("eventpopupdiv").style.display = "none";
+            document.getElementById("changeeventform").style.display = "none";		
+            document.getElementById("eventpopupdiv").style.display = "none";
+			document.getElementById("eventinfopopup").style.display = "none";
+		}
+        
         function logout()
         {
             return new Promise( function (resolve, reject) {
@@ -545,6 +790,56 @@
             logout().then(function(){
                 window.location.href = "login.html";
             });
+        }
+    </script>
+    <script>
+        function changetodoevent(index)
+        {
+            var name = document.getElementById("changetodoeventname").value;
+            var location = document.getElementById("changetodolocation").value;
+            var start = document.getElementById("changetodostart").value;
+            var end = document.getElementById("changetodoend").value;
+            var notes = document.getElementById("changetodonotesinput").value;
+
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?changetododatabase=true&name="+name+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes+"&index="+index, false);
+            xhttp.send();
+            
+            getEvents();
+        }
+        
+        function deletetodoevent(index)
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?deletetododatabase=true&index="+index, false);
+            xhttp.send();
+            
+            getEvents();
+        }
+        
+        function changeevent(eventID)
+        {
+            var name = document.getElementById("changeeventname").value;
+            var location = document.getElementById("changeeventlocation").value;
+            var start = document.getElementById("changeeventstart").value;
+            var end = document.getElementById("changeeventend").value;
+            var notes = document.getElementById("changeeventnotes").value;
+            
+            var xxhttp = new XMLHttpRequest();
+            xxhttp.open("GET", "http://localhost:8080/final_project_gyst/events_servlet?changeeventdatabase=true&name="+name+"&location="+location+"&start="+start+"&end="+end+"&notes="+notes+"&eventID="+eventID, false);
+            xxhttp.send();
+            
+            getEvents();
+        }
+        
+        function deleteevent(eventID)
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/events_servlet?deleteeventdatabase=true&eventID="+eventID, false);
+            xhttp.send();
+            
+            getEvents();
         }
     </script>
     <script>
@@ -572,6 +867,21 @@
             
             document.getElementById("todolist").innerHTML = xhttp.responseText;
             getNextEvent();
+            guestrestrictionsharingevents();
+        }
+        
+        function guestrestrictionsharingevents()
+        {
+            var xhttpd = new XMLHttpRequest();
+            xhttpd.open("GET", "http://localhost:8080/final_project_gyst/account_servlet?getcurrentusername=true", false);
+            xhttpd.send();            
+            var currentUsername = xhttpd.responseText;
+
+            if(currentUsername.trim() == 'guest')
+            {
+                document.getElementById("shareeventp").style.display = "none";
+                document.getElementById("eventsharedwith").style.display = "none";
+            }
         }
         
         function getNextEvent()
@@ -586,13 +896,45 @@
     <script>
         function showtodoinfo(eventindex)
         {   
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?showtodoinfo=true&index="+eventindex, false);
-            xhttp.send();
-            document.getElementById("todoeventinfopopup").innerHTML = xhttp.responseText;
+            var xhttp3 = new XMLHttpRequest();
+            xhttp3.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?showtodoinfo=true&index="+eventindex, false);
+            xhttp3.send();
+            document.getElementById("todoeventinfopopup").innerHTML = xhttp3.responseText;
+            
+            //create the edit form but don't display
+            changetodo(eventindex);
             
             document.getElementById("eventpopupdiv").style.display = "block";
 			document.getElementById("todoeventinfopopup").style.display = "block";
+        }
+        
+        function changetodo(index)
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/todoevents_servlet?changetodo=true&index="+index, false);
+            xhttp.send();
+            document.getElementById("changetodoeventform").innerHTML = xhttp.responseText;
+        }
+        
+        function displayEventDetails(eventIDinput)
+        {
+            var xhttp4 = new XMLHttpRequest();
+            xhttp4.open("GET", 'http://localhost:8080/final_project_gyst/events_servlet?showeventinfo=true&eventidinput='+eventIDinput, false);
+            xhttp4.send();
+            document.getElementById("eventinfopopup").innerHTML = xhttp4.responseText;
+
+            changeeventfill(eventIDinput);
+                
+            document.getElementById("eventpopupdiv").style.display = "block";
+			document.getElementById("eventinfopopup").style.display = "block";
+        }
+        
+        function changeeventfill(eventID)
+        {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "http://localhost:8080/final_project_gyst/events_servlet?changeeventfill=true&eventID="+eventID, false);
+            xhttp.send();
+            document.getElementById("changeeventform").innerHTML = xhttp.responseText;
         }
     </script>
     <script>
@@ -600,6 +942,16 @@
         {
 			document.getElementById("eventpopupdiv").style.display = "none";
 			document.getElementById("todoeventinfopopup").style.display = "none";
+            document.getElementById("eventpopupdiv").style.display = "none";
+            document.getElementById("changetodoeventform").style.display = "none";			
+        }
+        
+        function exiteventinfo()
+        {
+			document.getElementById("eventpopupdiv").style.display = "none";
+            document.getElementById("changeeventform").style.display = "none";		
+            document.getElementById("eventpopupdiv").style.display = "none";
+			document.getElementById("eventinfopopup").style.display = "none";
         }
     </script>
     <style>
@@ -609,9 +961,9 @@
             z-index: 2000002;
             background-color: #DEF6FA;
             width: 40vw;
-            height: 400px;
+            height: 450px;
             margin-left: 30vw;
-            margin-top: calc(27% - 200px);
+            margin-top: calc(27% - 225px);
             font-family: 'Avenir Next';
             font-weight: 200;
             font-size: 20px;
@@ -648,7 +1000,7 @@
 			font-family:'Avenir Next';
 			box-shadow: 2px 3px 5px 0px #ccc;
 			outline:none;
-            background-color: white;
+            background-color: #DEF6FA;
             font-size: 20px !important;
 		}
 		
@@ -662,7 +1014,130 @@
 			font-family:'Avenir Next';
 			box-shadow: inset 0 0 5px #aaaaaa;
 			outline:none;
+            background-color: #DEF6FA;
+            font-size: 20px !important;
+		}
+        
+        #edittodobutton
+		{
+            width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+            margin-bottom: 20px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
             background-color: white;
+            font-size: 20px !important;
+		}
+		
+		#edittodobutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+            margin-bottom: 20px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
+        
+        #editeventbutton
+		{
+            width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+            margin-bottom: 20px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
+		
+		#editeventbutton:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+            margin-bottom: 20px;
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: white;
+            font-size: 20px !important;
+		}
+        
+        #eventinfopopup
+        {
+            position:absolute;
+            z-index: 2000002;
+            background-color: #DEF6FA;
+            width: 40vw;
+            height: 450px;
+            margin-left: 30vw;
+            margin-top: calc(27% - 225px);
+            font-family: 'Avenir Next';
+            font-weight: 200;
+            font-size: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        #eventinfopopup p
+        {
+            color: black;
+            text-align: center;
+            font-family: 'Avenir Next';
+            font-weight: 200;
+            font-size: 20px;
+        }
+        
+        #eventinfopopup #eventtitle
+        {
+            color: black;
+            text-align: center;
+            font-family: 'Avenir Next';
+            font-weight: 300;
+            font-size: 30px;
+            margin-top: 20px;
+        }
+        
+        #closebutton1
+		{
+            width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: 2px 3px 5px 0px #ccc;
+			outline:none;
+            background-color: #DEF6FA;
+            font-size: 20px !important;
+		}
+		
+		#closebutton1:active
+		{
+			width: 200px;
+			height:5vh;
+			margin-left: calc(50% - 100px);
+			border-radius:8px;
+			text-align: center;
+			font-family:'Avenir Next';
+			box-shadow: inset 0 0 5px #aaaaaa;
+			outline:none;
+            background-color: #DEF6FA;
             font-size: 20px !important;
 		}
     </style>
@@ -674,9 +1149,11 @@
 			<!-- POPULATE TABLE HERE -->
             <br>
             <div id="todolist">
+                <!--
                 <a href="" action="">todo 1</a><br>
                 <a href="" action="">todo 2</a><br>
                 <a href="" action="">todo 3</a><br>
+                -->
             </div>
 			<button id="addtodobutton" onclick="showTodoeventpopup();">+</button>
 		</div>
@@ -694,21 +1171,21 @@
 	</div>
     <button id="addeventbutton" onclick="showEventpopup()">Add Calendar Event</button>
 	<!-- darker background -->
-  <div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup(); exittodoinfo();"></div>
-	<form id="eventform" action="http://localhost:3000/addevent" method="GET" onsubmit="exitEventPopup();">
+  <div id="eventpopupdiv" onclick="exitEventpopup(); exitTodoeventpopup(); exittodoinfo(); exiteventinfo(); exitTodoeventpopup(); exitchangeeventpopup2();"></div>
+	<form id="eventform" action="" method="GET" onsubmit="sendEvent(); exitEventPopup();">
         <p class="neweventformp">New Event</p>
         <p>Event Name</p>
         <input type="text" name="eventname" id="eventname">
         <p>Location</p>
-        <input type="text" name="location">
+        <input type="text" name="location" id="eventlocation">
         <p>Start</p>
-        <input type="datetime-local" name="start">
+        <input type="datetime-local" name="start" id="eventstart">
         <p>End</p>
-        <input type="datetime-local" name="end">
+        <input type="datetime-local" name="end" id="eventend">
         <p>Notes</p>
-		<input type="text" name="notes" id="notes">
-        <p>Share event with:</p>
-        <input type="text" name="sharedwith">
+		<input type="text" name="notes" id="eventnotes">
+        <p id="shareeventp">Share event with:</p>
+        <input type="text" name="sharedwith" id="eventsharedwith">
         <input type="submit" id="eventsubmitbutton" name="submit" value="add event">
     </form> 
     
@@ -726,7 +1203,8 @@
         <input type="text" id="todonotesinput" name="notes">
         <input type="submit" id="todoeventsubmitbutton" name="submit" value="add to do event">
     </form> 
-    <form id="todoeventinfopopup" onsubmit="return exittodoinfo();">
+    <div id="todoeventinfopopup">
+        <!-- sample input, to be populated
         <p id="todotitle">To Do Event Details</p>
         <p>event name: testttt</p>
         <p>location: testttt</p>
@@ -734,6 +1212,53 @@
         <p>end: testttt</p>
         <p>notes: testttt</p>
         <input type="submit" value="close" id="closebutton">
+        -->
+    </div>
+    <div id="eventinfopopup">
+        <!-- sample input, to be populated
+        <p id="todotitle">To Do Event Details</p>
+        <p>event name: testttt</p>
+        <p>location: testttt</p>
+        <p>start: testttt</p>
+        <p>end: testttt</p>
+        <p>notes: testttt</p>
+        <input type="submit" value="close" id="closebutton1">
+        -->
+    </div>
+    
+    <form id="changetodoeventform">
+        <!-- sample input, to be populated
+        <p class="neweventformp">Edit To Do Event</p>
+        <p>Event Name</p>
+        <input type="text" name="todoeventname" id="changetodoeventname">
+        <p>Location</p>
+        <input type="text" name="location" id="changetodolocation">
+        <p>Start</p>
+        <input type="datetime-local" name="start" id="changetodostart">
+        <p>End</p>
+        <input type="datetime-local" name="end" id="changetodoend">
+        <p>Notes</p>
+        <input type="text" id="changetodonotesinput" name="notes">
+        <input type="submit" id="changetodoeventsubmitbutton" name="submit" value="save">
+        -->
+    </form> 
+    
+    <form id="changeeventform" action="" method="GET" onsubmit="sendEvent(); exitEventPopup();">
+        <!--
+        <p class="neweventformp">Edit Event</p>
+        <p>Event Name</p>
+        <input type="text" name="eventname" id="changeeventname">
+        <p>Location</p>
+        <input type="text" name="location" id="changeeventlocation">
+        <p>Start</p>
+        <input type="datetime-local" name="start" id="changeeventstart">
+        <p>End</p>
+        <input type="datetime-local" name="end" id="changeeventend">
+        <p>Notes</p>
+		<input type="text" name="notes" id="changeeventnotes">
+        <input type="submit" id="changeeventsubmitbutton" name="submit" value="save">
+        <input type="submit" id="deleteeventsubmitbutton" name="submit" value="delete">
+        -->
     </form>
 </body>
 </html>
