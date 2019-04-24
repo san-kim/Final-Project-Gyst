@@ -22,7 +22,7 @@ public class DatabaseAccess
 	{
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Gyst?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&user=root&password=password123");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Gyst?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&user=root&password=sankim333");
 		}
 		catch(SQLException sqle)
 		{
@@ -316,12 +316,12 @@ public class DatabaseAccess
 	}
 	
 	//keep it this syntax because we will likely need to update the database without rewriting every time
-	public void addEvent(String username, String eventname, String location, String start, String end, String notes, String host)
+	public void addEvent(int eventID, String username, String eventname, String location, String start, String end, String notes, String host)
 	{
 		try {
 			//after ? comes the value user input 
 			//where not exists, only insert row
-			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+ generateEvent_ID() +","+getIDFromUsername(username)+",?,?,?,?,?,"+getIDFromUsername(host)+")");
+			ps = conn.prepareStatement("INSERT INTO User_Events(Event_ID, User_ID, Event_name, location, Start_time, End_time, notes, Host_ID) VALUES("+ eventID +","+getIDFromUsername(username)+",?,?,?,?,?,"+getIDFromUsername(host)+")");
 			//replace first question mark with the firstName variable. question mark means a variable will go there
 		
 			/*
@@ -336,6 +336,18 @@ public class DatabaseAccess
 			ps.executeUpdate();
 		}
 		
+		catch(SQLException sqle)
+		{
+			System.out.println("sqle: " + sqle.getMessage());
+		}
+	}
+	
+	public void addToSharedEvents(int eventID, String username)
+	{
+		try {
+			ps = conn.prepareStatement("INSERT INTO sharedevents(eventid, userid, username) VALUES("+ eventID +", "+getIDFromUsername(username)+", '"+username+"')");
+			ps.executeUpdate();
+		} 
 		catch(SQLException sqle)
 		{
 			System.out.println("sqle: " + sqle.getMessage());
@@ -391,6 +403,7 @@ public class DatabaseAccess
 	}
 	
 	//make sure you store before as before=this; then do whatever change then after=this
+	/*
 	public void changeEvent(String username, Event after)
 	{
 		try {
@@ -419,6 +432,7 @@ public class DatabaseAccess
 			System.out.println("sqle: " + sqle.getMessage());
 		}
 	}
+	*/
 	
 	public void changeEventInfo(String username, EventInfo after, int eventID)
 	{
