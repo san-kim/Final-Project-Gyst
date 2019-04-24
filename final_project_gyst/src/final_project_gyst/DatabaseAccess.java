@@ -22,7 +22,7 @@ public class DatabaseAccess
 	{
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Gyst?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&user=root&password=sankim333");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Gyst?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&user=root&password=password123");
 		}
 		catch(SQLException sqle)
 		{
