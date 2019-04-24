@@ -56,3 +56,8 @@ CREATE TABLE Browse_permanent (
     FOREIGN KEY(User_ID) REFERENCES UserInfo(User_ID)
 );
 
+CREATE TABLE sharedevents (
+	eventid INT(11) NOT NULL,
+	userid INT(11) NOT NULL,
+    username VARCHAR(50) NOT NULL
+);
